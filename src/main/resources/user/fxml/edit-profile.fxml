@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane fitToWidth="true" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.EditProfileController">
+   <content>
+      <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40;">
+         <children>
+            <Text style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-fill: #2c3e50;" text="Edit Profile" />
+            
+            <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 10; -fx-background-radius: 10;" maxWidth="400">
+               <children>
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Full Name:*" />
+                        <TextField fx:id="fullNameField" promptText="Enter your full name" style="-fx-font-size: 14px;" />
+                        <Label fx:id="fullNameError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Country:*" />
+                        <TextField fx:id="countryField" promptText="Enter your country" style="-fx-font-size: 14px;" />
+                        <Label fx:id="countryError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Birth Date:* (YYYY-MM-DD)" />
+                        <TextField fx:id="birthDateField" promptText="YYYY-MM-DD" style="-fx-font-size: 14px;" />
+                        <Label fx:id="birthDateError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <Separator style="-fx-padding: 10 0;" />
+                  
+                  <Text style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-fill: #555;" text="Change Password (Optional)" />
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Current Password:" />
+                        <PasswordField fx:id="currentPasswordField" promptText="Enter current password" style="-fx-font-size: 14px;" />
+                        <Label fx:id="currentPasswordError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="New Password:" />
+                        <PasswordField fx:id="newPasswordField" promptText="Enter new password" style="-fx-font-size: 14px;" />
+                        <Label fx:id="newPasswordError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Confirm New Password:" />
+                        <PasswordField fx:id="confirmNewPasswordField" promptText="Confirm new password" style="-fx-font-size: 14px;" />
+                        <Label fx:id="confirmNewPasswordError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <HBox spacing="15" alignment="CENTER">
+                     <children>
+                        <Button fx:id="saveButton" onAction="#handleSave" prefWidth="120" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand;" text="Save" />
+                        <Button fx:id="cancelButton" onAction="#handleCancel" prefWidth="120" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand;" text="Cancel" />
+                     </children>
+                  </HBox>
+                  
+                  <Label fx:id="successLabel" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;" text="" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>

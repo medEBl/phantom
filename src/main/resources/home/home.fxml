@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.home.HomeController">
+   <top>
+      <VBox style="-fx-background-color: #2c3e50; -fx-padding: 15;">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 0 20;">
+               <children>
+                  <Text style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: white;" text="Phantom App" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="userLabel" style="-fx-font-size: 14px; -fx-fill: #ecf0f1;" text="Welcome, User" />
+                  <Button fx:id="logoutButton" onAction="#handleLogout" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand;" text="Logout" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <VBox alignment="CENTER" spacing="30" style="-fx-padding: 40;">
+         <children>
+            <Text fx:id="welcomeText" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-fill: #2c3e50;" text="Welcome to Phantom App" />
+            
+            <Text fx:id="roleText" style="-fx-font-size: 18px; -fx-fill: #7f8c8d;" text="Your role: PLAYER" />
+            
+            <GridPane hgap="20" vgap="15" style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 10; -fx-background-radius: 10;">
+               <children>
+                  <Button fx:id="profileButton" onAction="#handleProfile" prefHeight="50" prefWidth="200" style="-fx-font-size: 16px; -fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;" text="My Profile" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  
+                  <Button fx:id="tournamentButton" onAction="#handleTournaments" prefHeight="50" prefWidth="200" style="-fx-font-size: 16px; -fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand;" text="Tournaments" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  
+                  <Button fx:id="teamButton" onAction="#handleTeams" prefHeight="50" prefWidth="200" style="-fx-font-size: 16px; -fx-background-color: #f39c12; -fx-text-fill: white; -fx-cursor: hand;" text="Teams" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  
+                  <Button fx:id="trainingButton" onAction="#handleTraining" prefHeight="50" prefWidth="200" style="-fx-font-size: 16px; -fx-background-color: #9b59b6; -fx-text-fill: white; -fx-cursor: hand;" text="Training Plans" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  
+                  <Button fx:id="shopButton" onAction="#handleShop" prefHeight="50" prefWidth="200" style="-fx-font-size: 16px; -fx-background-color: #e67e22; -fx-text-fill: white; -fx-cursor: hand;" text="Shop" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                  
+                  <Button fx:id="matchyButton" onAction="#handleMatchy" prefHeight="50" prefWidth="200" style="-fx-font-size: 16px; -fx-background-color: #34495e; -fx-text-fill: white; -fx-cursor: hand;" text="Matchy" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+            </GridPane>
+            
+            <VBox spacing="10" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10;">
+               <children>
+                  <Text style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-fill: #2c3e50;" text="Quick Stats" />
+                  <HBox spacing="30" alignment="CENTER">
+                     <children>
+                        <VBox alignment="CENTER" spacing="5">
+                           <children>
+                              <Text fx:id="pointsText" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: #3498db;" text="0" />
+                              <Text style="-fx-font-size: 12px; -fx-fill: #7f8c8d;" text="Points" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="5">
+                           <children>
+                              <Text fx:id="tournamentsText" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: #27ae60;" text="0" />
+                              <Text style="-fx-font-size: 12px; -fx-fill: #7f8c8d;" text="Tournaments" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="5">
+                           <children>
+                              <Text fx:id="teamsText" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: #f39c12;" text="0" />
+                              <Text style="-fx-font-size: 12px; -fx-fill: #7f8c8d;" text="Teams" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

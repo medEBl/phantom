@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane fitToWidth="true" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.RegisterController">
+   <content>
+      <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40;">
+         <children>
+            <Text style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-fill: #2c3e50;" text="Register" />
+            
+            <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 10; -fx-background-radius: 10;" maxWidth="400">
+               <children>
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Email:*" />
+                        <TextField fx:id="emailField" promptText="Enter your email" style="-fx-font-size: 14px;" />
+                        <Label fx:id="emailError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Username:*" />
+                        <TextField fx:id="usernameField" promptText="Enter username" style="-fx-font-size: 14px;" />
+                        <Label fx:id="usernameError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Full Name:*" />
+                        <TextField fx:id="fullNameField" promptText="Enter your full name" style="-fx-font-size: 14px;" />
+                        <Label fx:id="fullNameError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Password:*" />
+                        <PasswordField fx:id="passwordField" promptText="Enter password" style="-fx-font-size: 14px;" />
+                        <Label fx:id="passwordError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Confirm Password:*" />
+                        <PasswordField fx:id="confirmPasswordField" promptText="Confirm password" style="-fx-font-size: 14px;" />
+                        <Label fx:id="confirmPasswordError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Country:*" />
+                        <TextField fx:id="countryField" promptText="Enter your country" style="-fx-font-size: 14px;" />
+                        <Label fx:id="countryError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Birth Date:* (YYYY-MM-DD)" />
+                        <TextField fx:id="birthDateField" promptText="YYYY-MM-DD" style="-fx-font-size: 14px;" />
+                        <Label fx:id="birthDateError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Role:*" />
+                        <ComboBox fx:id="roleComboBox" prefWidth="250" promptText="Select role" style="-fx-font-size: 14px;" />
+                     </children>
+                  </VBox>
+                  
+                  <Button fx:id="registerButton" onAction="#handleRegister" prefWidth="250" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand;" text="Register" />
+                  
+                  <Hyperlink fx:id="loginLink" onAction="#handleLogin" text="Already have an account? Login here" />
+                  
+                  <Label fx:id="successLabel" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;" text="" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>

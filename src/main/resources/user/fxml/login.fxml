@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="20" style="-fx-padding: 40; -fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.LoginController">
+   <children>
+      <Text style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-fill: #2c3e50;" text="Login" />
+      
+      <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 10; -fx-background-radius: 10;">
+         <children>
+            <VBox spacing="5">
+               <children>
+                  <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Email:" />
+                  <TextField fx:id="emailField" prefWidth="250" promptText="Enter your email" style="-fx-font-size: 14px;" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="5">
+               <children>
+                  <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Password:" />
+                  <PasswordField fx:id="passwordField" prefWidth="250" promptText="Enter your password" style="-fx-font-size: 14px;" />
+               </children>
+            </VBox>
+            
+            <Button fx:id="loginButton" onAction="#handleLogin" prefWidth="250" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;" text="Login" />
+            
+            <Hyperlink fx:id="registerLink" onAction="#handleRegister" text="Don't have an account? Register here" />
+         </children>
+      </VBox>
+      
+      <Label fx:id="errorLabel" style="-fx-text-fill: #e74c3c; -fx-font-size: 12px;" text="" />
+   </children>
+</VBox>
