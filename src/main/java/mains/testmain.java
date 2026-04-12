@@ -13,7 +13,7 @@ public class testmain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Loads the CREATE screen directly for testing
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/AgentCreate.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/ListAgents.fxml")));
 
         primaryStage.setTitle("Phantom Force - Créer un Agent");
         primaryStage.setScene(new Scene(root, 1200, 800));

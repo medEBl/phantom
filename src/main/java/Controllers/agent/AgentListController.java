@@ -61,20 +61,32 @@ public class AgentListController {
         });
 
         // 3. Setup Action Buttons (Modifier & Supprimer)
+// 3. Setup Action Buttons (Details, Modifier & Supprimer)
         colActions.setCellFactory(column -> new TableCell<Agent, String>() {
+            final Button btnDetails = new Button("Voir Profil");
             final Button btnModifier = new Button("Modifier");
             final Button btnSupprimer = new Button("Supprimer");
-            final HBox actionButtons = new HBox(10, btnModifier, btnSupprimer);
+            final HBox actionButtons = new HBox(10, btnDetails, btnModifier, btnSupprimer); // Added btnDetails here
 
             {
+                // Styling the buttons
+                btnDetails.setStyle("-fx-background-color: transparent; -fx-border-color: #4da6ff; -fx-text-fill: #4da6ff; -fx-cursor: hand; -fx-border-radius: 4;");
                 btnModifier.setStyle("-fx-background-color: #2a2a35; -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 4;");
                 btnSupprimer.setStyle("-fx-background-color: transparent; -fx-border-color: #ff3b3f; -fx-text-fill: #ff3b3f; -fx-cursor: hand; -fx-border-radius: 4;");
 
+                // --- ACTION: VOIR PROFIL ---
+                btnDetails.setOnAction(event -> {
+                    Agent selectedAgent = getTableView().getItems().get(getIndex());
+                    openDetailsScreen(selectedAgent); // Calls the new method below!
+                });
+
+                // --- ACTION: MODIFIER ---
                 btnModifier.setOnAction(event -> {
                     Agent selectedAgent = getTableView().getItems().get(getIndex());
                     openEditScreen(selectedAgent);
                 });
 
+                // --- ACTION: SUPPRIMER ---
                 btnSupprimer.setOnAction(event -> {
                     Agent selectedAgent = getTableView().getItems().get(getIndex());
                     serviceAgent.deleteAgent(selectedAgent.getId());
@@ -100,8 +112,7 @@ public class AgentListController {
         // 5. Setup the "Créer un Agent +" Button Navigation
         btnCreateAgent.setOnAction(event -> {
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/AgentCreate.fxml"));
-                btnCreateAgent.getScene().setRoot(root);
+                Parent root = FXMLLoader.load(getClass().getResource("/fxml/AgentCreate.fxml"));                btnCreateAgent.getScene().setRoot(root);
             } catch (IOException e) {
                 System.err.println("Erreur navigation création: " + e.getMessage());
             }
@@ -121,8 +132,7 @@ public class AgentListController {
     // This method was missing from your code! It opens the Edit screen.
     private void openEditScreen(Agent agent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AgentEdit.fxml"));
-            Parent root = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AgentEdit.fxml"));            Parent root = loader.load();
 
             // Pass the data!
             AgentEditController editController = loader.getController();
@@ -132,6 +142,22 @@ public class AgentListController {
             btnCreateAgent.getScene().setRoot(root);
         } catch (IOException e) {
             System.err.println("Erreur de navigation vers Edit : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    // Navigation method for the Details screen
+    private void openDetailsScreen(Agent agent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AgentDetails.fxml"));            Parent root = loader.load();
+
+            // Pass the data to the Details Controller!
+            AgentDetailsController detailsController = loader.getController();
+            detailsController.initData(agent);
+
+            // Change scene
+            btnCreateAgent.getScene().setRoot(root);
+        } catch (IOException e) {
+            System.err.println("Erreur de navigation vers Details : " + e.getMessage());
             e.printStackTrace();
         }
     }

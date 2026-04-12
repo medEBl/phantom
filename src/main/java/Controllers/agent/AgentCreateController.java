@@ -163,7 +163,7 @@ public class AgentCreateController {
 
     private void navigateToList() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/ListAgents.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/ListAgents.fxml"));
             btnRetour.getScene().setRoot(root);
         } catch (IOException e) {
             System.err.println("Erreur de navigation : " + e.getMessage());
