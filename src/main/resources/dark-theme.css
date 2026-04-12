@@ -1,0 +1,102 @@
+/* --- dark-theme.css --- */
+
+/* Main Table Background */
+.table-view {
+    -fx-background-color: #1a1a24;
+    -fx-border-color: #2a2a36;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+/* Hide the ugly blue focus ring when you click the table */
+.table-view:focused {
+    -fx-background-color: #1a1a24;
+}
+
+/* Column Headers Area */
+.table-view .column-header-background {
+    -fx-background-color: #121216; /* Darker header */
+    -fx-background-radius: 8 8 0 0;
+    -fx-border-color: transparent transparent #2a2a36 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* Individual Column Headers */
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 40px; /* Taller headers */
+}
+
+/* Header Text */
+.table-view .column-header .label {
+    -fx-text-fill: #a0a0a0;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 0 10px;
+}
+
+/* Regular Rows */
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #22222d transparent; /* Subtle line between rows */
+    -fx-border-width: 0 0 1 0;
+    -fx-cell-size: 45px; /* Taller rows for modern look */
+}
+
+/* Text inside the rows */
+.table-cell {
+    -fx-text-fill: white;
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 0 10px;
+    -fx-font-size: 14px;
+}
+
+/* Hover Effect on Rows */
+.table-row-cell:hover {
+    -fx-background-color: #22222d;
+}
+
+/* Selected Row Effect */
+.table-row-cell:selected {
+    -fx-background-color: #2a2a36;
+}
+
+/* Scrollbar styling to match the dark theme */
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: #1a1a24;
+}
+.table-view .scroll-bar:vertical .thumb,
+.table-view .scroll-bar:horizontal .thumb {
+    -fx-background-color: #3a3a46;
+    -fx-background-radius: 5em;
+}
+/* Style the ComboBox itself */
+.combo-box {
+    -fx-background-color: #1e1e28;
+    -fx-border-color: #2a2a35;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+.combo-box .list-cell {
+    -fx-text-fill: white;
+}
+
+/* Style the popup dropdown menu */
+.combo-box-popup .list-view {
+    -fx-background-color: #1e1e28;
+    -fx-border-color: #2a2a35;
+}
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: #1e1e28;
+    -fx-text-fill: white;
+    -fx-padding: 8 10 8 10;
+}
+
+/* Hover effect on the dropdown items */
+.combo-box-popup .list-view .list-cell:hover,
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #ff3b3f; /* Phantom Force Red highlight */
+    -fx-text-fill: white;
+}

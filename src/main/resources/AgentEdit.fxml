@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentEditController">
+    <children>
+        <VBox layoutX="300.0" layoutY="50.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #16161e; -fx-background-radius: 12; -fx-border-color: #2a2a35; -fx-border-radius: 12;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="50.0">
+            <padding>
+                <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+            </padding>
+            <children>
+
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Modifier le Profil Agent" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblSubtitle" text="Pseudo • Game" textFill="#8a8a98">
+                                    <font>
+                                        <Font name="System Bold" size="13.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <Button fx:id="btnRetour" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-border-color: #444455; -fx-border-radius: 6; -fx-text-fill: white; -fx-cursor: hand;" text="← Retour">
+                            <padding>
+                                <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <VBox style="-fx-background-color: #1a1a24; -fx-background-radius: 6; -fx-border-color: #2a2a35; -fx-border-radius: 6;">
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                    </padding>
+                    <children>
+                        <Label text="⚠ Vous ne pouvez modifier que : pseudo, rang, statut, lien social." textFill="#a0a0a0" wrapText="true">
+                            <font><Font size="13.0" /></font>
+                        </Label>
+                        <Label text="Le jeu et les autres champs sont verrouillés pour éviter les doublons." textFill="#a0a0a0" wrapText="true">
+                            <font><Font size="13.0" /></font>
+                        </Label>
+                    </children>
+                </VBox>
+
+                <VBox spacing="15.0">
+                    <children>
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="PSEUDO / GAMER TAG" textFill="#e0e0e0">
+                                    <font><Font name="System Bold" size="11.0" /></font>
+                                </Label>
+                                <TextField fx:id="tfPseudo" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="GAME (CANNOT BE CHANGED)" textFill="#8a8a98">
+                                    <font><Font name="System Bold" size="11.0" /></font>
+                                </Label>
+                                <TextField fx:id="tfGame" editable="false" style="-fx-background-color: #1a1a24; -fx-text-fill: #8a8a98; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="CURRENT RANK" textFill="#e0e0e0">
+                                    <font><Font name="System Bold" size="11.0" /></font>
+                                </Label>
+                                <TextField fx:id="tfRank" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="STATUS" textFill="#e0e0e0">
+                                    <font><Font name="System Bold" size="11.0" /></font>
+                                </Label>
+                                <ComboBox fx:id="cbStatus" prefWidth="520.0" style="-fx-background-color: #1e1e28; -fx-border-color: #2a2a35; -fx-border-radius: 6;" />
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="SOCIAL LINK (OPTIONAL)" textFill="#e0e0e0">
+                                    <font><Font name="System Bold" size="11.0" /></font>
+                                </Label>
+                                <TextField fx:id="tfSocials" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+
+                <HBox alignment="CENTER_RIGHT" spacing="15.0" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                    <children>
+                        <Button fx:id="btnAnnuler" mnemonicParsing="false" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-cursor: hand;" text="Annuler">
+                            <padding>
+                                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                            </padding>
+                        </Button>
+                        <Button fx:id="btnEnregistrer" mnemonicParsing="false" style="-fx-background-color: #ff3b3f; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" text="Enregistrer">
+                            <padding>
+                                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
