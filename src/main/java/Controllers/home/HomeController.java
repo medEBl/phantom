@@ -53,6 +53,33 @@ public class HomeController {
     @FXML
     private Button matchyButton;
 
+    @FXML
+    private Button editProfileButton;
+
+    @FXML
+    private Button navHome;
+
+    @FXML
+    private Button navTournaments;
+
+    @FXML
+    private Button navTeams;
+
+    @FXML
+    private Button navTraining;
+
+    @FXML
+    private Button navShop;
+
+    @FXML
+    private Button navMatchy;
+
+    @FXML
+    private Button navAgent;
+
+    @FXML
+    private Button agentButton;
+
     public void setCurrentUser(User user) {
         this.currentUser = user;
         updateUserInfo();
@@ -61,8 +88,8 @@ public class HomeController {
     private void updateUserInfo() {
         if (currentUser != null) {
             userLabel.setText("Welcome, " + currentUser.getFullName());
-            welcomeText.setText("Welcome, " + currentUser.getFullName() + "!");
-            roleText.setText("Your role: " + currentUser.getRole());
+            welcomeText.setText("Welcome, " + currentUser.getFullName().toUpperCase() + "!");
+            roleText.setText("ROLE: " + currentUser.getRole());
             pointsText.setText(String.valueOf(currentUser.getAchievementPoints()));
             
             // TODO: Load actual statistics from services
@@ -72,13 +99,74 @@ public class HomeController {
     }
 
     @FXML
+    private void handleEditProfile() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/fxml/profile.fxml"));
+            Parent root = loader.load();
+            
+            // Pass current user to profile controller
+            Controllers.user.ProfileController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+            
+            Stage stage = (Stage) editProfileButton.getScene().getWindow();
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.setTitle("My Profile - Phantom App");
+            stage.show();
+            
+        } catch (Exception e) {
+            System.err.println("Error loading profile screen: " + e.getMessage());
+            showError("Cannot open profile: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleNavHome() {
+        // Already on home page - just refresh
+        updateUserInfo();
+    }
+
+    @FXML
+    private void handleNavTournaments() {
+        handleTournaments();
+    }
+
+    @FXML
+    private void handleNavTeams() {
+        handleTeams();
+    }
+
+    @FXML
+    private void handleNavTraining() {
+        handleTraining();
+    }
+
+    @FXML
+    private void handleNavShop() {
+        handleShop();
+    }
+
+    @FXML
+    private void handleNavMatchy() {
+        handleMatchy();
+    }
+
+    @FXML
+    private void handleNavAgent() {
+        handleAgent();
+    }
+
+    @FXML
     private void handleLogout() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/fxml/login.fxml"));
             Parent root = loader.load();
             
             Stage stage = (Stage) logoutButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.setTitle("Login - Phantom App");
             stage.show();
             
@@ -98,7 +186,9 @@ public class HomeController {
             controller.setCurrentUser(currentUser);
             
             Stage stage = (Stage) profileButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.setTitle("My Profile - Phantom App");
             stage.show();
             
@@ -115,7 +205,9 @@ public class HomeController {
             Parent root = loader.load();
             
             Stage stage = (Stage) tournamentButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.setTitle("Tournaments - Phantom App");
             stage.show();
             
@@ -132,7 +224,9 @@ public class HomeController {
             Parent root = loader.load();
             
             Stage stage = (Stage) teamButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.setTitle("Teams - Phantom App");
             stage.show();
             
@@ -149,7 +243,9 @@ public class HomeController {
             Parent root = loader.load();
             
             Stage stage = (Stage) trainingButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.setTitle("Training Plans - Phantom App");
             stage.show();
             
@@ -166,7 +262,9 @@ public class HomeController {
             Parent root = loader.load();
             
             Stage stage = (Stage) shopButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.setTitle("Shop - Phantom App");
             stage.show();
             
@@ -183,13 +281,34 @@ public class HomeController {
             Parent root = loader.load();
             
             Stage stage = (Stage) matchyButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.setTitle("Matchy - Phantom App");
             stage.show();
             
         } catch (Exception e) {
             System.err.println("Error loading matchy screen: " + e.getMessage());
             showError("Cannot open matchy: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleAgent() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/fxml/list.fxml"));
+            Parent root = loader.load();
+            
+            Stage stage = (Stage) agentButton.getScene().getWindow();
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.setTitle("Agent - Phantom App");
+            stage.show();
+            
+        } catch (Exception e) {
+            System.err.println("Error loading agent screen: " + e.getMessage());
+            showError("Cannot open agent: " + e.getMessage());
         }
     }
 

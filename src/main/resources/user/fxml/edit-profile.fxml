@@ -3,75 +3,79 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import java.net.*?>
 
-<ScrollPane fitToWidth="true" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.EditProfileController">
-   <content>
-      <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40;">
+<ScrollPane fitToWidth="true" styleClass="edit-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.EditProfileController">
+   <stylesheets>
+      <URL value="@/user/css/style.css" />
+   </stylesheets>
+      <content>
+      <VBox alignment="CENTER" spacing="20">
          <children>
-            <Text style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-fill: #2c3e50;" text="Edit Profile" />
+            <Text styleClass="edit-title" text="Edit Profile" />
             
-            <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 10; -fx-background-radius: 10;" maxWidth="400">
+            <VBox spacing="15" styleClass="edit-form" maxWidth="400">
                <children>
                   <VBox spacing="5">
                      <children>
-                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Full Name:*" />
-                        <TextField fx:id="fullNameField" promptText="Enter your full name" style="-fx-font-size: 14px;" />
-                        <Label fx:id="fullNameError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                        <Label styleClass="form-label" text="Full Name:*" />
+                        <TextField fx:id="fullNameField" promptText="Enter your full name" />
+                        <Label fx:id="fullNameError" styleClass="error-label" text="" />
                      </children>
                   </VBox>
                   
                   <VBox spacing="5">
                      <children>
-                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Country:*" />
-                        <TextField fx:id="countryField" promptText="Enter your country" style="-fx-font-size: 14px;" />
-                        <Label fx:id="countryError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                        <Label styleClass="form-label" text="Country:*" />
+                        <TextField fx:id="countryField" promptText="Enter your country" />
+                        <Label fx:id="countryError" styleClass="error-label" text="" />
                      </children>
                   </VBox>
                   
                   <VBox spacing="5">
                      <children>
-                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Birth Date:* (YYYY-MM-DD)" />
-                        <TextField fx:id="birthDateField" promptText="YYYY-MM-DD" style="-fx-font-size: 14px;" />
-                        <Label fx:id="birthDateError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                        <Label styleClass="form-label" text="Birth Date:* (YYYY-MM-DD)" />
+                        <TextField fx:id="birthDateField" promptText="YYYY-MM-DD" />
+                        <Label fx:id="birthDateError" styleClass="error-label" text="" />
                      </children>
                   </VBox>
                   
                   <Separator style="-fx-padding: 10 0;" />
                   
-                  <Text style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-fill: #555;" text="Change Password (Optional)" />
+                  <Text styleClass="form-label" text="Change Password (Optional)" />
                   
                   <VBox spacing="5">
                      <children>
-                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Current Password:" />
-                        <PasswordField fx:id="currentPasswordField" promptText="Enter current password" style="-fx-font-size: 14px;" />
-                        <Label fx:id="currentPasswordError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                        <Label styleClass="form-label" text="Current Password:" />
+                        <PasswordField fx:id="currentPasswordField" promptText="Enter current password" />
+                        <Label fx:id="currentPasswordError" styleClass="error-label" text="" />
                      </children>
                   </VBox>
                   
                   <VBox spacing="5">
                      <children>
-                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="New Password:" />
-                        <PasswordField fx:id="newPasswordField" promptText="Enter new password" style="-fx-font-size: 14px;" />
-                        <Label fx:id="newPasswordError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                        <Label styleClass="form-label" text="New Password:" />
+                        <PasswordField fx:id="newPasswordField" promptText="Enter new password" />
+                        <Label fx:id="newPasswordError" styleClass="error-label" text="" />
                      </children>
                   </VBox>
                   
                   <VBox spacing="5">
                      <children>
-                        <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Confirm New Password:" />
-                        <PasswordField fx:id="confirmNewPasswordField" promptText="Confirm new password" style="-fx-font-size: 14px;" />
-                        <Label fx:id="confirmNewPasswordError" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;" text="" />
+                        <Label styleClass="form-label" text="Confirm New Password:" />
+                        <PasswordField fx:id="confirmNewPasswordField" promptText="Confirm new password" />
+                        <Label fx:id="confirmNewPasswordError" styleClass="error-label" text="" />
                      </children>
                   </VBox>
                   
                   <HBox spacing="15" alignment="CENTER">
                      <children>
-                        <Button fx:id="saveButton" onAction="#handleSave" prefWidth="120" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand;" text="Save" />
-                        <Button fx:id="cancelButton" onAction="#handleCancel" prefWidth="120" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand;" text="Cancel" />
+                        <Button fx:id="saveButton" onAction="#handleSave" prefWidth="120" styleClass="save-button" text="Save" />
+                        <Button fx:id="cancelButton" onAction="#handleCancel" prefWidth="120" styleClass="login-button" text="Cancel" />
                      </children>
                   </HBox>
                   
-                  <Label fx:id="successLabel" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;" text="" />
+                  <Label fx:id="successLabel" styleClass="success-label" text="" />
                </children>
             </VBox>
          </children>

@@ -3,33 +3,37 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import java.net.*?>
 
-<VBox alignment="CENTER" spacing="20" style="-fx-padding: 40; -fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.LoginController">
-   <children>
-      <Text style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-fill: #2c3e50;" text="Login" />
+<VBox alignment="CENTER" spacing="20" styleClass="login-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.LoginController">
+   <stylesheets>
+      <URL value="@/user/css/style.css" />
+   </stylesheets>
+         <children>
+      <Text styleClass="login-title" text="Login" />
       
-      <VBox spacing="15" style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 10; -fx-background-radius: 10;">
+      <VBox spacing="15" styleClass="login-form">
          <children>
             <VBox spacing="5">
                <children>
-                  <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Email:" />
-                  <TextField fx:id="emailField" prefWidth="250" promptText="Enter your email" style="-fx-font-size: 14px;" />
+                  <Label styleClass="form-label" text="Email:" />
+                  <TextField fx:id="emailField" prefWidth="250" promptText="Enter your email" />
                </children>
             </VBox>
             
             <VBox spacing="5">
                <children>
-                  <Label style="-fx-font-size: 14px; -fx-fill: #555;" text="Password:" />
-                  <PasswordField fx:id="passwordField" prefWidth="250" promptText="Enter your password" style="-fx-font-size: 14px;" />
+                  <Label styleClass="form-label" text="Password:" />
+                  <PasswordField fx:id="passwordField" prefWidth="250" promptText="Enter your password" />
                </children>
             </VBox>
             
-            <Button fx:id="loginButton" onAction="#handleLogin" prefWidth="250" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;" text="Login" />
+            <Button fx:id="loginButton" onAction="#handleLogin" prefWidth="250" styleClass="login-button" text="Login" />
             
-            <Hyperlink fx:id="registerLink" onAction="#handleRegister" text="Don't have an account? Register here" />
+            <Hyperlink fx:id="registerLink" onAction="#handleRegister" styleClass="register-link" text="Don't have an account? Register here" />
          </children>
       </VBox>
       
-      <Label fx:id="errorLabel" style="-fx-text-fill: #e74c3c; -fx-font-size: 12px;" text="" />
+      <Label fx:id="errorLabel" styleClass="error-label" text="" />
    </children>
 </VBox>

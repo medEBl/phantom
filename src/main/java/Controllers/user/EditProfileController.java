@@ -178,7 +178,9 @@ public class EditProfileController {
             controller.setCurrentUser(currentUser);
             
             Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.setTitle("My Profile - Phantom App");
             stage.show();
             

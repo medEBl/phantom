@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+
+<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.admin.DashboardController">
+   <stylesheets>
+      <URL value="@/dashboard/css/dashboard.css" />
+   </stylesheets>
+   
+   <top>
+      <VBox styleClass="dashboard-header">
+         <children>
+            <!-- Admin Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="dashboard-info">
+               <children>
+                  <Button fx:id="logoutButton" onAction="#handleLogout" styleClass="logout-button" text="LOGOUT" />
+                  <Text styleClass="dashboard-title" text="ADMIN DASHBOARD" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="adminNameLabel" styleClass="admin-label" text="ADMIN: LOADING..." />
+               </children>
+            </HBox>
+            
+            <!-- Admin Navigation -->
+            <HBox alignment="CENTER" spacing="0" styleClass="dashboard-nav">
+               <children>
+                  <Button fx:id="navDashboard" styleClass="nav-button-active" text="DASHBOARD" />
+                  <Button fx:id="navUsers" onAction="#handleUsers" styleClass="nav-button" text="USERS" />
+                  <Button fx:id="navTournaments" onAction="#handleTournaments" styleClass="nav-button" text="TOURNAMENTS" />
+                  <Button fx:id="navTeams" onAction="#handleTeams" styleClass="nav-button" text="TEAMS" />
+                  <Button fx:id="navMatches" onAction="#handleMatches" styleClass="nav-button" text="MATCHES" />
+                  <Button fx:id="navReports" onAction="#handleReports" styleClass="nav-button" text="REPORTS" />
+                  <Button fx:id="navSettings" onAction="#handleSettings" styleClass="nav-button" text="SETTINGS" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="dashboard-scroll">
+         <content>
+            <VBox spacing="30" styleClass="dashboard-content">
+               <children>
+                  <!-- Stats Overview -->
+                  <HBox spacing="20" alignment="CENTER">
+                     <children>
+                        <VBox spacing="10" styleClass="stat-card">
+                           <children>
+                              <Text styleClass="stat-title" text="TOTAL USERS" />
+                              <Label fx:id="totalUsersLabel" styleClass="stat-value" text="0" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="10" styleClass="stat-card">
+                           <children>
+                              <Text styleClass="stat-title" text="ACTIVE TOURNAMENTS" />
+                              <Label fx:id="activeTournamentsLabel" styleClass="stat-value" text="0" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="10" styleClass="stat-card">
+                           <children>
+                              <Text styleClass="stat-title" text="TOTAL TEAMS" />
+                              <Label fx:id="totalTeamsLabel" styleClass="stat-value" text="0" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="10" styleClass="stat-card">
+                           <children>
+                              <Text styleClass="stat-title" text="PENDING APPROVALS" />
+                              <Label fx:id="pendingApprovalsLabel" styleClass="stat-value" text="0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  
+                  <!-- Recent Activity -->
+                  <VBox spacing="15" styleClass="activity-section">
+                     <children>
+                        <Text styleClass="section-title" text="RECENT ACTIVITY" />
+                        
+                        <TableView fx:id="activityTable" styleClass="activity-table">
+                           <columns>
+                              <TableColumn fx:id="timestampColumn" text="Timestamp" prefWidth="200" />
+                              <TableColumn fx:id="activityColumn" text="Activity" prefWidth="400" />
+                              <TableColumn fx:id="userColumn" text="User" prefWidth="150" />
+                              <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </VBox>
+                  
+                  <!-- Quick Actions -->
+                  <VBox spacing="15" styleClass="actions-section">
+                     <children>
+                        <Text styleClass="section-title" text="QUICK ACTIONS" />
+                        
+                        <HBox spacing="20" alignment="CENTER">
+                           <children>
+                              <Button fx:id="createTournamentButton" onAction="#handleCreateTournament" styleClass="action-button" text="CREATE TOURNAMENT" />
+                              <Button fx:id="manageUsersButton" onAction="#handleUsers" styleClass="action-button" text="MANAGE USERS" />
+                              <Button fx:id="viewReportsButton" onAction="#handleReports" styleClass="action-button" text="VIEW REPORTS" />
+                              <Button fx:id="systemSettingsButton" onAction="#handleSettings" styleClass="action-button" text="SYSTEM SETTINGS" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

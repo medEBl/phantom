@@ -122,17 +122,34 @@ public class LoginController {
 
     private void navigateToHome(User user) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/home/home.fxml"));
-            Parent root = loader.load();
+            Parent root;
+            String title;
             
-            // Pass current user to home controller
-            Controllers.home.HomeController controller = loader.getController();
-            controller.setCurrentUser(user);
+            // Check user role and redirect accordingly
+            if ("admin".equalsIgnoreCase(user.getRole())) {
+                // Admin goes to dashboard
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/dashboard/dashboard.fxml"));
+                root = loader.load();
+                title = "Admin Dashboard - Phantom App";
+            } else {
+                // Player, Organizer, Coach go to home
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/home/home.fxml"));
+                root = loader.load();
+                
+                // Pass current user to home controller
+                Controllers.home.HomeController controller = loader.getController();
+                controller.setCurrentUser(user);
+                
+                title = "Home - Phantom App";
+            }
             
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Home - Phantom App");
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.show();
+            stage.setTitle(title);
             
         } catch (Exception e) {
             showError("Cannot open home screen: " + e.getMessage());

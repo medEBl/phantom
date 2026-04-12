@@ -1,0 +1,196 @@
+/* Admin Dashboard CSS - Phantom Gaming Theme */
+
+.root {
+    -fx-background-color: #0a0a0a;
+    -fx-font-family: Arial Black;
+}
+
+/* Main container */
+.dashboard-container {
+    -fx-background-color: #0a0a0a;
+}
+
+/* Header */
+.dashboard-header {
+    -fx-background-color: #8b0000;
+    -fx-padding: 0;
+}
+
+.dashboard-info {
+    -fx-background-color: rgba(0,0,0,0.3);
+    -fx-padding: 15 25;
+}
+
+.dashboard-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-fill: #ff3333;
+}
+
+.admin-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #cccccc;
+    -fx-font-weight: bold;
+}
+
+.logout-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-color: #4a0000;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border-color: #8b0000;
+    -fx-border-width: 2;
+}
+
+.logout-button:hover {
+    -fx-background-color: #6a0000;
+    -fx-border-color: #ff3333;
+}
+
+/* Navigation */
+.dashboard-nav {
+    -fx-background-color: #1a1a1a;
+    -fx-padding: 0;
+}
+
+.nav-button, .nav-button-active {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cccccc;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 2 0 0;
+    -fx-border-color: #333333;
+    -fx-padding: 15 30;
+}
+
+.nav-button:hover {
+    -fx-background-color: #2a2a2a;
+    -fx-text-fill: #ff3333;
+}
+
+.nav-button-active {
+    -fx-background-color: #8b0000;
+    -fx-text-fill: #ff3333;
+    -fx-border-color: #ff3333;
+}
+
+/* Content */
+.dashboard-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.dashboard-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.dashboard-scroll .scroll-bar {
+    -fx-background-color: #2a2a2a;
+}
+
+.dashboard-scroll .scroll-bar .track {
+    -fx-background-color: #1a1a1a;
+}
+
+.dashboard-scroll .scroll-bar .thumb {
+    -fx-background-color: #8b0000;
+    -fx-background-radius: 4;
+}
+
+.dashboard-scroll .scroll-bar .thumb:hover {
+    -fx-background-color: #ff3333;
+}
+
+.dashboard-content {
+    -fx-padding: 40;
+    -fx-background-color: #0a0a0a;
+}
+
+/* Stats Cards */
+.stat-card {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #8b0000;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-alignment: CENTER;
+    -fx-pref-width: 200;
+    -fx-pref-height: 120;
+}
+
+.stat-title {
+    -fx-font-size: 14px;
+    -fx-fill: #cccccc;
+    -fx-font-weight: bold;
+}
+
+.stat-value {
+    -fx-font-size: 36px;
+    -fx-text-fill: #ff3333;
+    -fx-font-weight: bold;
+}
+
+/* Sections */
+.activity-section, .actions-section {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #8b0000;
+    -fx-border-width: 2;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-padding: 30;
+}
+
+.section-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: #ff3333;
+}
+
+/* Table */
+.activity-table {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: #8b0000;
+    -fx-border-width: 1;
+}
+
+.activity-table .column-header {
+    -fx-background-color: #8b0000;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.activity-table .table-cell {
+    -fx-background-color: #2a2a2a;
+    -fx-text-fill: #cccccc;
+    -fx-border-color: #444444;
+}
+
+.activity-table .table-row-cell:selected {
+    -fx-background-color: #8b0000;
+    -fx-text-fill: white;
+}
+
+/* Action Buttons */
+.action-button {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-color: #ff3333;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border-color: #cc0000;
+    -fx-border-width: 2;
+    -fx-padding: 15 30;
+}
+
+.action-button:hover {
+    -fx-background-color: #ff5555;
+    -fx-border-color: #ff3333;
+}
+
+.action-button:pressed {
+    -fx-background-color: #cc0000;
+}
