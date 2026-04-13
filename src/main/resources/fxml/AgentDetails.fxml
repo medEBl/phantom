@@ -21,6 +21,9 @@
                         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                     </padding>
                     <children>
+
+                        <Button fx:id="btnRetour" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-border-color: #444455; -fx-border-radius: 6; -fx-text-fill: white; -fx-cursor: hand;" text="← Retour" />
+
                         <Label text="Détails de l'Agent" textFill="WHITE">
                             <font><Font name="System Bold" size="20.0" /></font>
                         </Label>

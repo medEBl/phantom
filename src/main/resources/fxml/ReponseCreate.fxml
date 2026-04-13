@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.ReponseCreateController">
+    <children>
+        <VBox layoutX="250.0" layoutY="30.0" prefWidth="700.0" spacing="20.0" style="-fx-background-color: #16161e; -fx-background-radius: 12; -fx-border-color: #2a2a35; -fx-border-radius: 12;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="30.0">
+            <padding>
+                <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+            </padding>
+            <children>
+
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Remplir le Questionnaire" textFill="WHITE">
+                                    <font><Font name="System Bold" size="24.0" /></font>
+                                </Label>
+                                <Label fx:id="lblSubtitle" text="Pseudo • Game" textFill="#8a8a98">
+                                    <font><Font name="System Bold" size="13.0" /></font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <Button fx:id="btnAnnuler" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-border-color: #444455; -fx-border-radius: 6; -fx-text-fill: white; -fx-cursor: hand;" text="← Annuler">
+                            <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent; -fx-border-color: transparent;" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox spacing="20.0" style="-fx-background-color: #16161e;">
+                            <children>
+
+                                <VBox fx:id="boxQ1" spacing="8.0">
+                                    <children>
+                                        <Label fx:id="lblQ1" text="QUESTION 1" textFill="#a0a0a0" wrapText="true">
+                                            <font><Font name="System Bold" size="11.0" /></font>
+                                        </Label>
+                                        <TextArea fx:id="taR1" prefHeight="80.0" style="-fx-control-inner-background: #1e1e28; -fx-text-fill: white; -fx-prompt-text-fill: #666666; -fx-border-color: #2a2a35; -fx-border-radius: 6;" wrapText="true" />
+                                    </children>
+                                </VBox>
+
+                                <VBox fx:id="boxQ2" spacing="8.0">
+                                    <children>
+                                        <Label fx:id="lblQ2" text="QUESTION 2" textFill="#a0a0a0" wrapText="true">
+                                            <font><Font name="System Bold" size="11.0" /></font>
+                                        </Label>
+                                        <TextArea fx:id="taR2" prefHeight="80.0" style="-fx-control-inner-background: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6;" wrapText="true" />
+                                    </children>
+                                </VBox>
+
+                                <VBox fx:id="boxQ3" spacing="8.0">
+                                    <children>
+                                        <Label fx:id="lblQ3" text="QUESTION 3" textFill="#a0a0a0" wrapText="true">
+                                            <font><Font name="System Bold" size="11.0" /></font>
+                                        </Label>
+                                        <TextArea fx:id="taR3" prefHeight="80.0" style="-fx-control-inner-background: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6;" wrapText="true" />
+                                    </children>
+                                </VBox>
+
+                                <VBox fx:id="boxQ4" spacing="8.0">
+                                    <children>
+                                        <Label fx:id="lblQ4" text="QUESTION 4" textFill="#a0a0a0" wrapText="true">
+                                            <font><Font name="System Bold" size="11.0" /></font>
+                                        </Label>
+                                        <TextArea fx:id="taR4" prefHeight="80.0" style="-fx-control-inner-background: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6;" wrapText="true" />
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                    <children>
+                        <Button fx:id="btnEnregistrer" mnemonicParsing="false" style="-fx-background-color: #ff3b3f; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" text="Enregistrer les réponses">
+                            <padding><Insets bottom="12.0" left="25.0" right="25.0" top="12.0" /></padding>
+                        </Button>
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
