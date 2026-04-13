@@ -48,7 +48,8 @@ public class QuestionnaireService implements IQuestionnaireService {
     @Override
     public List<Questionnaire> getAllQuestionnaires() {
         List<Questionnaire> list = new ArrayList<>();
-        String sql = "SELECT * FROM questionnaire_agent";
+        // We only want the templates! Added "WHERE id_agent IS NULL" so it matches the dashboard logic.
+        String sql = "SELECT * FROM questionnaire_agent WHERE id_agent IS NULL";
         try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) list.add(mapRow(rs));
         } catch (SQLException e) {
@@ -80,5 +81,27 @@ public class QuestionnaireService implements IQuestionnaireService {
         } catch (SQLException e) {
             throw new RuntimeException("deleteQuestionnaire failed: " + e.getMessage(), e);
         }
+    } // <-- THIS BRACE WAS MISSING BEFORE! It closes deleteQuestionnaire.
+
+    // --- DASHBOARD STATS METHODS ---
+
+    @Override
+    public int getTotalAgentsCount() {
+        String sql = "SELECT COUNT(*) FROM agent";
+        try (java.sql.Statement st = tools.Phantom.getInstance().getCnx().createStatement();
+             java.sql.ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (Exception e) { e.printStackTrace(); }
+        return 0;
+    }
+
+    @Override
+    public int getFilledQuestionnairesCount() {
+        String sql = "SELECT COUNT(DISTINCT id_agent) FROM reponse_questionnaire";
+        try (java.sql.Statement st = tools.Phantom.getInstance().getCnx().createStatement();
+             java.sql.ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (Exception e) { e.printStackTrace(); }
+        return 0;
     }
 }

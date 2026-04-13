@@ -12,10 +12,13 @@ public class testmain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Loads the CREATE screen directly for testing
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/ListAgents.fxml")));
+        // Comment out the old ListAgents line
+        // Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/ListAgents.fxml")));
 
-        primaryStage.setTitle("Phantom Force - Créer un Agent");
+        // Load the Admin Dashboard instead!
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/ListQuestionnaires.fxml")));
+
+        primaryStage.setTitle("Phantom Admin - Dashboard");
         primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
     }
