@@ -7,8 +7,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,18 +35,17 @@ public class UsersController {
     @FXML
     private Label currentUserLabel;
     
+    private Label deleteErrorLabel;
+
     @FXML
     private TextField searchField;
-    
     @FXML
     private ComboBox roleFilter;
-    
     @FXML
     private ComboBox statusFilter;
     
     @FXML
     private Button searchButton;
-    
     @FXML
     private Button clearButton;
     
@@ -176,12 +181,44 @@ public class UsersController {
     @FXML
     private void handleBack() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/home/home.fxml"));
-            Parent root = loader.load();
+            System.out.println("Back button clicked!");
+            System.out.println("Current user: " + (currentUser != null ? currentUser.getFullName() : "NULL"));
+            System.out.println("User role: " + (currentUser != null ? currentUser.getRole() : "NULL"));
             
-            // Pass current user back to home controller
-            Controllers.home.HomeController controller = loader.getController();
-            controller.setCurrentUser(currentUser);
+            String fxmlPath;
+            String title;
+            
+            // Default to home page for safety
+            fxmlPath = "/home/home.fxml";
+            title = "Home - Phantom App";
+            
+            // Check if current user is admin and navigate accordingly
+            if (currentUser != null && "ADMIN".equals(currentUser.getRole())) {
+                // Admin user - go back to dashboard
+                fxmlPath = "/dashboard/dashboard.fxml";
+                title = "Admin Dashboard - Phantom App";
+                System.out.println("Navigating to dashboard...");
+            } else {
+                // Regular user - go back to home
+                System.out.println("Navigating to home...");
+            }
+            
+            System.out.println("Loading FXML: " + fxmlPath);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            System.out.println("FXML loaded successfully");
+            
+            // Pass current user back to appropriate controller
+            if (currentUser != null && "ADMIN".equals(currentUser.getRole())) {
+                Controllers.admin.DashboardController controller = loader.getController();
+                System.out.println("Dashboard controller loaded");
+            } else {
+                Controllers.home.HomeController controller = loader.getController();
+                if (currentUser != null) {
+                    controller.setCurrentUser(currentUser);
+                    System.out.println("Home controller loaded with user");
+                }
+            }
             
             Stage stage = (Stage) backButton.getScene().getWindow();
             Scene scene = new Scene(root, 1920, 1080);
@@ -189,10 +226,15 @@ public class UsersController {
             stage.setMaximized(true);
             stage.setFullScreen(true);
             stage.show();
-            stage.setTitle("Home - Phantom App");
+            stage.setTitle(title);
+            System.out.println("Scene changed successfully");
             
         } catch (IOException e) {
-            showAlert("Error", "Cannot navigate back: " + e.getMessage());
+            System.err.println("Cannot go back: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Unexpected error in handleBack: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -213,32 +255,58 @@ public class UsersController {
 
     @FXML
     private void handleAddUser() {
-        // TODO: Open add user dialog
-        System.out.println("Add new user");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/fxml/add-user.fxml"));
+            Parent root = loader.load();
+            
+            // Pass admin user context to add user controller
+            Controllers.user.AddUserController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+            
+            Stage stage = (Stage) addUserButton.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.show();
+            stage.setTitle("Add User - Phantom Admin");
+            
+        } catch (IOException e) {
+            System.err.println("Cannot open add user: " + e.getMessage());
+        }
     }
 
     @FXML
     private void handleEditUser(User user) {
-        // TODO: Open edit user dialog
-        System.out.println("Edit user: " + user.getFullName());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/fxml/edit-user.fxml"));
+            Parent root = loader.load();
+            
+            // Pass user to edit controller
+            Controllers.user.EditUserController controller = loader.getController();
+            controller.setCurrentUser(user);
+            
+            Stage stage = (Stage) usersTable.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.show();
+            stage.setTitle("Edit User - Phantom Admin");
+            
+        } catch (IOException e) {
+            System.err.println("Cannot open edit user: " + e.getMessage());
+        }
     }
 
     @FXML
     private void handleDeleteUser(User user) {
-        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmDialog.setTitle("Confirm Delete");
-        confirmDialog.setHeaderText("Delete User");
-        confirmDialog.setContentText("Are you sure you want to delete user " + user.getFullName() + "?");
-        
-        Optional<ButtonType> result = confirmDialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                userService.deleteUser(user.getId());
-                loadUsers();
-                showAlert("Success", "User deleted successfully");
-            } catch (Exception e) {
-                showAlert("Error", "Failed to delete user: " + e.getMessage());
-            }
+        try {
+            userService.deleteUser(user.getId());
+            currentPage--;
+            loadUsers();
+        } catch (Exception e) {
+            System.err.println("Cannot delete user: " + e.getMessage());
         }
     }
 
@@ -258,6 +326,7 @@ public class UsersController {
         }
     }
 
+    @FXML
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

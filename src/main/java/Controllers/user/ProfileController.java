@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class ProfileController {
 
     private User currentUser;
@@ -42,6 +44,7 @@ public class ProfileController {
     @FXML
     private Button editButton;
 
+    // Navigation buttons
     @FXML
     private Button navHome;
 
@@ -66,6 +69,12 @@ public class ProfileController {
     @FXML
     private Button navAgent;
 
+    @FXML
+    public void initialize() {
+        System.out.println("ProfileController initialized");
+        // Les doublons ont été supprimés
+    }
+
     public void setCurrentUser(User user) {
         this.currentUser = user;
         updateProfileInfo();
@@ -73,15 +82,24 @@ public class ProfileController {
 
     private void updateProfileInfo() {
         if (currentUser != null) {
-            fullNameLabel.setText(currentUser.getFullName());
-            emailLabel.setText(currentUser.getEmail());
-            usernameLabel.setText(currentUser.getUsername());
-            roleLabel.setText(currentUser.getRole());
-            countryLabel.setText(currentUser.getCountry());
-            birthDateLabel.setText(currentUser.getBirthDate().toString());
+            fullNameLabel.setText(currentUser.getFullName() != null ? currentUser.getFullName() : "N/A");
+            emailLabel.setText(currentUser.getEmail() != null ? currentUser.getEmail() : "N/A");
+            usernameLabel.setText(currentUser.getUsername() != null ? currentUser.getUsername() : "N/A");
+            roleLabel.setText(currentUser.getRole() != null ? currentUser.getRole() : "N/A");
+            countryLabel.setText(currentUser.getCountry() != null ? currentUser.getCountry() : "N/A");
+
+            // Handle birth date safely
+            if (currentUser.getBirthDate() != null) {
+                birthDateLabel.setText(currentUser.getBirthDate().toString());
+            } else {
+                birthDateLabel.setText("Not specified");
+            }
+
             pointsLabel.setText(String.valueOf(currentUser.getAchievementPoints()));
-            activeStatusLabel.setText(currentUser.isActive() ? "Active" : "Inactive");
-            activeStatusLabel.setStyle(currentUser.isActive() ? "-fx-text-fill: #27ae60;" : "-fx-text-fill: #e74c3c;");
+
+            boolean isActive = currentUser.isActive();
+            activeStatusLabel.setText(isActive ? "Active" : "Inactive");
+            activeStatusLabel.setStyle(isActive ? "-fx-text-fill: #2dff8b;" : "-fx-text-fill: #ff2d2d;");
         }
     }
 
@@ -90,20 +108,22 @@ public class ProfileController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/home/home.fxml"));
             Parent root = loader.load();
-            
+
             // Pass current user back to home controller
             Controllers.home.HomeController controller = loader.getController();
             controller.setCurrentUser(currentUser);
-            
+
             Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 1920, 1080));
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
             stage.setMaximized(true);
             stage.setFullScreen(true);
             stage.setTitle("Home - Phantom App");
             stage.show();
-            
+
         } catch (Exception e) {
             System.err.println("Error loading home screen: " + e.getMessage());
+            e.printStackTrace();
             showError("Cannot return to home: " + e.getMessage());
         }
     }
@@ -113,135 +133,97 @@ public class ProfileController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/fxml/edit-profile.fxml"));
             Parent root = loader.load();
-            
+
             // Pass current user to edit profile controller
             Controllers.user.EditProfileController controller = loader.getController();
             controller.setCurrentUser(currentUser);
-            
+
             Stage stage = (Stage) editButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 1920, 1080));
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
             stage.setMaximized(true);
             stage.setFullScreen(true);
             stage.setTitle("Edit Profile - Phantom App");
             stage.show();
-            
+
         } catch (Exception e) {
             System.err.println("Error loading edit profile screen: " + e.getMessage());
+            e.printStackTrace();
             showError("Cannot open edit profile: " + e.getMessage());
         }
     }
 
+    // Navigation handlers
     @FXML
-    private void handleTournaments() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tournament/fxml/list.fxml"));
-            Parent root = loader.load();
-            
-            Stage stage = (Stage) navTournaments.getScene().getWindow();
-            stage.setScene(new Scene(root, 1920, 1080));
-            stage.setMaximized(true);
-            stage.setFullScreen(true);
-            stage.setTitle("Tournaments - Phantom App");
-            stage.show();
-            
-        } catch (Exception e) {
-            System.err.println("Error loading tournaments screen: " + e.getMessage());
-            showError("Cannot open tournaments: " + e.getMessage());
-        }
+    private void handleNavHome() {
+        navigateTo("/home/home.fxml", "Home - Phantom App");
     }
 
     @FXML
-    private void handleTeams() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/team/fxml/list.fxml"));
-            Parent root = loader.load();
-            
-            Stage stage = (Stage) navTeams.getScene().getWindow();
-            stage.setScene(new Scene(root, 1920, 1080));
-            stage.setMaximized(true);
-            stage.setFullScreen(true);
-            stage.setTitle("Teams - Phantom App");
-            stage.show();
-            
-        } catch (Exception e) {
-            System.err.println("Error loading teams screen: " + e.getMessage());
-            showError("Cannot open teams: " + e.getMessage());
-        }
+    private void handleNavProfile() {
+        // Already on profile page, do nothing or refresh
+        System.out.println("Already on Profile page");
     }
 
     @FXML
-    private void handleTraining() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/trainingplan/fxml/list.fxml"));
-            Parent root = loader.load();
-            
-            Stage stage = (Stage) navTraining.getScene().getWindow();
-            stage.setScene(new Scene(root, 1920, 1080));
-            stage.setMaximized(true);
-            stage.setFullScreen(true);
-            stage.setTitle("Training Plans - Phantom App");
-            stage.show();
-            
-        } catch (Exception e) {
-            System.err.println("Error loading training plans screen: " + e.getMessage());
-            showError("Cannot open training plans: " + e.getMessage());
-        }
+    private void handleNavTournaments() {
+        navigateTo("/tournament/fxml/list.fxml", "Tournaments - Phantom App");
     }
 
     @FXML
-    private void handleShop() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shop/fxml/list.fxml"));
-            Parent root = loader.load();
-            
-            Stage stage = (Stage) navShop.getScene().getWindow();
-            stage.setScene(new Scene(root, 1920, 1080));
-            stage.setMaximized(true);
-            stage.setFullScreen(true);
-            stage.setTitle("Shop - Phantom App");
-            stage.show();
-            
-        } catch (Exception e) {
-            System.err.println("Error loading shop screen: " + e.getMessage());
-            showError("Cannot open shop: " + e.getMessage());
-        }
+    private void handleNavTeams() {
+        navigateTo("/team/fxml/list.fxml", "Teams - Phantom App");
     }
 
     @FXML
-    private void handleMatchy() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/list.fxml"));
-            Parent root = loader.load();
-            
-            Stage stage = (Stage) navMatchy.getScene().getWindow();
-            stage.setScene(new Scene(root, 1920, 1080));
-            stage.setMaximized(true);
-            stage.setFullScreen(true);
-            stage.setTitle("Matchy - Phantom App");
-            stage.show();
-            
-        } catch (Exception e) {
-            System.err.println("Error loading matchy screen: " + e.getMessage());
-            showError("Cannot open matchy: " + e.getMessage());
-        }
+    private void handleNavTraining() {
+        navigateTo("/training/fxml/list.fxml", "Training - Phantom App");
     }
 
     @FXML
-    private void handleAgent() {
+    private void handleNavShop() {
+        navigateTo("/shop/fxml/shop.fxml", "Shop - Phantom App");
+    }
+
+    @FXML
+    private void handleNavMatchy() {
+        navigateTo("/match/fxml/list.fxml", "Matches - Phantom App");
+    }
+
+    @FXML
+    private void handleNavAgent() {
+        navigateTo("/agent/fxml/agent.fxml", "AI Agent - Phantom App");
+    }
+
+    private void navigateTo(String fxmlPath, String title) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/fxml/list.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
-            
-            Stage stage = (Stage) navAgent.getScene().getWindow();
-            stage.setScene(new Scene(root, 1920, 1080));
+
+            // Pass current user to the target controller if it accepts a user
+            Object controller = loader.getController();
+            if (controller instanceof Controllers.home.HomeController) {
+                ((Controllers.home.HomeController) controller).setCurrentUser(currentUser);
+            } else if (controller instanceof Controllers.user.ProfileController) {
+                ((Controllers.user.ProfileController) controller).setCurrentUser(currentUser);
+            } else if (controller instanceof Controllers.tournament.TournamentController) {
+                // If TournamentController has setCurrentUser method
+                // ((Controllers.tournament.TournamentController) controller).setCurrentUser(currentUser);
+            }
+            // Add more controllers as needed
+
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
             stage.setMaximized(true);
             stage.setFullScreen(true);
-            stage.setTitle("Agent - Phantom App");
+            stage.setTitle(title);
             stage.show();
-            
-        } catch (Exception e) {
-            System.err.println("Error loading agent screen: " + e.getMessage());
-            showError("Cannot open agent: " + e.getMessage());
+
+        } catch (IOException e) {
+            System.err.println("Cannot navigate to " + fxmlPath + ": " + e.getMessage());
+            e.printStackTrace();
+            showError("Cannot open page: " + e.getMessage());
         }
     }
 

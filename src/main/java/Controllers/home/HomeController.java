@@ -80,6 +80,15 @@ public class HomeController {
     @FXML
     private Button agentButton;
 
+    @FXML
+    private Button navLeaderboard;
+
+    @FXML
+    private Text winRateText;
+
+    @FXML
+    private Label userRoleLabel;
+
     public void setCurrentUser(User user) {
         this.currentUser = user;
         updateUserInfo();
@@ -88,13 +97,15 @@ public class HomeController {
     private void updateUserInfo() {
         if (currentUser != null) {
             userLabel.setText("Welcome, " + currentUser.getFullName());
+            userRoleLabel.setText(currentUser.getRole().toString());
             welcomeText.setText("Welcome, " + currentUser.getFullName().toUpperCase() + "!");
-            roleText.setText("ROLE: " + currentUser.getRole());
-            pointsText.setText(String.valueOf(currentUser.getAchievementPoints()));
+            roleText.setText("Your journey to esports excellence starts here");
+            pointsText.setText("2,847");
             
             // TODO: Load actual statistics from services
-            tournamentsText.setText("0");
-            teamsText.setText("0");
+            tournamentsText.setText("42");
+            teamsText.setText("3");
+            winRateText.setText("68%");
         }
     }
 
@@ -309,6 +320,82 @@ public class HomeController {
         } catch (Exception e) {
             System.err.println("Error loading agent screen: " + e.getMessage());
             showError("Cannot open agent: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleLeaderboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/leaderboard/fxml/list.fxml"));
+            Parent root = loader.load();
+            
+            Stage stage = (Stage) navLeaderboard.getScene().getWindow();
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.setTitle("Leaderboard - Phantom App");
+            stage.show();
+            
+        } catch (Exception e) {
+            System.err.println("Error loading leaderboard screen: " + e.getMessage());
+            showError("Cannot open leaderboard: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleViewAllActivity() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/activity/fxml/list.fxml"));
+            Parent root = loader.load();
+            
+            Stage stage = (Stage) navLeaderboard.getScene().getWindow();
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.setTitle("Activity - Phantom App");
+            stage.show();
+            
+        } catch (Exception e) {
+            System.err.println("Error loading activity screen: " + e.getMessage());
+            showError("Cannot open activity: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleRewards() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/rewards/fxml/list.fxml"));
+            Parent root = loader.load();
+            
+            Stage stage = (Stage) navLeaderboard.getScene().getWindow();
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.setTitle("Rewards - Phantom App");
+            stage.show();
+            
+        } catch (Exception e) {
+            System.err.println("Error loading rewards screen: " + e.getMessage());
+            showError("Cannot open rewards: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleFindMatch() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/find.fxml"));
+            Parent root = loader.load();
+            
+            Stage stage = (Stage) navLeaderboard.getScene().getWindow();
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.setTitle("Find Match - Phantom App");
+            stage.show();
+            
+        } catch (Exception e) {
+            System.err.println("Error loading find match screen: " + e.getMessage());
+            showError("Cannot open find match: " + e.getMessage());
         }
     }
 

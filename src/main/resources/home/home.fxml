@@ -3,101 +3,332 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
 
-<BorderPane style="-fx-background-color: #0a0a0a;" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.home.HomeController">
+<BorderPane styleClass="home-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.home.HomeController">
+   <stylesheets>
+      <URL value="@/home/home.css" />
+   </stylesheets>
+
    <top>
-      <VBox style="-fx-background-color: linear-gradient(to bottom, #8b0000, #4a0000); -fx-padding: 0;">
+      <VBox styleClass="home-header">
          <children>
             <!-- Header with app title and user actions -->
-            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 15 25; -fx-background-color: rgba(0,0,0,0.3);">
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="home-info">
                <children>
-                  <Text style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-fill: #ff3333; -fx-font-family: 'Arial Black';" text="PHANTOM" />
+                  <HBox alignment="CENTER_LEFT" spacing="12">
+                     <children>
+                        <Text styleClass="home-title" text="PHANTOM" />
+                        <Text styleClass="home-title" fill="#ff2d2d" text="FORCE" />
+                     </children>
+                  </HBox>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Label fx:id="userLabel" style="-fx-font-size: 14px; -fx-fill: #cccccc; -fx-font-weight: bold;" text="Welcome, User" />
-                  <Button fx:id="editProfileButton" onAction="#handleEditProfile" style="-fx-background-color: #ff3333; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold; -fx-border-color: #cc0000; -fx-border-width: 2;" text="Edit Profile" />
-                  <Button fx:id="logoutButton" onAction="#handleLogout" style="-fx-background-color: #4a0000; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold; -fx-border-color: #8b0000; -fx-border-width: 2;" text="Logout" />
+
+                  <!-- User Profile Section -->
+                  <HBox alignment="CENTER" spacing="15" styleClass="user-container">
+                     <children>
+                        <VBox alignment="CENTER_RIGHT" spacing="2">
+                           <children>
+                              <Label fx:id="userLabel" styleClass="user-label" text="Welcome, User" />
+                              <Label fx:id="userRoleLabel" styleClass="user-role" text="PLAYER" />
+                           </children>
+                        </VBox>
+                        <Button fx:id="editProfileButton" onAction="#handleEditProfile" styleClass="secondary-button" text="Edit Profile" />
+                        <Button fx:id="logoutButton" onAction="#handleLogout" styleClass="primary-button" text="LOGOUT" />
+                     </children>
+                  </HBox>
                </children>
             </HBox>
-            
+
             <!-- Navigation Bar -->
-            <HBox alignment="CENTER" spacing="0" style="-fx-background-color: #1a1a1a; -fx-padding: 0;">
+            <HBox alignment="CENTER_LEFT" spacing="0" styleClass="home-nav">
                <children>
-                  <Button fx:id="navHome" onAction="#handleNavHome" style="-fx-background-color: transparent; -fx-text-fill: #ff3333; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 16px; -fx-border-color: transparent; -fx-border-width: 0 2 0 0; -fx-border-color: #333333; -fx-padding: 15 30;" text="HOME" />
-                  <Button fx:id="navTournaments" onAction="#handleTournaments" style="-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 16px; -fx-border-color: transparent; -fx-border-width: 0 2 0 0; -fx-border-color: #333333; -fx-padding: 15 30;" text="TOURNAMENTS" />
-                  <Button fx:id="navTeams" onAction="#handleTeams" style="-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 16px; -fx-border-color: transparent; -fx-border-width: 0 2 0 0; -fx-border-color: #333333; -fx-padding: 15 30;" text="TEAMS" />
-                  <Button fx:id="navTraining" onAction="#handleTraining" style="-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 16px; -fx-border-color: transparent; -fx-border-width: 0 2 0 0; -fx-border-color: #333333; -fx-padding: 15 30;" text="TRAINING" />
-                  <Button fx:id="navShop" onAction="#handleShop" style="-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 16px; -fx-border-color: transparent; -fx-border-width: 0 2 0 0; -fx-border-color: #333333; -fx-padding: 15 30;" text="SHOP" />
-                  <Button fx:id="navMatchy" onAction="#handleMatchy" style="-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 16px; -fx-border-color: transparent; -fx-border-width: 0 2 0 0; -fx-border-color: #333333; -fx-padding: 15 30;" text="MATCHY" />
-                  <Button fx:id="navAgent" onAction="#handleAgent" style="-fx-background-color: transparent; -fx-text-fill: #cccccc; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 15 30;" text="AGENT" />
+                  <Button fx:id="navHome" onAction="#handleNavHome" styleClass="nav-button-active" text="🏠 HOME" />
+                  <Button fx:id="navTournaments" onAction="#handleTournaments" styleClass="nav-button" text="🏆 TOURNAMENTS" />
+                  <Button fx:id="navTeams" onAction="#handleTeams" styleClass="nav-button" text="👥 TEAMS" />
+                  <Button fx:id="navTraining" onAction="#handleTraining" styleClass="nav-button" text="⚡ TRAINING" />
+                  <Button fx:id="navShop" onAction="#handleShop" styleClass="nav-button" text="🛒 SHOP" />
+                  <Button fx:id="navMatchy" onAction="#handleMatchy" styleClass="nav-button" text="🎮 MATCHY" />
+                  <Button fx:id="navAgent" onAction="#handleAgent" styleClass="nav-button" text="🤖 AGENT" />
+                  <Button fx:id="navLeaderboard" onAction="#handleLeaderboard" styleClass="nav-button" text="📊 LEADERBOARD" />
                </children>
             </HBox>
          </children>
       </VBox>
    </top>
-   
+
    <center>
-      <VBox alignment="CENTER" spacing="30" style="-fx-padding: 40; -fx-background-color: #0a0a0a;">
-         <children>
-            <Text fx:id="welcomeText" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-fill: #ff3333; -fx-font-family: 'Arial Black';" text="WELCOME TO PHANTOM" />
-            
-            <Text fx:id="roleText" style="-fx-font-size: 18px; -fx-fill: #cccccc; -fx-font-weight: bold;" text="ROLE: PLAYER" />
-            
-            <GridPane hgap="25" vgap="20" style="-fx-background-color: #1a1a1a; -fx-padding: 40; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: #8b0000; -fx-border-width: 2;">
+      <ScrollPane styleClass="home-scroll" fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+         <content>
+            <VBox alignment="TOP_CENTER" spacing="30" styleClass="home-content">
                <children>
-                  <Button fx:id="profileButton" onAction="#handleProfile" prefHeight="60" prefWidth="220" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #8b0000; -fx-text-fill: white; -fx-cursor: hand; -fx-border-color: #ff3333; -fx-border-width: 2; -fx-font-family: 'Arial Black';" text="MY PROFILE" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                  
-                  <Button fx:id="tournamentButton" onAction="#handleTournaments" prefHeight="60" prefWidth="220" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #4a0000; -fx-text-fill: white; -fx-cursor: hand; -fx-border-color: #8b0000; -fx-border-width: 2; -fx-font-family: 'Arial Black';" text="TOURNAMENTS" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                  
-                  <Button fx:id="teamButton" onAction="#handleTeams" prefHeight="60" prefWidth="220" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #4a0000; -fx-text-fill: white; -fx-cursor: hand; -fx-border-color: #8b0000; -fx-border-width: 2; -fx-font-family: 'Arial Black';" text="TEAMS" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                  
-                  <Button fx:id="trainingButton" onAction="#handleTraining" prefHeight="60" prefWidth="220" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #4a0000; -fx-text-fill: white; -fx-cursor: hand; -fx-border-color: #8b0000; -fx-border-width: 2; -fx-font-family: 'Arial Black';" text="TRAINING" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  
-                  <Button fx:id="shopButton" onAction="#handleShop" prefHeight="60" prefWidth="220" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #4a0000; -fx-text-fill: white; -fx-cursor: hand; -fx-border-color: #8b0000; -fx-border-width: 2; -fx-font-family: 'Arial Black';" text="SHOP" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                  
-                  <Button fx:id="matchyButton" onAction="#handleMatchy" prefHeight="60" prefWidth="220" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #4a0000; -fx-text-fill: white; -fx-cursor: hand; -fx-border-color: #8b0000; -fx-border-width: 2; -fx-font-family: 'Arial Black';" text="MATCHY" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                  
-                  <Button fx:id="agentButton" onAction="#handleAgent" prefHeight="60" prefWidth="220" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-color: #4a0000; -fx-text-fill: white; -fx-cursor: hand; -fx-border-color: #8b0000; -fx-border-width: 2; -fx-font-family: 'Arial Black';" text="AGENT" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints />
-                  <ColumnConstraints />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
-            </GridPane>
-            
-            <VBox spacing="15" alignment="CENTER" style="-fx-background-color: #1a1a1a; -fx-padding: 30; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: #8b0000; -fx-border-width: 2;">
-               <children>
-                  <Text style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: #ff3333; -fx-font-family: 'Arial Black';" text="BATTLE STATS" />
-                  <HBox spacing="40" alignment="CENTER">
+                  <!-- Welcome Hero Section -->
+                  <VBox alignment="CENTER" spacing="20" styleClass="welcome-section">
                      <children>
-                        <VBox alignment="CENTER" spacing="8">
+                        <Text fx:id="welcomeText" styleClass="welcome-title" text="WELCOME TO PHANTOM FORCE" />
+                        <Text fx:id="roleText" styleClass="welcome-subtitle" text="Your journey to esports excellence starts here" />
+                        <HBox alignment="CENTER" spacing="15">
                            <children>
-                              <Text fx:id="pointsText" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #ff3333; -fx-font-family: 'Arial Black';" text="0" />
-                              <Text style="-fx-font-size: 14px; -fx-fill: #cccccc; -fx-font-weight: bold;" text="POINTS" />
+                              <Label styleClass="role-badge" text="⭐ COMPETITIVE GAMING" />
+                              <Label styleClass="role-badge" text="🎯 RANKED MATCHES" />
+                              <Label styleClass="role-badge" text="🏆 TOURNAMENTS" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+                  <!-- Quick Actions Grid -->
+                  <GridPane hgap="25" vgap="20" styleClass="action-cards-grid" alignment="CENTER">
+                     <children>
+                        <!-- Row 1 -->
+                        <VBox alignment="CENTER" spacing="12" styleClass="action-card" fx:id="profileCard" onMouseClicked="#handleProfile" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                           <children>
+                              <Text styleClass="action-icon" text="👤" />
+                              <Text styleClass="action-title" text="MY PROFILE" />
+                              <Text styleClass="action-description" text="View and manage your personal information, gaming stats, and achievements" />
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" spacing="8">
+
+                        <VBox alignment="CENTER" spacing="12" styleClass="action-card" fx:id="tournamentCard" onMouseClicked="#handleTournaments" GridPane.columnIndex="1" GridPane.rowIndex="0">
                            <children>
-                              <Text fx:id="tournamentsText" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #ff3333; -fx-font-family: 'Arial Black';" text="0" />
-                              <Text style="-fx-font-size: 14px; -fx-fill: #cccccc; -fx-font-weight: bold;" text="BATTLES" />
+                              <Text styleClass="action-icon" text="🏆" />
+                              <Text styleClass="action-title" text="TOURNAMENTS" />
+                              <Text styleClass="action-description" text="Join competitive tournaments and climb the ranks to glory" />
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" spacing="8">
+
+                        <VBox alignment="CENTER" spacing="12" styleClass="action-card" fx:id="teamCard" onMouseClicked="#handleTeams" GridPane.columnIndex="2" GridPane.rowIndex="0">
                            <children>
-                              <Text fx:id="teamsText" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #ff3333; -fx-font-family: 'Arial Black';" text="0" />
-                              <Text style="-fx-font-size: 14px; -fx-fill: #cccccc; -fx-font-weight: bold;" text="SQUADS" />
+                              <Text styleClass="action-icon" text="👥" />
+                              <Text styleClass="action-title" text="TEAMS" />
+                              <Text styleClass="action-description" text="Create or join teams, coordinate strategies and dominate together" />
+                           </children>
+                        </VBox>
+
+                        <!-- Row 2 -->
+                        <VBox alignment="CENTER" spacing="12" styleClass="action-card" fx:id="trainingCard" onMouseClicked="#handleTraining" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                           <children>
+                              <Text styleClass="action-icon" text="⚡" />
+                              <Text styleClass="action-title" text="TRAINING" />
+                              <Text styleClass="action-description" text="Improve your skills with personalized training sessions" />
+                           </children>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="12" styleClass="action-card" fx:id="shopCard" onMouseClicked="#handleShop" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Text styleClass="action-icon" text="🛒" />
+                              <Text styleClass="action-title" text="SHOP" />
+                              <Text styleClass="action-description" text="Get exclusive skins, boosts, and premium content" />
+                           </children>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="12" styleClass="action-card" fx:id="matchyCard" onMouseClicked="#handleMatchy" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <children>
+                              <Text styleClass="action-icon" text="🎮" />
+                              <Text styleClass="action-title" text="MATCHY" />
+                              <Text styleClass="action-description" text="Quick matchmaking and real-time game sessions" />
+                           </children>
+                        </VBox>
+
+                        <!-- Row 3 -->
+                        <VBox alignment="CENTER" spacing="12" styleClass="action-card" fx:id="agentCard" onMouseClicked="#handleAgent" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                           <children>
+                              <Text styleClass="action-icon" text="🤖" />
+                              <Text styleClass="action-title" text="AGENT" />
+                              <Text styleClass="action-description" text="AI-powered gaming assistant for tips and strategies" />
+                           </children>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="12" styleClass="action-card" fx:id="leaderboardCard" onMouseClicked="#handleLeaderboard" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <Text styleClass="action-icon" text="📊" />
+                              <Text styleClass="action-title" text="LEADERBOARD" />
+                              <Text styleClass="action-description" text="Check global rankings and compare with top players" />
+                           </children>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="12" styleClass="action-card" fx:id="rewardsCard" onMouseClicked="#handleRewards" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <children>
+                              <Text styleClass="action-icon" text="🎁" />
+                              <Text styleClass="action-title" text="REWARDS" />
+                              <Text styleClass="action-description" text="Claim daily bonuses and exclusive achievements" />
                            </children>
                         </VBox>
                      </children>
-                  </HBox>
+
+                     <columnConstraints>
+                        <ColumnConstraints percentWidth="33.33" />
+                        <ColumnConstraints percentWidth="33.33" />
+                        <ColumnConstraints percentWidth="33.33" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                  </GridPane>
+
+                  <!-- Battle Stats Section -->
+                  <VBox spacing="20" alignment="CENTER" styleClass="stats-section">
+                     <children>
+                        <Text styleClass="stats-title" text="⚔️ BATTLE STATS" />
+                        <HBox spacing="40" alignment="CENTER" styleClass="stats-container">
+                           <children>
+                              <VBox alignment="CENTER" spacing="10" styleClass="stat-card">
+                                 <children>
+                                    <Text styleClass="stat-value" fx:id="pointsText" text="2,847" />
+                                    <Text styleClass="stat-label" text="🏅 TOTAL POINTS" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" spacing="10" styleClass="stat-card">
+                                 <children>
+                                    <Text styleClass="stat-value" fx:id="tournamentsText" text="42" />
+                                    <Text styleClass="stat-label" text="🎯 BATTLES" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" spacing="10" styleClass="stat-card">
+                                 <children>
+                                    <Text styleClass="stat-value" fx:id="teamsText" text="3" />
+                                    <Text styleClass="stat-label" text="👥 SQUADS" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" spacing="10" styleClass="stat-card">
+                                 <children>
+                                    <Text styleClass="stat-value" fx:id="winRateText" text="68%" />
+                                    <Text styleClass="stat-label" text="📈 WIN RATE" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+                  <!-- Recent Activity Section -->
+                  <VBox spacing="20" styleClass="activity-section">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                           <children>
+                              <Text styleClass="section-title" text="📋 RECENT ACTIVITY" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button styleClass="secondary-button" text="View All" onAction="#handleViewAllActivity" />
+                           </children>
+                        </HBox>
+
+                        <VBox spacing="10" styleClass="activity-list">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="15" styleClass="activity-item">
+                                 <children>
+                                    <Text styleClass="activity-icon" text="🏆" />
+                                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                                       <children>
+                                          <Text styleClass="activity-title" text="Tournament Victory!" />
+                                          <Text styleClass="activity-description" text="Your team won the Weekly Championship" />
+                                          <Text styleClass="activity-time" text="2 hours ago" />
+                                       </children>
+                                    </VBox>
+                                    <Label styleClass="role-badge" text="+250 XP" />
+                                 </children>
+                              </HBox>
+
+                              <HBox alignment="CENTER_LEFT" spacing="15" styleClass="activity-item">
+                                 <children>
+                                    <Text styleClass="activity-icon" text="🎮" />
+                                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                                       <children>
+                                          <Text styleClass="activity-title" text="Match Completed" />
+                                          <Text styleClass="activity-description" text="Victory against Night Stalkers - 3:1" />
+                                          <Text styleClass="activity-time" text="Yesterday" />
+                                       </children>
+                                    </VBox>
+                                    <Label styleClass="role-badge" text="+100 XP" />
+                                 </children>
+                              </HBox>
+
+                              <HBox alignment="CENTER_LEFT" spacing="15" styleClass="activity-item">
+                                 <children>
+                                    <Text styleClass="activity-icon" text="👥" />
+                                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                                       <children>
+                                          <Text styleClass="activity-title" text="Team Invitation" />
+                                          <Text styleClass="activity-description" text="You've been invited to join 'Phoenix Rising'" />
+                                          <Text styleClass="activity-time" text="2 days ago" />
+                                       </children>
+                                    </VBox>
+                                    <HBox spacing="10">
+                                       <children>
+                                          <Button styleClass="secondary-button" text="Accept" />
+                                          <Button styleClass="secondary-button" text="Decline" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+
+                              <HBox alignment="CENTER_LEFT" spacing="15" styleClass="activity-item">
+                                 <children>
+                                    <Text styleClass="activity-icon" text="⭐" />
+                                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                                       <children>
+                                          <Text styleClass="activity-title" text="Rank Up!" />
+                                          <Text styleClass="activity-description" text="You've reached Diamond rank" />
+                                          <Text styleClass="activity-time" text="3 days ago" />
+                                       </children>
+                                    </VBox>
+                                    <Label styleClass="role-badge" text="NEW" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+
+                  <!-- Upcoming Matches Section -->
+                  <VBox spacing="20" styleClass="activity-section">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                           <children>
+                              <Text styleClass="section-title" text="🎯 UPCOMING MATCHES" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button styleClass="primary-button" text="Find Match" onAction="#handleFindMatch" />
+                           </children>
+                        </HBox>
+
+                        <VBox spacing="10" styleClass="activity-list">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="15" styleClass="activity-item">
+                                 <children>
+                                    <Text styleClass="activity-icon" text="⚔️" />
+                                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                                       <children>
+                                          <Text styleClass="activity-title" text="vs. Dark Wolves" />
+                                          <Text styleClass="activity-description" text="Ranked Match - Best of 3" />
+                                          <Text styleClass="activity-time" text="Today, 20:00" />
+                                       </children>
+                                    </VBox>
+                                    <Button styleClass="primary-button" text="Ready" />
+                                 </children>
+                              </HBox>
+
+                              <HBox alignment="CENTER_LEFT" spacing="15" styleClass="activity-item">
+                                 <children>
+                                    <Text styleClass="activity-icon" text="🏆" />
+                                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                                       <children>
+                                          <Text styleClass="activity-title" text="Summer Championship Qualifier" />
+                                          <Text styleClass="activity-description" text="Tournament - Round 1" />
+                                          <Text styleClass="activity-time" text="Tomorrow, 18:30" />
+                                       </children>
+                                    </VBox>
+                                    <Button styleClass="secondary-button" text="Details" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
                </children>
             </VBox>
-         </children>
-      </VBox>
+         </content>
+      </ScrollPane>
    </center>
 </BorderPane>
