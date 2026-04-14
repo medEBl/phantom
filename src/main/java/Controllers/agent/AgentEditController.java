@@ -25,12 +25,13 @@ public class AgentEditController {
 
     @FXML
     public void initialize() {
-        // Initialiser la ComboBox des statuts
         if (cbStatus != null) {
             cbStatus.getItems().addAll("active", "banned", "pending");
         }
 
-        // Actions des boutons
+        // --- REAL-TIME VALIDATION LISTENERS ---
+        setupRealTimeValidation();
+
         btnRetour.setOnAction(e -> navigateBack());
         btnAnnuler.setOnAction(e -> navigateBack());
         btnEnregistrer.setOnAction(e -> handleUpdate());
@@ -39,30 +40,107 @@ public class AgentEditController {
     public void initData(Agent agent) {
         this.currentAgent = agent;
 
-        // Définir le sous-titre pour aider la navigation au retour
-        // Si on charge AgentEditBack.fxml, le FXML a déjà "Édition Administrative" par défaut
         if (lblSubtitle.getText().equals("Pseudo • Game")) {
             lblSubtitle.setText(agent.getPseudo() + " • " + agent.getGame());
         }
 
         tfPseudo.setText(agent.getPseudo());
-        tfGame.setText(agent.getGame());
+        tfGame.setText(agent.getGame()); // Game is usually read-only in Edit
         tfRank.setText(agent.getRank());
         tfSocials.setText(agent.getSocialsLink());
         cbStatus.setValue(agent.getStatus());
     }
 
+    private void setupRealTimeValidation() {
+        // Validation Pseudo
+        if (tfPseudo != null) {
+            tfPseudo.textProperty().addListener((obs, oldText, newText) -> {
+                String text = newText == null ? "" : newText.trim();
+                boolean isValid = text.length() >= 3 && text.length() <= 50;
+                applyValidationStyle(tfPseudo, isValid);
+            });
+        }
+
+        // Validation Rank
+        if (tfRank != null) {
+            tfRank.textProperty().addListener((obs, oldText, newText) -> {
+                String text = newText == null ? "" : newText.trim();
+                boolean isValid = !text.isEmpty();
+                if (isValid) {
+                    try {
+                        if (Double.parseDouble(text) < 0) isValid = false;
+                    } catch (NumberFormatException e) { }
+                }
+                applyValidationStyle(tfRank, isValid);
+            });
+        }
+
+        // Validation Socials
+        if (tfSocials != null) {
+            tfSocials.textProperty().addListener((obs, oldText, newText) -> {
+                String text = newText == null ? "" : newText.trim();
+                String urlRegex = "^(https?://)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$";
+                boolean isValid = !text.isEmpty() && text.matches(urlRegex);
+                applyValidationStyle(tfSocials, isValid);
+            });
+        }
+    }
+
+    private void applyValidationStyle(TextField field, boolean isValid) {
+        if (isValid) {
+            field.setStyle("-fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-background-radius: 8;");
+        } else {
+            field.setStyle("-fx-border-color: #ff3b3f; -fx-border-radius: 8; -fx-background-radius: 8;");
+        }
+    }
+
     private void handleUpdate() {
-        if (tfPseudo.getText().trim().isEmpty() || tfRank.getText().trim().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Champs requis", "Le pseudo et le rang sont obligatoires.");
+        String pseudo = tfPseudo != null ? tfPseudo.getText().trim() : "";
+        String rank = tfRank != null ? tfRank.getText().trim() : "";
+        String socials = tfSocials != null ? tfSocials.getText().trim() : "";
+        String status = cbStatus != null ? cbStatus.getValue() : null;
+
+        // 1. Validation Pseudo
+        if (pseudo.isEmpty() || pseudo.length() < 3 || pseudo.length() > 50) {
+            if (tfPseudo != null) applyValidationStyle(tfPseudo, false);
+            showAlert(Alert.AlertType.WARNING, "Pseudo invalide", "Le pseudo doit contenir entre 3 et 50 caractères.");
             return;
         }
 
+        // 2. Validation Rank
+        if (rank.isEmpty()) {
+            if (tfRank != null) applyValidationStyle(tfRank, false);
+            showAlert(Alert.AlertType.WARNING, "Rang manquant", "Le champ rang est obligatoire.");
+            return;
+        }
         try {
-            currentAgent.setPseudo(tfPseudo.getText().trim());
-            currentAgent.setRank(tfRank.getText().trim());
-            currentAgent.setStatus(cbStatus.getValue());
-            currentAgent.setSocialsLink(tfSocials.getText().trim());
+            if (Double.parseDouble(rank) < 0) {
+                if (tfRank != null) applyValidationStyle(tfRank, false);
+                showAlert(Alert.AlertType.WARNING, "Rang invalide", "Le rang ne peut pas être négatif.");
+                return;
+            }
+        } catch (NumberFormatException e) { }
+
+        // 3. Validation Status
+        if (status == null) {
+            showAlert(Alert.AlertType.WARNING, "Statut manquant", "Veuillez sélectionner un statut.");
+            return;
+        }
+
+        // 4. Validation Socials
+        String urlRegex = "^(https?://)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$";
+        if (socials.isEmpty() || !socials.matches(urlRegex)) {
+            if (tfSocials != null) applyValidationStyle(tfSocials, false);
+            showAlert(Alert.AlertType.WARNING, "Lien social invalide", "Veuillez entrer une URL valide.");
+            return;
+        }
+
+        // Update if valid
+        try {
+            currentAgent.setPseudo(pseudo);
+            currentAgent.setRank(rank);
+            currentAgent.setStatus(status);
+            currentAgent.setSocialsLink(socials);
 
             service.updateAgent(currentAgent);
 
@@ -71,17 +149,15 @@ public class AgentEditController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de mettre à jour le profil.");
+            showAlert(Alert.AlertType.ERROR, "Erreur serveur", "Impossible de mettre à jour le profil.");
         }
     }
 
     private void navigateBack() {
         try {
-            // LOGIQUE DE RETOUR :
-            // Si le texte contient "Admin", on retourne vers ListAgentsBack.fxml
             String fxmlPath = "/fxml/ListAgents.fxml";
 
-            if (lblSubtitle.getText().contains("Admin")) {
+            if (lblSubtitle != null && lblSubtitle.getText().contains("Admin")) {
                 fxmlPath = "/fxml/ListAgentsBack.fxml";
             }
 
