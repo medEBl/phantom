@@ -10,7 +10,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import services.agent.AgentService;
 
+import tools.Phantom;
+
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AgentCreateController {
 
@@ -20,10 +27,12 @@ public class AgentCreateController {
 
     private final AgentService service = new AgentService();
 
-    // --- LE FLAG DE SÉCURITÉ ABSOLUE ---
     private boolean isAdminMode = false;
 
-    // Cette méthode sera appelée avant d'afficher la page
+    // Dictionaries to link the Names displayed in the UI to their Database IDs
+    private Map<String, Integer> playerMap = new HashMap<>();
+    private Map<String, Integer> teamMap = new HashMap<>();
+
     public void setAdminMode(boolean isAdmin) {
         this.isAdminMode = isAdmin;
     }
@@ -31,18 +40,57 @@ public class AgentCreateController {
     @FXML
     public void initialize() {
         if (cbStatus != null) cbStatus.getItems().addAll("active", "banned", "pending");
-        if (cbGame != null) cbGame.getItems().addAll("League of Legends", "Valorant", "Apex Legends", "Overwatch 2");
-        if (cbPlayer != null) cbPlayer.getItems().addAll("Joueur 1", "Joueur 2");
-        if (cbTeam != null) cbTeam.getItems().addAll("Team A", "Team B", "Free Agent");
+        if (cbGame != null) cbGame.getItems().addAll("League of Legends", "Valorant", "Apex Legends", "Overwatch 2", "Counter-Strike 2", "Rocket League");
+
+        // Load dynamic data from the database
+        loadDynamicData();
 
         if (btnRetour != null) btnRetour.setOnAction(e -> navigateBack());
         if (btnAnnuler != null) btnAnnuler.setOnAction(e -> navigateBack());
         if (btnCreer != null) btnCreer.setOnAction(e -> handleCreate());
     }
 
+    private void loadDynamicData() {
+        try {
+            // Use your Singleton connection
+            Connection cnx = Phantom.getInstance().getCnx();
+            Statement st = cnx.createStatement();
+
+            // 1. Load Players
+            if (cbPlayer != null) {
+                ResultSet rsPlayers = st.executeQuery("SELECT id, name FROM player");
+                while (rsPlayers.next()) {
+                    String name = rsPlayers.getString("name");
+                    int id = rsPlayers.getInt("id");
+
+                    playerMap.put(name, id);
+                    cbPlayer.getItems().add(name);
+                }
+            }
+
+            // 2. Load Teams
+            if (cbTeam != null) {
+                cbTeam.getItems().add("Free Agent (Aucune)"); // Allow null team option
+
+                ResultSet rsTeams = st.executeQuery("SELECT id, name FROM team");
+                while (rsTeams.next()) {
+                    String name = rsTeams.getString("name");
+                    int id = rsTeams.getInt("id");
+
+                    teamMap.put(name, id);
+                    cbTeam.getItems().add(name);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur BDD", "Impossible de charger les joueurs et les équipes.");
+        }
+    }
+
     private void handleCreate() {
-        if (tfPseudo.getText().trim().isEmpty() || tfRank.getText().trim().isEmpty() || cbGame.getValue() == null) {
-            showAlert(Alert.AlertType.WARNING, "Attention", "Veuillez remplir les champs obligatoires.");
+        // We also check if a Player is selected since id_player is NOT NULL in your SQL
+        if (tfPseudo.getText().trim().isEmpty() || tfRank.getText().trim().isEmpty() || cbGame.getValue() == null || cbPlayer.getValue() == null) {
+            showAlert(Alert.AlertType.WARNING, "Attention", "Veuillez remplir les champs obligatoires (Pseudo, Rang, Jeu, Player).");
             return;
         }
 
@@ -54,13 +102,24 @@ public class AgentCreateController {
             agent.setStatus(cbStatus != null && cbStatus.getValue() != null ? cbStatus.getValue() : "active");
             agent.setSocialsLink(tfSocials != null ? tfSocials.getText().trim() : "");
 
+            // --- LINKING THE DYNAMIC IDs ---
+            // Fetch the ID corresponding to the selected Player name
+            agent.setIdPlayer(playerMap.get(cbPlayer.getValue()));
+
+            // Handle the Team (It can be null according to your SQL dump)
+            if (cbTeam != null && cbTeam.getValue() != null && !cbTeam.getValue().equals("Free Agent (Aucune)")) {
+                agent.setIdTeam(teamMap.get(cbTeam.getValue()));
+            } else {
+                agent.setIdTeam(null);
+            }
+
             service.createAgent(agent);
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Profil agent créé avec succès !");
             navigateBack();
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Un problème est survenu.");
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Un problème est survenu lors de la création.");
         }
     }
 

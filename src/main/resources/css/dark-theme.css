@@ -1,151 +1,123 @@
-/* --- dark-theme.css --- */
+/* --- PHANTOM FORCE GLOBAL THEME --- */
 
-/* Main Table Background */
+.root {
+    -fx-background-color: #0f0f13; /* Deepest dark for app background */
+}
+
+/* --- TABLEVIEW CORE STYLING --- */
+
 .table-view {
-    -fx-background-color: #1a1a24;
-    -fx-border-color: #2a2a36;
+    -fx-background-color: #16161e; /* Main panel background */
+    -fx-border-color: #2a2a35;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
+    -fx-padding: 0;
 }
 
-/* Hide the ugly blue focus ring when you click the table */
+/* Removes the default light-blue focus border when clicking cells */
 .table-view:focused {
-    -fx-background-color: #1a1a24;
-}
-
-/* Column Headers Area */
-.table-view .column-header-background {
-    -fx-background-color: #121216; /* Darker header */
-    -fx-background-radius: 8 8 0 0;
-    -fx-border-color: transparent transparent #2a2a36 transparent;
-    -fx-border-width: 0 0 1 0;
-}
-
-/* Individual Column Headers */
-.table-view .column-header {
-    -fx-background-color: transparent;
-    -fx-size: 40px; /* Taller headers */
-}
-
-/* Header Text */
-.table-view .column-header .label {
-    -fx-text-fill: #a0a0a0;
-    -fx-font-weight: bold;
-    -fx-font-size: 13px;
-    -fx-alignment: center-left;
-    -fx-padding: 0 0 0 10px;
-}
-
-/* Regular Rows */
-.table-row-cell {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent transparent #22222d transparent; /* Subtle line between rows */
-    -fx-border-width: 0 0 1 0;
-    -fx-cell-size: 45px; /* Taller rows for modern look */
-}
-
-/* Text inside the rows */
-.table-cell {
-    -fx-text-fill: white;
-    -fx-alignment: center-left;
-    -fx-padding: 0 0 0 10px;
-    -fx-font-size: 14px;
-}
-
-/* Hover Effect on Rows */
-.table-row-cell:hover {
-    -fx-background-color: #22222d;
-}
-
-/* Selected Row Effect */
-.table-row-cell:selected {
-    -fx-background-color: #2a2a36;
-}
-
-/* Scrollbar styling to match the dark theme */
-.table-view .scroll-bar:vertical,
-.table-view .scroll-bar:horizontal {
-    -fx-background-color: #1a1a24;
-}
-.table-view .scroll-bar:vertical .thumb,
-.table-view .scroll-bar:horizontal .thumb {
-    -fx-background-color: #3a3a46;
-    -fx-background-radius: 5em;
-}
-/* Style the ComboBox itself */
-.combo-box {
-    -fx-background-color: #1e1e28;
-    -fx-border-color: #2a2a35;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
-}
-.combo-box .list-cell {
-    -fx-text-fill: white;
-}
-
-/* Style the popup dropdown menu */
-.combo-box-popup .list-view {
-    -fx-background-color: #1e1e28;
-    -fx-border-color: #2a2a35;
-}
-.combo-box-popup .list-view .list-cell {
-    -fx-background-color: #1e1e28;
-    -fx-text-fill: white;
-    -fx-padding: 8 10 8 10;
-}
-
-/* Hover effect on the dropdown items */
-.combo-box-popup .list-view .list-cell:hover,
-.combo-box-popup .list-view .list-cell:filled:selected {
-    -fx-background-color: #ff3b3f; /* Phantom Force Red highlight */
-    -fx-text-fill: white;
-}
-/* --- STYLE DU TABLEAU PHANTOM --- */
-.table-view {
     -fx-background-color: #16161e;
-    -fx-border-color: #2a2a35;
-    -fx-border-radius: 8;
 }
 
+/* --- COLUMN HEADERS --- */
+
 .table-view .column-header-background {
-    -fx-background-color: #1a1a24;
+    -fx-background-color: #1a1a24; /* Header bar slightly lighter */
     -fx-background-radius: 8 8 0 0;
 }
 
 .table-view .column-header, .table-view .filler {
     -fx-background-color: transparent;
-    -fx-size: 40px;
-    -fx-border-width: 0 0 1 0;
     -fx-border-color: #2a2a35;
+    -fx-border-width: 0 0 1 0; /* Bottom border only */
+    -fx-size: 45px;            /* Taller headers for modern look */
 }
 
 .table-view .column-header .label {
-    -fx-text-fill: #8a8a98;
+    -fx-text-fill: #8a8a98;    /* Muted secondary text color */
     -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: center-left;
 }
+
+/* --- ROWS AND CELLS --- */
 
 .table-row-cell {
-    -fx-background-color: transparent;
+    -fx-background-color: #16161e;
+    -fx-border-color: transparent transparent #1f1f28 transparent;
     -fx-border-width: 0 0 1 0;
-    -fx-border-color: #1f1f28;
-    -fx-table-cell-border-color: transparent;
+    -fx-cell-size: 50px;       /* Increased height for breathing room */
 }
 
+/* Zebra Striping (Alternating Row Color) */
 .table-row-cell:odd {
-    -fx-background-color: #181820;
+    -fx-background-color: #1a1a24;
 }
 
+/* Hover Effect */
 .table-row-cell:hover {
     -fx-background-color: #22222d;
 }
 
+/* Selected Row */
 .table-row-cell:selected {
     -fx-background-color: #2a2a35;
-    -fx-text-fill: #00ffff;
 }
 
 .table-view .cell {
-    -fx-text-fill: white;
+    -fx-text-fill: white;      /* Primary text color */
     -fx-alignment: CENTER-LEFT;
-    -fx-padding: 0 0 0 10;
+    -fx-padding: 0 0 0 15px;
+    -fx-font-size: 14px;
+}
+
+/* --- ACTION BUTTONS (Inside Cell Factory) --- */
+
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 6;
+    -fx-font-weight: bold;
+}
+
+/* Primary Action (Cyan) */
+.btn-primary {
+    -fx-background-color: #00ffff;
+    -fx-text-fill: black;
+}
+
+/* Danger Action (Red) */
+.btn-danger {
+    -fx-background-color: #ff3b3f;
+    -fx-text-fill: white;
+}
+
+/* Transparent Outline Button (Voir Profil) */
+.btn-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #00ffff;
+    -fx-text-fill: #00ffff;
+    -fx-border-radius: 6;
+}
+
+/* --- SCROLLBARS --- */
+
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar .thumb {
+    -fx-background-color: #3a3a46;
+    -fx-background-radius: 10;
+}
+
+.table-view .scroll-bar .thumb:hover {
+    -fx-background-color: #4a4a56;
+}
+
+/* Hide extra corner space in scrollbar */
+.table-view .scroll-bar .increment-button,
+.table-view .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
 }

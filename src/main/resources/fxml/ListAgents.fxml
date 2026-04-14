@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+
 <AnchorPane stylesheets="@dark-theme.css" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #121216;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentListController">    <children>
         <VBox layoutX="40.0" layoutY="40.0" prefHeight="620.0" prefWidth="920.0" spacing="25.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">
             <children>
