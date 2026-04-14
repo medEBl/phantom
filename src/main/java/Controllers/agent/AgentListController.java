@@ -199,7 +199,7 @@ public class AgentListController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ReponseCreate.fxml"));
             Parent root = loader.load();
-            Controllers.agent.ReponseCreateController controller = loader.getController();
+            Controllers.reponse.ReponseCreateController controller = loader.getController(); // <--- CORRECT PACKAGE
             controller.initData(agent);
             agentTable.getScene().setRoot(root);
         } catch (IOException e) { e.printStackTrace(); }

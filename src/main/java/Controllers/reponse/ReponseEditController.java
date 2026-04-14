@@ -14,21 +14,21 @@ import javafx.scene.layout.VBox;
 import services.reponse.ReponseService;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
-public class ReponseCreateController {
+public class ReponseEditController {
 
     @FXML private Label lblSubtitle;
-    @FXML private Button btnAnnuler, btnEnregistrer;
+    @FXML private Button btnAnnuler, btnMettreAJour;
     @FXML private VBox boxQ3, boxQ4;
     @FXML private Label lblQ1, lblQ2, lblQ3, lblQ4;
     @FXML private TextArea taR1, taR2, taR3, taR4;
 
     private Agent currentAgent;
-    private int currentQuestionnaireId = -1;
+    private Reponse existingReponse;
     private ReponseService reponseService;
 
-    // Matches PHP Assert\Regex logic
     private final Pattern BAD_WORDS_PATTERN = Pattern.compile(".*\\b(badword|insult|stupid)\\b.*", Pattern.CASE_INSENSITIVE);
 
     @FXML
@@ -36,48 +36,48 @@ public class ReponseCreateController {
         reponseService = new ReponseService();
         setupRealTimeValidation();
         btnAnnuler.setOnAction(e -> navigateToDetails());
-        btnEnregistrer.setOnAction(e -> handleSave());
+        btnMettreAJour.setOnAction(e -> handleUpdate());
     }
 
     public void initData(Agent agent) {
         this.currentAgent = agent;
-        lblSubtitle.setText("Nouveau Questionnaire • " + agent.getPseudo());
-        loadQuestions();
+        lblSubtitle.setText("Édition des Réponses • " + agent.getPseudo());
+        loadQuestionsAndAnswers();
     }
 
-    // Matches PHP Assert\Length(min: 5) and NotBlank
     private boolean isValidResponse(String text) {
         if (text == null) return false;
         String t = text.trim();
-        return t.length() >= 5
-                && !t.equalsIgnoreCase("Aucune réponse")
-                && !t.equalsIgnoreCase("Aucune reponse");
+        return t.length() >= 5 && !t.equalsIgnoreCase("Aucune réponse") && !t.equalsIgnoreCase("Aucune reponse");
     }
 
     private void applyValidationStyle(TextArea area, boolean isValid) {
-        String color = isValid ? "#2a2a35" : "#ff3b3f"; // Red border if invalid
+        String color = isValid ? "#2a2a35" : "#ff3b3f";
         area.setStyle("-fx-control-inner-background: #1e1e28; -fx-text-fill: white; -fx-border-radius: 8; -fx-background-radius: 8; -fx-border-color: " + color + ";");
     }
 
-    private void loadQuestions() {
+    private void loadQuestionsAndAnswers() {
         Map<String, Object> questions = reponseService.getQuestionnaireByGame(currentAgent.getGame());
-        if (questions != null) {
-            currentQuestionnaireId = (int) questions.get("id");
+        Optional<Reponse> reponseOpt = reponseService.getReponseByAgentId(currentAgent.getId());
+
+        if (questions != null && reponseOpt.isPresent()) {
+            this.existingReponse = reponseOpt.get();
             lblQ1.setText((String) questions.get("ques1"));
             lblQ2.setText((String) questions.get("ques2"));
 
             if (questions.get("ques3") == null || ((String) questions.get("ques3")).trim().isEmpty()) {
                 boxQ3.setVisible(false); boxQ3.setManaged(false);
-                lblQ3.setText("");
             } else lblQ3.setText((String) questions.get("ques3"));
 
             if (questions.get("ques4") == null || ((String) questions.get("ques4")).trim().isEmpty()) {
                 boxQ4.setVisible(false); boxQ4.setManaged(false);
-                lblQ4.setText("");
             } else lblQ4.setText((String) questions.get("ques4"));
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Aucun questionnaire trouvé.");
-            btnEnregistrer.setDisable(true);
+
+            // Clear invalid stored answers to force re-entry
+            taR1.setText(isValidResponse(existingReponse.getRep1()) ? existingReponse.getRep1() : "");
+            taR2.setText(isValidResponse(existingReponse.getRep2()) ? existingReponse.getRep2() : "");
+            taR3.setText(isValidResponse(existingReponse.getRep3()) ? existingReponse.getRep3() : "");
+            taR4.setText(isValidResponse(existingReponse.getRep4()) ? existingReponse.getRep4() : "");
         }
     }
 
@@ -88,7 +88,7 @@ public class ReponseCreateController {
         taR4.textProperty().addListener((obs, oldV, newV) -> applyValidationStyle(taR4, isValidResponse(newV)));
     }
 
-    private void handleSave() {
+    private void handleUpdate() {
         String r1 = taR1.getText();
         String r2 = taR2.getText();
         String r3 = taR3.getText();
@@ -130,15 +130,15 @@ public class ReponseCreateController {
             return;
         }
 
-        // Si tout est valide, on enregistre
+        // Si tout est valide, on met à jour
         try {
-            Reponse rep = new Reponse(currentAgent.getId(), currentQuestionnaireId,
-                    r1.trim(), r2.trim(),
-                    hasQ3 ? r3.trim() : null,
-                    hasQ4 ? r4.trim() : null);
+            existingReponse.setRep1(r1.trim());
+            existingReponse.setRep2(r2.trim());
+            existingReponse.setRep3(hasQ3 ? r3.trim() : null);
+            existingReponse.setRep4(hasQ4 ? r4.trim() : null);
 
-            reponseService.createReponse(rep);
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Les réponses ont été enregistrées avec succès !");
+            reponseService.updateReponse(existingReponse);
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Mise à jour réussie !");
             navigateToDetails();
         } catch (Exception e) {
             e.printStackTrace();

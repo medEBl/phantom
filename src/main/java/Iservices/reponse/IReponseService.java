@@ -10,9 +10,7 @@ public interface IReponseService {
     List<Reponse> getAllReponses();
     Optional<Reponse> getReponseById(int id);
     void deleteReponse(int id);
-
-    // Add these three missing method signatures!
-    void updateReponse(Reponse r);
-    Optional<Reponse> getReponseByAgentId(int idAgent);
-    Map<String, Object> getQuestionnaireByGame(String game);
+    void updateReponse(Reponse r); // Required for Edit
+    Optional<Reponse> getReponseByAgentId(int idAgent); // Required for Edit
+    Map<String, Object> getQuestionnaireByGame(String game); // Required for both
 }
