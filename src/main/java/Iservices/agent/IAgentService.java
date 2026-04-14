@@ -11,4 +11,6 @@ public interface IAgentService {
     void deleteAgent(int id);
     Optional<Agent> getAgentById(int id);
     List<Agent> getAllAgents();
+    // ADD THIS LINE BELOW
+    boolean agentExistsForPlayerAndGame(int idPlayer, String game);
 }
