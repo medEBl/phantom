@@ -3,6 +3,8 @@ package Controllers.agent;
 import entities.agent.Agent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -35,10 +37,28 @@ public class AgentListController {
 
     private AgentService serviceAgent;
     private ObservableList<Agent> agentObservableList;
+    private FilteredList<Agent> filteredData; // Used for search
 
     @FXML
     public void initialize() {
         serviceAgent = new AgentService();
+
+        // 1. Initialize the lists for Search and Sort
+        agentObservableList = FXCollections.observableArrayList();
+        filteredData = new FilteredList<>(agentObservableList, b -> true);
+
+        // 2. Wrap the FilteredList in a SortedList
+        SortedList<Agent> sortedData = new SortedList<>(filteredData);
+
+        // 3. Bind the SortedList comparator to the TableView comparator
+        // (This enables sorting when clicking column headers!)
+        sortedData.comparatorProperty().bind(agentTable.comparatorProperty());
+
+        // 4. Add sorted (and filtered) data to the table
+        agentTable.setItems(sortedData);
+
+        // 5. Setup Search Bar Listener
+        setupSearchFilter();
 
         colPseudo.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
         colJeu.setCellValueFactory(new PropertyValueFactory<>("game"));
@@ -72,22 +92,16 @@ public class AgentListController {
             final Button btnDetails = new Button("👁 Profil");
             final Button btnRemplir = new Button("📝 Remplir");
             final Label lblComplete = new Label("✅ Complété");
-            final Label lblNonRempli = new Label("❌ Non rempli"); // Admin text for missing questionnaire
+            final Label lblNonRempli = new Label("❌ Non rempli");
 
-            // On utilise juste des icônes pour gagner de la place !
             final Button btnModifier = new Button("✎");
             final Button btnSupprimer = new Button("🗑");
 
             {
-                // Application stricte de votre palette de couleurs
                 btnDetails.setStyle("-fx-background-color: transparent; -fx-border-color: #00ffff; -fx-text-fill: #00ffff; -fx-cursor: hand; -fx-border-radius: 4; -fx-padding: 5 10;");
-
-                // Remplir (Rouge) vs Complété (Vert) vs Non Rempli (Gris pour Admin)
                 btnRemplir.setStyle("-fx-background-color: #ff3b3f; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 4; -fx-padding: 5 10;");
                 lblComplete.setStyle("-fx-text-fill: #00e676; -fx-font-weight: bold; -fx-padding: 5 10;");
                 lblNonRempli.setStyle("-fx-text-fill: #8a8a98; -fx-font-weight: bold; -fx-padding: 5 10;");
-
-                // Boutons d'édition (Plus petits)
                 btnModifier.setStyle("-fx-background-color: #2a2a35; -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 4; -fx-padding: 5 10;");
                 btnSupprimer.setStyle("-fx-background-color: transparent; -fx-border-color: #ff3b3f; -fx-text-fill: #ff3b3f; -fx-cursor: hand; -fx-border-radius: 4; -fx-padding: 5 10;");
 
@@ -96,7 +110,7 @@ public class AgentListController {
                 btnModifier.setOnAction(event -> openEditScreen(getTableView().getItems().get(getIndex())));
                 btnSupprimer.setOnAction(event -> {
                     serviceAgent.deleteAgent(getTableView().getItems().get(getIndex()).getId());
-                    loadAgents();
+                    loadAgents(); // Reloads data which automatically applies active filters
                 });
             }
 
@@ -110,35 +124,31 @@ public class AgentListController {
                     HBox actionBox = new HBox(10);
                     actionBox.setAlignment(Pos.CENTER);
 
-                    // Determine if we are in Admin Mode based on the presence of the sidebar buttons
                     boolean isAdmin = (btnNavQuestionnaires != null || btnDisconnect != null);
                     boolean aRepondu = checkReponseExists(agent.getId());
 
                     if (isAdmin) {
-                        // BACK-OFFICE (Admin)
                         if (aRepondu) {
                             actionBox.getChildren().addAll(lblComplete, btnDetails, btnModifier, btnSupprimer);
                         } else {
                             actionBox.getChildren().addAll(lblNonRempli, btnDetails, btnModifier, btnSupprimer);
                         }
                     } else {
-                        // FRONT-OFFICE (User)
                         if (aRepondu) {
                             actionBox.getChildren().addAll(lblComplete, btnDetails, btnModifier, btnSupprimer);
                         } else {
                             actionBox.getChildren().addAll(btnRemplir, btnDetails, btnModifier, btnSupprimer);
                         }
                     }
-
                     setGraphic(actionBox);
                 }
             }
         });
 
-        // RESTORED CODE: Actually load the data into the table
+        // Charger les données de la base
         loadAgents();
 
-        // RESTORED CODE: Setup buttons
+        // Setup boutons existants
         if (btnCreateAgent != null) {
             btnCreateAgent.setOnAction(event -> {
                 try {
@@ -161,31 +171,51 @@ public class AgentListController {
                 } catch (IOException ex) { ex.printStackTrace(); }
             });
         }
-    } // <-- This closing bracket was missing
+    }
+
+    // --- RECHERCHE EN TEMPS RÉEL (PSEUDO SEULEMENT) ---
+    private void setupSearchFilter() {
+        if (tfSearch != null) {
+            tfSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate(agent -> {
+                    // Si le champ est vide, on affiche tout
+                    if (newValue == null || newValue.isEmpty() || newValue.isBlank()) {
+                        return true;
+                    }
+
+                    // On met tout en minuscules pour comparer facilement
+                    String lowerCaseFilter = newValue.toLowerCase();
+
+                    // Recherche UNIQUEMENT par Pseudo
+                    if (agent.getPseudo() != null && agent.getPseudo().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+
+                    // Si le pseudo ne correspond pas, on cache la ligne
+                    return false;
+                });
+            });
+        }
+    }
 
     private void loadAgents() {
         try {
             List<Agent> agentsFromDB = serviceAgent.getAllAgents();
-            agentObservableList = FXCollections.observableArrayList(agentsFromDB);
-            agentTable.setItems(agentObservableList);
+            // On met à jour la liste source. Le FilteredList et SortedList se mettront à jour tout seuls !
+            agentObservableList.setAll(agentsFromDB);
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    // --- REQUÊTE POUR SAVOIR SI LE JOUEUR A RÉPONDU ---
     private boolean checkReponseExists(int agentId) {
         String sql = "SELECT 1 FROM reponse_questionnaire WHERE id_agent = ?";
         try {
             Connection cnx = Phantom.getInstance().getCnx();
             PreparedStatement ps = cnx.prepareStatement(sql);
-
             ps.setInt(1, agentId);
             ResultSet rs = ps.executeQuery();
-
             boolean exists = rs.next();
-
             rs.close();
             ps.close();
-
             return exists;
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,13 +223,11 @@ public class AgentListController {
         }
     }
 
-    // --- METHODES DE NAVIGATION ---
-
     private void openReponseScreen(Agent agent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ReponseCreate.fxml"));
             Parent root = loader.load();
-            Controllers.reponse.ReponseCreateController controller = loader.getController(); // <--- CORRECT PACKAGE
+            Controllers.reponse.ReponseCreateController controller = loader.getController();
             controller.initData(agent);
             agentTable.getScene().setRoot(root);
         } catch (IOException e) { e.printStackTrace(); }

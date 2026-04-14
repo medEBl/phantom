@@ -11,8 +11,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane stylesheets="@dark-theme.css" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #121216;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentListController">    <children>
+<AnchorPane stylesheets="@../css/dark-theme.css" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #121216;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentListController">
+    <children>
         <VBox layoutX="40.0" layoutY="40.0" prefHeight="620.0" prefWidth="920.0" spacing="25.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">
             <children>
 
@@ -42,21 +42,25 @@
 
                 <HBox alignment="CENTER_RIGHT" prefHeight="40.0" style="-fx-background-color: #1a1a24; -fx-background-radius: 8;">
                     <children>
-                        <TextField fx:id="tfSearch" prefWidth="300.0" promptText="Rechercher (Pseudo, Jeu...)" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-prompt-text-fill: #666666;" />
+                        <Label text="🔍" textFill="#8a8a98" />
+                        <TextField fx:id="tfSearch" prefWidth="300.0" promptText="Rechercher (Pseudo...)" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-prompt-text-fill: #666666;" />
                     </children>
                     <padding>
                         <Insets left="15.0" right="15.0" />
                     </padding>
                 </HBox>
 
-                <TableView fx:id="agentTable" prefHeight="450.0" prefWidth="920.0" style="-fx-background-color: #1a1a24; -fx-border-color: #2a2a36; -fx-border-radius: 8; -fx-background-radius: 8;">
+                <TableView fx:id="agentTable" style="-fx-background-color: #1a1a24; -fx-border-color: #2a2a36; -fx-border-radius: 8; -fx-background-radius: 8;" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colPseudo" prefWidth="180.0" text="Pseudo" />
                         <TableColumn fx:id="colJeu" prefWidth="200.0" text="Jeu" />
-                        <TableColumn fx:id="colRang" prefWidth="120.0" text="Rang" />
-                        <TableColumn fx:id="colStatut" prefWidth="150.0" text="Statut" />
-                        <TableColumn fx:id="colActions" prefWidth="260.0" text="Actions" />
+                        <TableColumn fx:id="colRang" prefWidth="120.0" style="-fx-alignment: center;" text="Rang" />
+                        <TableColumn fx:id="colStatut" prefWidth="150.0" style="-fx-alignment: center;" text="Statut" />
+                        <TableColumn fx:id="colActions" prefWidth="260.0" style="-fx-alignment: center;" text="Actions" />
                     </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
                 </TableView>
 
             </children>

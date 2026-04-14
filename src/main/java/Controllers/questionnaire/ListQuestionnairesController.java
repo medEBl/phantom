@@ -3,6 +3,8 @@ package Controllers.questionnaire;
 import entities.questionnaire.Questionnaire;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,17 +34,34 @@ public class ListQuestionnairesController {
 
     private QuestionnaireService service;
     private ObservableList<Questionnaire> observableList;
+    private FilteredList<Questionnaire> filteredData; // Used for search
 
     @FXML
     public void initialize() {
         service = new QuestionnaireService();
 
-        // 1. Map Columns to Entity Properties
+        // 1. Initialize the lists for Search and Sort
+        observableList = FXCollections.observableArrayList();
+        filteredData = new FilteredList<>(observableList, b -> true);
+
+        // 2. Wrap the FilteredList in a SortedList
+        SortedList<Questionnaire> sortedData = new SortedList<>(filteredData);
+
+        // 3. Bind the SortedList comparator to the TableView comparator
+        sortedData.comparatorProperty().bind(questionnaireTable.comparatorProperty());
+
+        // 4. Add sorted (and filtered) data to the table
+        questionnaireTable.setItems(sortedData);
+
+        // 5. Setup Search Bar Listener
+        setupSearchFilter();
+
+        // 6. Map Columns to Entity Properties
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colGame.setCellValueFactory(new PropertyValueFactory<>("game"));
         colQ1.setCellValueFactory(new PropertyValueFactory<>("ques1"));
 
-        // 2. Setup Actions Column (View, Edit, Delete buttons)
+        // 7. Setup Actions Column (View, Edit, Delete buttons)
         colActions.setCellFactory(column -> new TableCell<Questionnaire, String>() {
             final Button btnDetails = new Button("👁");
             final Button btnModifier = new Button("✎");
@@ -75,13 +94,13 @@ public class ListQuestionnairesController {
             }
         });
 
-        // 3. Load Data
+        // 8. Load Data
         loadQuestionnaires();
 
-        // 4. Main Button Actions
+        // 9. Main Button Actions
         btnNouveau.setOnAction(e -> openCreate());
 
-        // 5. Sidebar Navigation Actions
+        // 10. Sidebar Navigation Actions
         if (btnNavAgents != null) {
             btnNavAgents.setOnAction(e -> {
                 try {
@@ -99,10 +118,36 @@ public class ListQuestionnairesController {
         }
     }
 
+    // --- RECHERCHE EN TEMPS RÉEL (JEU SEULEMENT) ---
+    private void setupSearchFilter() {
+        if (tfSearch != null) {
+            tfSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate(q -> {
+                    // Si le champ est vide, on affiche tout
+                    if (newValue == null || newValue.isEmpty() || newValue.isBlank()) {
+                        return true;
+                    }
+
+                    // On met tout en minuscules pour comparer facilement
+                    String lowerCaseFilter = newValue.toLowerCase();
+
+                    // Recherche UNIQUEMENT par le nom du Jeu
+                    if (q.getGame() != null && q.getGame().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+
+                    // Si le jeu ne correspond pas, on cache la ligne
+                    return false;
+                });
+            });
+        }
+
+    }
+
     private void loadQuestionnaires() {
         List<Questionnaire> list = service.getAllQuestionnaires();
-        observableList = FXCollections.observableArrayList(list);
-        questionnaireTable.setItems(observableList);
+        // Utiliser setAll met à jour la liste source sans casser les liens Filtered/Sorted
+        observableList.setAll(list);
     }
 
     private void deleteQuestionnaire(int id) {

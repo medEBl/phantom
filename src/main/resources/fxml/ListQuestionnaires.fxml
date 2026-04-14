@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.questionnaire.ListQuestionnairesController">
+<HBox stylesheets="@../css/dark-theme.css" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.questionnaire.ListQuestionnairesController">
     <children>
 
         <VBox prefWidth="250.0" spacing="40.0" style="-fx-background-color: #1a1a24; -fx-border-color: #2a2a35; -fx-border-width: 0 1 0 0;">
@@ -30,7 +30,7 @@
                             <padding><Insets bottom="12.0" left="15.0" top="12.0" /></padding>
                         </Button>
 
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #2a2a35; -fx-border-color: #00ffff; -fx-border-width: 0 0 0 4; -fx-text-fill: #00ffff; -fx-alignment: CENTER_LEFT; -fx-cursor: default;" text="📝 Questionnaires">
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #2a2a35; -fx-border-color: #00ffff; -fx-border-width: 0 0 0 4; -fx-text-fill: #00ffff; -fx-alignment: CENTER_LEFT; -fx-cursor: default;" text="📋 Questionnaires">
                             <font><Font name="System Bold" size="16.0" /></font>
                             <padding><Insets bottom="12.0" left="11.0" top="12.0" /></padding>
                         </Button>
@@ -45,7 +45,6 @@
 
         <VBox spacing="25.0" style="-fx-padding: 30 50 30 50;" HBox.hgrow="ALWAYS">
             <children>
-
                 <HBox alignment="CENTER_LEFT">
                     <children>
                         <VBox HBox.hgrow="ALWAYS">
