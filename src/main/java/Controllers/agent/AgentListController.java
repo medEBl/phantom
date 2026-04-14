@@ -16,6 +16,11 @@ import java.util.List;
 
 public class AgentListController {
 
+    // --- Sidebar Buttons (Back-Office Only) ---
+    @FXML private Button btnNavQuestionnaires;
+    @FXML private Button btnDisconnect;
+
+    // --- Main Content ---
     @FXML private Button btnCreateAgent;
     @FXML private TextField tfSearch;
     @FXML private TableView<Agent> agentTable;
@@ -24,7 +29,7 @@ public class AgentListController {
     @FXML private TableColumn<Agent, String> colJeu;
     @FXML private TableColumn<Agent, String> colRang;
     @FXML private TableColumn<Agent, String> colStatut;
-    @FXML private TableColumn<Agent, String> colActions; // This was missing before!
+    @FXML private TableColumn<Agent, String> colActions;
 
     private AgentService serviceAgent;
     private ObservableList<Agent> agentObservableList;
@@ -33,13 +38,13 @@ public class AgentListController {
     public void initialize() {
         serviceAgent = new AgentService();
 
-        // 1. Tell columns where to get their data
+        // 1. Mapping des colonnes
         colPseudo.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
         colJeu.setCellValueFactory(new PropertyValueFactory<>("game"));
         colRang.setCellValueFactory(new PropertyValueFactory<>("rank"));
         colStatut.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // 2. Dynamic Colors for Status
+        // 2. Couleurs dynamiques pour le statut
         colStatut.setCellFactory(column -> new TableCell<Agent, String>() {
             @Override
             protected void updateItem(String status, boolean empty) {
@@ -60,44 +65,40 @@ public class AgentListController {
             }
         });
 
-        // 3. Setup Action Buttons (Modifier & Supprimer)
-// 3. Setup Action Buttons (Details, Modifier & Supprimer)
+        // 3. Configuration des boutons d'actionF
         colActions.setCellFactory(column -> new TableCell<Agent, String>() {
             final Button btnDetails = new Button("Voir Profil");
             final Button btnModifier = new Button("Modifier");
             final Button btnSupprimer = new Button("Supprimer");
-            final HBox actionButtons = new HBox(10, btnDetails, btnModifier, btnSupprimer); // Added btnDetails here
+            final HBox actionButtons = new HBox(10, btnDetails, btnModifier, btnSupprimer);
 
             {
-                // Styling the buttons
                 btnDetails.setStyle("-fx-background-color: transparent; -fx-border-color: #4da6ff; -fx-text-fill: #4da6ff; -fx-cursor: hand; -fx-border-radius: 4;");
                 btnModifier.setStyle("-fx-background-color: #2a2a35; -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 4;");
                 btnSupprimer.setStyle("-fx-background-color: transparent; -fx-border-color: #ff3b3f; -fx-text-fill: #ff3b3f; -fx-cursor: hand; -fx-border-radius: 4;");
+                actionButtons.setStyle("-fx-alignment: center;");
 
-                // --- ACTION: VOIR PROFIL ---
                 btnDetails.setOnAction(event -> {
                     Agent selectedAgent = getTableView().getItems().get(getIndex());
-                    openDetailsScreen(selectedAgent); // Calls the new method below!
+                    openDetailsScreen(selectedAgent);
                 });
 
-                // --- ACTION: MODIFIER ---
                 btnModifier.setOnAction(event -> {
                     Agent selectedAgent = getTableView().getItems().get(getIndex());
                     openEditScreen(selectedAgent);
                 });
 
-                // --- ACTION: SUPPRIMER ---
                 btnSupprimer.setOnAction(event -> {
                     Agent selectedAgent = getTableView().getItems().get(getIndex());
                     serviceAgent.deleteAgent(selectedAgent.getId());
-                    loadAgents(); // Refresh the table
+                    loadAgents();
                 });
             }
 
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
+                if (empty || getIndex() >= getTableView().getItems().size()) {
                     setGraphic(null);
                 } else {
                     setGraphic(actionButtons);
@@ -106,17 +107,48 @@ public class AgentListController {
             }
         });
 
-        // 4. Load Data into Table
+        // 4. Chargement des données
         loadAgents();
 
-        // 5. Setup the "Créer un Agent +" Button Navigation
-        btnCreateAgent.setOnAction(event -> {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/fxml/AgentCreate.fxml"));                btnCreateAgent.getScene().setRoot(root);
-            } catch (IOException e) {
-                System.err.println("Erreur navigation création: " + e.getMessage());
-            }
-        });
+        // 5. Navigation "Créer un Agent"
+        if (btnCreateAgent != null) {
+            btnCreateAgent.setOnAction(event -> {
+                try {
+                    // 1. Détection de l'endroit où l'on se trouve
+                    boolean isAdmin = (btnNavQuestionnaires != null || btnDisconnect != null);
+                    String fxmlPath = isAdmin ? "/fxml/AgentCreateBack.fxml" : "/fxml/AgentCreate.fxml";
+
+                    // 2. Chargement du fichier
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+                    Parent root = loader.load();
+
+                    // 3. --- L'INJECTION DE SÉCURITÉ ---
+                    AgentCreateController createController = loader.getController();
+                    createController.setAdminMode(isAdmin); // On force l'info !
+
+                    // 4. Affichage
+                    btnCreateAgent.getScene().setRoot(root);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        // 6. Navigation Sidebar (Back-Office)
+        if (btnNavQuestionnaires != null) {
+            btnNavQuestionnaires.setOnAction(e -> {
+                try {
+                    Parent root = FXMLLoader.load(getClass().getResource("/fxml/ListQuestionnaires.fxml"));
+                    btnNavQuestionnaires.getScene().setRoot(root);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+        }
+
+        if (btnDisconnect != null) {
+            btnDisconnect.setOnAction(e -> System.out.println("Déconnexion !"));
+        }
     }
 
     private void loadAgents() {
@@ -125,37 +157,55 @@ public class AgentListController {
             agentObservableList = FXCollections.observableArrayList(agentsFromDB);
             agentTable.setItems(agentObservableList);
         } catch (Exception e) {
-            System.err.println("Error loading agents: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    // This method was missing from your code! It opens the Edit screen.
+    // --- METHODES DE NAVIGATION ---
+
     private void openEditScreen(Agent agent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AgentEdit.fxml"));            Parent root = loader.load();
+            // Détection robuste : Si l'un des boutons de la barre latérale est présent, on est en Admin !
+            boolean isAdmin = (btnNavQuestionnaires != null || btnDisconnect != null);
 
-            // Pass the data!
+            // Choix dynamique du fichier FXML
+            String fxmlPath = isAdmin ? "/fxml/AgentEditBack.fxml" : "/fxml/AgentEdit.fxml";
+
+            // Petite trace pour vous aider à débugger dans la console
+            System.out.println("Navigation vers Modifier. Mode Admin ? " + isAdmin + " -> Charge: " + fxmlPath);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            // On passe les données au contrôleur
             AgentEditController editController = loader.getController();
             editController.initData(agent);
 
-            // Change scene
-            btnCreateAgent.getScene().setRoot(root);
+            // On change l'écran
+            agentTable.getScene().setRoot(root);
         } catch (IOException e) {
             System.err.println("Erreur de navigation vers Edit : " + e.getMessage());
             e.printStackTrace();
         }
     }
-    // Navigation method for the Details screen
+
     private void openDetailsScreen(Agent agent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AgentDetails.fxml"));            Parent root = loader.load();
+            // Détection robuste pour les détails aussi
+            boolean isAdmin = (btnNavQuestionnaires != null || btnDisconnect != null);
 
-            // Pass the data to the Details Controller!
+            // Choix dynamique du fichier FXML
+            String fxmlPath = isAdmin ? "/fxml/AgentDetailsBack.fxml" : "/fxml/AgentDetails.fxml";
+
+            System.out.println("Navigation vers Details. Mode Admin ? " + isAdmin + " -> Charge: " + fxmlPath);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
             AgentDetailsController detailsController = loader.getController();
             detailsController.initData(agent);
 
-            // Change scene
-            btnCreateAgent.getScene().setRoot(root);
+            agentTable.getScene().setRoot(root);
         } catch (IOException e) {
             System.err.println("Erreur de navigation vers Details : " + e.getMessage());
             e.printStackTrace();

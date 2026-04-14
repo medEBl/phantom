@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.questionnaire.ListQuestionnairesController">
+<HBox prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentListController">
     <children>
 
         <VBox prefWidth="250.0" spacing="40.0" style="-fx-background-color: #1a1a24; -fx-border-color: #2a2a35; -fx-border-width: 0 1 0 0;">
@@ -25,14 +25,13 @@
 
                 <VBox spacing="10.0" VBox.vgrow="ALWAYS">
                     <children>
-                        <Button fx:id="btnNavAgents" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #8a8a98; -fx-alignment: CENTER_LEFT; -fx-cursor: hand;" text="👥 Agents">
-                            <font><Font size="16.0" /></font>
-                            <padding><Insets bottom="12.0" left="15.0" top="12.0" /></padding>
-                        </Button>
-
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #2a2a35; -fx-border-color: #00ffff; -fx-border-width: 0 0 0 4; -fx-text-fill: #00ffff; -fx-alignment: CENTER_LEFT; -fx-cursor: default;" text="📝 Questionnaires">
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #2a2a35; -fx-border-color: #00ffff; -fx-border-width: 0 0 0 4; -fx-text-fill: #00ffff; -fx-alignment: CENTER_LEFT; -fx-cursor: default;" text="👥 Agents">
                             <font><Font name="System Bold" size="16.0" /></font>
                             <padding><Insets bottom="12.0" left="11.0" top="12.0" /></padding>
+                        </Button>
+                        <Button fx:id="btnNavQuestionnaires" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #8a8a98; -fx-alignment: CENTER_LEFT; -fx-cursor: hand;" text="📝 Questionnaires">
+                            <font><Font size="16.0" /></font>
+                            <padding><Insets bottom="12.0" left="15.0" top="12.0" /></padding>
                         </Button>
                     </children>
                 </VBox>
@@ -45,16 +44,15 @@
 
         <VBox spacing="25.0" style="-fx-padding: 30 50 30 50;" HBox.hgrow="ALWAYS">
             <children>
-
                 <HBox alignment="CENTER_LEFT">
                     <children>
                         <VBox HBox.hgrow="ALWAYS">
                             <children>
-                                <Label text="Gestion des Questionnaires" textFill="WHITE"><font><Font name="System Bold" size="24.0" /></font></Label>
-                                <Label text="Liste des templates par jeu" textFill="#8a8a98" />
+                                <Label text="Gestion des Agents (Admin)" textFill="WHITE"><font><Font name="System Bold" size="24.0" /></font></Label>
+                                <Label text="Supervision de tous les profils de la plateforme" textFill="#8a8a98" />
                             </children>
                         </VBox>
-                        <Button fx:id="btnNouveau" mnemonicParsing="false" style="-fx-background-color: #00ffff; -fx-text-fill: black; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" text="+ Nouveau">
+                        <Button fx:id="btnCreateAgent" mnemonicParsing="false" style="-fx-background-color: #00ffff; -fx-text-fill: black; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" text="+ Nouveau">
                             <padding><Insets bottom="10.0" left="20.0" right="20.0" top="10.0" /></padding>
                         </Button>
                     </children>
@@ -65,24 +63,24 @@
                         <HBox alignment="CENTER_LEFT" style="-fx-background-color: #16161e; -fx-background-radius: 8; -fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-padding: 5 15;" HBox.hgrow="ALWAYS">
                             <children>
                                 <Label text="🔍" textFill="#8a8a98" />
-                                <TextField fx:id="tfSearch" promptText="Rechercher un jeu..." style="-fx-background-color: transparent; -fx-text-fill: white;" HBox.hgrow="ALWAYS" />
+                                <TextField fx:id="tfSearch" promptText="Rechercher un pseudo..." style="-fx-background-color: transparent; -fx-text-fill: white;" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                     </children>
                 </HBox>
 
-                <TableView fx:id="questionnaireTable" style="-fx-background-color: #16161e; -fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-background-radius: 8;" VBox.vgrow="ALWAYS">
+                <TableView fx:id="agentTable" style="-fx-background-color: #16161e; -fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-background-radius: 8;" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colId" prefWidth="60.0" style="-fx-alignment: center;" text="ID" />
-                        <TableColumn fx:id="colGame" prefWidth="250.0" text="Jeu" />
-                        <TableColumn fx:id="colQ1" prefWidth="350.0" text="Question Principale (Q1)" />
-                        <TableColumn fx:id="colActions" prefWidth="300.0" style="-fx-alignment: center;" text="Actions" />
+                        <TableColumn fx:id="colPseudo" prefWidth="200.0" text="Pseudo" />
+                        <TableColumn fx:id="colJeu" prefWidth="200.0" text="Jeu" />
+                        <TableColumn fx:id="colRang" prefWidth="150.0" style="-fx-alignment: center;" text="Rang" />
+                        <TableColumn fx:id="colStatut" prefWidth="150.0" style="-fx-alignment: center;" text="Statut" />
+                        <TableColumn fx:id="colActions" prefWidth="200.0" style="-fx-alignment: center;" text="Actions" />
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                 </TableView>
-
             </children>
         </VBox>
 

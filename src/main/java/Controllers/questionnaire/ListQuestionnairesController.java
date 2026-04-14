@@ -16,6 +16,11 @@ import java.util.List;
 
 public class ListQuestionnairesController {
 
+    // --- Sidebar Buttons (Admin Panel) ---
+    @FXML private Button btnNavAgents;
+    @FXML private Button btnDisconnect;
+
+    // --- Main Content ---
     @FXML private Button btnNouveau;
     @FXML private TextField tfSearch;
     @FXML private TableView<Questionnaire> questionnaireTable;
@@ -37,7 +42,7 @@ public class ListQuestionnairesController {
         colGame.setCellValueFactory(new PropertyValueFactory<>("game"));
         colQ1.setCellValueFactory(new PropertyValueFactory<>("ques1"));
 
-        // 2. Setup Actions Column (View, Edit, Delete buttons inside the table)
+        // 2. Setup Actions Column (View, Edit, Delete buttons)
         colActions.setCellFactory(column -> new TableCell<Questionnaire, String>() {
             final Button btnDetails = new Button("👁");
             final Button btnModifier = new Button("✎");
@@ -45,13 +50,11 @@ public class ListQuestionnairesController {
             final HBox actionButtons = new HBox(10, btnDetails, btnModifier, btnSupprimer);
 
             {
-                // Styling the buttons
                 btnDetails.setStyle("-fx-background-color: transparent; -fx-border-color: #4da6ff; -fx-text-fill: #4da6ff; -fx-cursor: hand; -fx-border-radius: 4;");
                 btnModifier.setStyle("-fx-background-color: transparent; -fx-border-color: #d99846; -fx-text-fill: #d99846; -fx-cursor: hand; -fx-border-radius: 4;");
                 btnSupprimer.setStyle("-fx-background-color: transparent; -fx-border-color: #ff3b3f; -fx-text-fill: #ff3b3f; -fx-cursor: hand; -fx-border-radius: 4;");
                 actionButtons.setStyle("-fx-alignment: center;");
 
-                // Button Click Actions
                 btnDetails.setOnAction(e -> openDetails(getTableView().getItems().get(getIndex())));
                 btnModifier.setOnAction(e -> openEdit(getTableView().getItems().get(getIndex())));
                 btnSupprimer.setOnAction(e -> {
@@ -72,11 +75,28 @@ public class ListQuestionnairesController {
             }
         });
 
-        // 3. Load Data into the Table
+        // 3. Load Data
         loadQuestionnaires();
 
-        // 4. Setup "Nouveau" Button
+        // 4. Main Button Actions
         btnNouveau.setOnAction(e -> openCreate());
+
+        // 5. Sidebar Navigation Actions
+        if (btnNavAgents != null) {
+            btnNavAgents.setOnAction(e -> {
+                try {
+                    // Navigate to the Admin version of the Agents list
+                    Parent root = FXMLLoader.load(getClass().getResource("/fxml/ListAgentsBack.fxml"));
+                    btnNavAgents.getScene().setRoot(root);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+        }
+
+        if (btnDisconnect != null) {
+            btnDisconnect.setOnAction(e -> System.out.println("Déconnexion clicked!"));
+        }
     }
 
     private void loadQuestionnaires() {
@@ -90,7 +110,7 @@ public class ListQuestionnairesController {
         confirm.showAndWait();
         if (confirm.getResult() == ButtonType.YES) {
             service.deleteQuestionnaire(id);
-            loadQuestionnaires(); // Refresh the table automatically
+            loadQuestionnaires(); // Refresh the table
         }
     }
 
@@ -108,7 +128,7 @@ public class ListQuestionnairesController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/QuestionnaireEdit.fxml"));
             Parent root = loader.load();
             QuestionnaireEditController controller = loader.getController();
-            controller.initData(q); // Pass the data to the Edit screen
+            controller.initData(q);
             btnNouveau.getScene().setRoot(root);
         } catch (IOException e) { e.printStackTrace(); }
     }
@@ -118,7 +138,7 @@ public class ListQuestionnairesController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/QuestionnaireDetails.fxml"));
             Parent root = loader.load();
             QuestionnaireDetailsController controller = loader.getController();
-            controller.initData(q); // Pass the data to the Details screen
+            controller.initData(q);
             btnNouveau.getScene().setRoot(root);
         } catch (IOException e) { e.printStackTrace(); }
     }

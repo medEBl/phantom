@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentDetailsController">
+    <children>
+        <VBox prefWidth="250.0" spacing="40.0" style="-fx-background-color: #1a1a24; -fx-border-color: #2a2a35; -fx-border-width: 0 1 0 0;">
+            <padding><Insets bottom="30.0" left="20.0" right="20.0" top="40.0" /></padding>
+            <children>
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="PHANTOM" textFill="#00ffff"><font><Font name="System Bold" size="24.0" /></font></Label>
+                        <Label text="ADMIN PANEL" textFill="WHITE"><font><Font name="System Bold" size="14.0" /></font></Label>
+                    </children>
+                </VBox>
+                <VBox spacing="10.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Button fx:id="btnNavAgents" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #2a2a35; -fx-border-color: #00ffff; -fx-border-width: 0 0 0 4; -fx-text-fill: #00ffff; -fx-alignment: CENTER_LEFT;" text="👥 Agents">
+                            <font><Font name="System Bold" size="16.0" /></font>
+                            <padding><Insets bottom="12.0" left="11.0" top="12.0" /></padding>
+                        </Button>
+                        <Button fx:id="btnNavQuestionnaires" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #8a8a98; -fx-alignment: CENTER_LEFT;" text="📝 Questionnaires">
+                            <font><Font size="16.0" /></font>
+                            <padding><Insets bottom="12.0" left="15.0" top="12.0" /></padding>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+
+        <VBox spacing="25.0" style="-fx-padding: 30 50;" HBox.hgrow="ALWAYS">
+            <children>
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Détails de l'Agent" textFill="WHITE"><font><Font name="System Bold" size="24.0" /></font></Label>
+                                <Label text="Visualisation complète du profil et des réponses" textFill="#8a8a98" />
+                            </children>
+                        </VBox>
+                        <Button fx:id="btnRetour" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-border-color: #444455; -fx-text-fill: white;" text="← Retour" />
+                    </children>
+                </HBox>
+
+                <HBox spacing="30.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox prefWidth="400.0" spacing="20.0" style="-fx-background-color: #16161e; -fx-padding: 20; -fx-background-radius: 12;">
+                            <children>
+                                <GridPane hgap="20.0" vgap="20.0">
+                                    <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                        <Label text="PSEUDO" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
+                                        <Label fx:id="lblPseudo" text="-" textFill="WHITE"><font><Font name="System Bold" size="16.0" /></font></Label>
+                                    </VBox>
+                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                        <Label text="JEU" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
+                                        <Label fx:id="lblJeu" text="-" textFill="WHITE"><font><Font name="System Bold" size="16.0" /></font></Label>
+                                    </VBox>
+                                    <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                        <Label text="RANG" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
+                                        <Label fx:id="lblRang" text="-" textFill="WHITE"><font><Font name="System Bold" size="16.0" /></font></Label>
+                                    </VBox>
+                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <Label text="STATUT" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
+                                        <Label fx:id="lblStatut" text="-" textFill="#00ffff"><font><Font name="System Bold" size="16.0" /></font></Label>
+                                    </VBox>
+                                    <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                        <Label text="CRÉÉ LE" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
+                                        <Label fx:id="lblDate" text="-" textFill="WHITE"><font><Font name="System Bold" size="16.0" /></font></Label>
+                                    </VBox>
+                                </GridPane>
+                                <VBox style="-fx-background-color: #22222d; -fx-padding: 15; -fx-background-radius: 8;">
+                                    <Label text="LIEN SOCIAL" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
+                                    <Label fx:id="lblLien" text="-" textFill="#00ffff" />
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="20.0" style="-fx-background-color: #16161e; -fx-padding: 20; -fx-background-radius: 12;" HBox.hgrow="ALWAYS">
+                            <children>
+                                <VBox fx:id="aiBanner" alignment="CENTER" spacing="10.0" style="-fx-background-color: #111116; -fx-border-color: #00ffff; -fx-padding: 15; -fx-border-radius: 8;">
+                                    <Label text="Get professional feedback on all 4 questions." textFill="#a0a0a0" />
+                                    <Button fx:id="btnRunAI" mnemonicParsing="false" prefWidth="300.0" style="-fx-background-color: #00ffff; -fx-text-fill: black; -fx-font-weight: bold;" text="Run AI Analysis" />
+                                </VBox>
+                                <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent; -fx-border-color: transparent;" VBox.vgrow="ALWAYS">
+                                    <content><VBox fx:id="qaContainer" spacing="15.0" /></content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</HBox>

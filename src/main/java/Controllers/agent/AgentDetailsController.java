@@ -21,10 +21,13 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 
 public class AgentDetailsController {
 
+    // --- Sidebar Elements (Pour la détection Front/Back) ---
+    @FXML private Button btnNavQuestionnaires;
+
+    // --- Main UI Elements ---
     @FXML private Button btnRetour;
     @FXML private Label lblPseudo, lblJeu, lblRang, lblStatut, lblDate, lblLien;
     @FXML private VBox aiBanner;
@@ -34,45 +37,45 @@ public class AgentDetailsController {
 
     @FXML
     public void initialize() {
-        btnRetour.setOnAction(event -> {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/fxml/ListAgents.fxml"));
-                btnRetour.getScene().setRoot(root);
-            } catch (IOException e) {
-                System.err.println("Erreur de retour: " + e.getMessage());
-            }
-        });
+        btnRetour.setOnAction(event -> navigateBack());
     }
 
     public void initData(Agent agent) {
         this.currentAgent = agent;
 
-        // Fill left column
-        lblPseudo.setText(agent.getPseudo());
-        lblJeu.setText(agent.getGame());
-        lblRang.setText(agent.getRank());
-        lblStatut.setText(agent.getStatus());
+        // Remplissage sécurisé de la colonne de gauche
+        if (lblPseudo != null) lblPseudo.setText(agent.getPseudo());
+        if (lblJeu != null) lblJeu.setText(agent.getGame());
+        if (lblRang != null) lblRang.setText(agent.getRank());
 
-        if (agent.getStatus().equalsIgnoreCase("active")) {
-            lblStatut.setTextFill(Color.web("#00e676"));
-        } else if (agent.getStatus().equalsIgnoreCase("banned")) {
-            lblStatut.setTextFill(Color.web("#ff4444"));
-        } else {
-            lblStatut.setTextFill(Color.web("#a0a0a0"));
+        if (lblStatut != null) {
+            lblStatut.setText(agent.getStatus());
+            if (agent.getStatus().equalsIgnoreCase("active")) {
+                lblStatut.setTextFill(Color.web("#00e676"));
+            } else if (agent.getStatus().equalsIgnoreCase("banned")) {
+                lblStatut.setTextFill(Color.web("#ff4444"));
+            } else {
+                lblStatut.setTextFill(Color.web("#a0a0a0"));
+            }
         }
 
-        if (agent.getDateOfCreation() != null) {
-            lblDate.setText(new SimpleDateFormat("dd MMM yyyy").format(agent.getDateOfCreation()));
+        if (lblDate != null) {
+            lblDate.setText(agent.getDateOfCreation() != null ? String.valueOf(agent.getDateOfCreation()) : "Non renseigné");
         }
 
-        lblLien.setText(agent.getSocialsLink() != null ? agent.getSocialsLink() : "Aucun lien social");
+        if (lblLien != null) {
+            lblLien.setText(agent.getSocialsLink() != null && !agent.getSocialsLink().isEmpty() ? agent.getSocialsLink() : "Aucun lien social");
+        }
 
-        // Load right column
+        // Chargement de la colonne de droite (Questionnaire)
         loadQuestionnaireData();
     }
 
     private void loadQuestionnaireData() {
         qaContainer.getChildren().clear();
+
+        // On vérifie si on est dans l'espace Admin (Back-Office)
+        boolean isAdmin = (btnNavQuestionnaires != null);
 
         String sql = "SELECT q.id AS q_id, q.ques1, q.ques2, q.ques3, q.ques4, " +
                 "r.rep1, r.rep2, r.rep3, r.rep4 " +
@@ -92,29 +95,36 @@ public class AgentDetailsController {
                 boolean hasAnswers = rs.getString("rep1") != null;
 
                 if (hasAnswers) {
-                    aiBanner.setVisible(true);
-                    aiBanner.setManaged(true);
+                    if (aiBanner != null) {
+                        aiBanner.setVisible(true);
+                        aiBanner.setManaged(true);
+                    }
 
-                    // Add the Q&A boxes
+                    // Affichage des questions/réponses
                     if (rs.getString("ques1") != null) qaContainer.getChildren().add(createQABox(rs.getString("ques1"), rs.getString("rep1")));
                     if (rs.getString("ques2") != null) qaContainer.getChildren().add(createQABox(rs.getString("ques2"), rs.getString("rep2")));
-                    if (rs.getString("ques3") != null) qaContainer.getChildren().add(createQABox(rs.getString("ques3"), rs.getString("rep3")));
-                    if (rs.getString("ques4") != null) qaContainer.getChildren().add(createQABox(rs.getString("ques4"), rs.getString("rep4")));
+                    if (rs.getString("ques3") != null && !rs.getString("ques3").trim().isEmpty()) qaContainer.getChildren().add(createQABox(rs.getString("ques3"), rs.getString("rep3")));
+                    if (rs.getString("ques4") != null && !rs.getString("ques4").trim().isEmpty()) qaContainer.getChildren().add(createQABox(rs.getString("ques4"), rs.getString("rep4")));
 
-                    // --- NEW: Add Edit/Delete Buttons for the Responses ---
+                    // --- BOUTONS D'ACTION DES RÉPONSES ---
                     HBox actionBox = new HBox(15);
                     actionBox.setAlignment(Pos.CENTER_RIGHT);
                     actionBox.setPadding(new Insets(15, 0, 0, 0));
 
-                    Button btnEditRes = new Button("✎ Modifier");
-                    btnEditRes.setStyle("-fx-background-color: transparent; -fx-border-color: #444455; -fx-text-fill: white; -fx-border-radius: 6; -fx-cursor: hand; -fx-padding: 8 20;");
-                    btnEditRes.setOnAction(e -> openReponseScreen());
+                    // Le bouton Modifier n'apparaît QUE pour le joueur (Front-Office)
+                    if (!isAdmin) {
+                        Button btnEditRes = new Button("✎ Modifier");
+                        btnEditRes.setStyle("-fx-background-color: transparent; -fx-border-color: #444455; -fx-text-fill: white; -fx-border-radius: 6; -fx-cursor: hand; -fx-padding: 8 20;");
+                        btnEditRes.setOnAction(e -> openReponseScreen());
+                        actionBox.getChildren().add(btnEditRes);
+                    }
 
+                    // Le bouton Supprimer est dispo pour l'Admin (et le joueur s'il le souhaite)
                     Button btnDeleteRes = new Button("🗑 Supprimer");
                     btnDeleteRes.setStyle("-fx-background-color: transparent; -fx-border-color: #ff3b3f; -fx-text-fill: #ff3b3f; -fx-border-radius: 6; -fx-cursor: hand; -fx-padding: 8 20;");
                     btnDeleteRes.setOnAction(e -> deleteResponses());
+                    actionBox.getChildren().add(btnDeleteRes);
 
-                    actionBox.getChildren().addAll(btnEditRes, btnDeleteRes);
                     qaContainer.getChildren().add(actionBox);
 
                 } else {
@@ -137,7 +147,7 @@ public class AgentDetailsController {
             Parent root = loader.load();
 
             ReponseCreateController formController = loader.getController();
-            formController.initData(currentAgent); // Passes agent so form pre-fills with old answers!
+            formController.initData(currentAgent);
 
             btnRetour.getScene().setRoot(root);
         } catch (Exception ex) {
@@ -160,11 +170,24 @@ public class AgentDetailsController {
                 ps.setInt(1, currentAgent.getId());
                 ps.executeUpdate();
 
-                // Immediately refresh the view to show the empty "Remplir" state
+                // Rafraîchir la vue
                 loadQuestionnaireData();
             } catch (Exception e) {
                 System.err.println("Erreur suppression: " + e.getMessage());
             }
+        }
+    }
+
+    private void navigateBack() {
+        try {
+            // Retour intelligent : Back ou Front
+            boolean isAdmin = (btnNavQuestionnaires != null);
+            String fxmlPath = isAdmin ? "/fxml/ListAgentsBack.fxml" : "/fxml/ListAgents.fxml";
+
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+            btnRetour.getScene().setRoot(root);
+        } catch (IOException e) {
+            System.err.println("Erreur de retour: " + e.getMessage());
         }
     }
 
@@ -180,7 +203,7 @@ public class AgentDetailsController {
         lblQ.setWrapText(true);
         VBox.setMargin(lblQ, new Insets(0, 0, 5, 0));
 
-        Label lblA = new Label(answer != null ? answer : "Aucune réponse");
+        Label lblA = new Label(answer != null && !answer.trim().isEmpty() ? answer : "Aucune réponse");
         lblA.setTextFill(Color.WHITE);
         lblA.setFont(Font.font("System", FontWeight.BOLD, 14));
         lblA.setWrapText(true);
@@ -194,8 +217,12 @@ public class AgentDetailsController {
     }
 
     private void showEmptyState(String description) {
-        aiBanner.setVisible(false);
-        aiBanner.setManaged(false);
+        if (aiBanner != null) {
+            aiBanner.setVisible(false);
+            aiBanner.setManaged(false);
+        }
+
+        boolean isAdmin = (btnNavQuestionnaires != null);
 
         VBox emptyBox = new VBox(10);
         emptyBox.setAlignment(Pos.CENTER);
@@ -213,12 +240,16 @@ public class AgentDetailsController {
         lblDesc.setTextFill(Color.web("#a0a0a0"));
         lblDesc.setWrapText(true);
 
-        Button btnRemplir = new Button("✎ Remplir le Questionnaire");
-        btnRemplir.setStyle("-fx-background-color: transparent; -fx-border-color: #ff3344; -fx-text-fill: #ff3344; -fx-border-radius: 6; -fx-padding: 8 20; -fx-cursor: hand;");
+        emptyBox.getChildren().addAll(lblIcon, lblTitle, lblDesc);
 
-        btnRemplir.setOnAction(e -> openReponseScreen());
+        // Le bouton "Remplir" n'apparaît QUE pour le joueur
+        if (!isAdmin) {
+            Button btnRemplir = new Button("✎ Remplir le Questionnaire");
+            btnRemplir.setStyle("-fx-background-color: transparent; -fx-border-color: #ff3344; -fx-text-fill: #ff3344; -fx-border-radius: 6; -fx-padding: 8 20; -fx-cursor: hand;");
+            btnRemplir.setOnAction(e -> openReponseScreen());
+            emptyBox.getChildren().add(btnRemplir);
+        }
 
-        emptyBox.getChildren().addAll(lblIcon, lblTitle, lblDesc, btnRemplir);
         qaContainer.getChildren().add(emptyBox);
     }
 }

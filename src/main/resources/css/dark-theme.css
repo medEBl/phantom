@@ -100,3 +100,52 @@
     -fx-background-color: #ff3b3f; /* Phantom Force Red highlight */
     -fx-text-fill: white;
 }
+/* --- STYLE DU TABLEAU PHANTOM --- */
+.table-view {
+    -fx-background-color: #16161e;
+    -fx-border-color: #2a2a35;
+    -fx-border-radius: 8;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #1a1a24;
+    -fx-background-radius: 8 8 0 0;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #2a2a35;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #8a8a98;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #1f1f28;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #181820;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #22222d;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #2a2a35;
+    -fx-text-fill: #00ffff;
+}
+
+.table-view .cell {
+    -fx-text-fill: white;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 0 0 0 10;
+}
