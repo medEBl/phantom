@@ -64,12 +64,8 @@ public class AgentCreateController {
         if (tfRank != null) {
             tfRank.textProperty().addListener((obs, oldText, newText) -> {
                 String text = newText == null ? "" : newText.trim();
-                boolean isValid = !text.isEmpty();
-                if (isValid) {
-                    try {
-                        if (Double.parseDouble(text) < 0) isValid = false;
-                    } catch (NumberFormatException e) { /* Text is valid */ }
-                }
+                // OBLIGATOIRE: Doit contenir UNIQUEMENT des chiffres (donc pas de nombres négatifs ni de lettres)
+                boolean isValid = !text.isEmpty() && text.matches("^\\d+$");
                 applyValidationStyle(tfRank, isValid);
             });
         }
@@ -78,7 +74,9 @@ public class AgentCreateController {
             tfSocials.textProperty().addListener((obs, oldText, newText) -> {
                 String text = newText == null ? "" : newText.trim();
                 String urlRegex = "^(https?://)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$";
-                applyValidationStyle(tfSocials, !text.isEmpty() && text.matches(urlRegex));
+                // OBLIGATOIRE: Doit ne pas être vide ET doit être un format URL valide
+                boolean isValid = !text.isEmpty() && text.matches(urlRegex);
+                applyValidationStyle(tfSocials, isValid);
             });
         }
     }
@@ -87,7 +85,7 @@ public class AgentCreateController {
         if (isValid) {
             field.setStyle("-fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-background-radius: 8; -fx-background-color: rgba(30, 30, 40, 0.9); -fx-text-fill: white;");
         } else {
-            field.setStyle("-fx-border-color: #ff3b3f; -fx-border-radius: 8; -fx-background-radius: 8; -fx-background-color: rgba(30, 30, 40, 0.9); -fx-text-fill: white;");
+            field.setStyle("-fx-border-color: #ff3b3f; -fx-border-radius: 8; -fx-background-radius: 8; -background-color: rgba(30, 30, 40, 0.9); -fx-text-fill: white;");
         }
     }
 
@@ -139,7 +137,7 @@ public class AgentCreateController {
     }
 
     private void handleCreate() {
-        System.out.println("--- BOUTON CRÉER CLIQUÉ ---"); // Debug to see if button fires
+        System.out.println("--- BOUTON CRÉER CLIQUÉ ---");
 
         String pseudo = tfPseudo != null ? tfPseudo.getText().trim() : "";
         String rank = tfRank != null ? tfRank.getText().trim() : "";
@@ -168,22 +166,29 @@ public class AgentCreateController {
         }
 
         // 4. Validation Rank
-        if (rank.isEmpty()) {
+        // 4. Validation Rank (Obligatoire et doit être un nombre positif)
+        if (rank.isEmpty() || !rank.matches("^\\d+$")) {
             if (tfRank != null) applyValidationStyle(tfRank, false);
-            showAlert(Alert.AlertType.WARNING, "Rang manquant", "Le champ rang est obligatoire.");
+            showAlert(Alert.AlertType.WARNING, "Rang invalide", "Le champ rang est obligatoire et doit être un nombre positif.");
+            return;
+        }
+
+        // 5. Validation Socials (OBLIGATOIRE et doit être une URL)
+        String urlRegex = "^(https?://)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$";
+        if (socials.isEmpty() || !socials.matches(urlRegex)) {
+            if (tfSocials != null) applyValidationStyle(tfSocials, false);
+            showAlert(Alert.AlertType.WARNING, "Lien social invalide", "Le lien social est obligatoire et doit être une URL valide (ex: https://...).");
             return;
         }
 
         // Save if everything is valid
         try {
-            // Safe extraction of IDs to prevent NullPointerExceptions
             Integer selectedPlayerId = playerMap.get(player);
             if (selectedPlayerId == null) {
                 showAlert(Alert.AlertType.ERROR, "Erreur Joueur", "Le joueur sélectionné est invalide.");
                 return;
             }
 
-            // DUPLICATE CHECK
             if (service.agentExistsForPlayerAndGame(selectedPlayerId, game)) {
                 showAlert(Alert.AlertType.ERROR, "Doublon détecté", "Vous avez déjà créé un Agent pour ce jeu !");
                 return;
@@ -224,18 +229,15 @@ public class AgentCreateController {
         }
     }
 
-    // --- DARK THEMED ALERT BOX ---
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
 
-        // Apply dark styling to the Dialog
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.setStyle("-fx-background-color: #1a1a24; -fx-border-color: #2a2a35; -fx-border-width: 2;");
 
-        // Style the text
         if (dialogPane.lookup(".content.label") != null) {
             dialogPane.lookup(".content.label").setStyle("-fx-text-fill: #e6e6e6; -fx-font-size: 14px; -fx-font-weight: bold;");
         }
@@ -243,7 +245,6 @@ public class AgentCreateController {
             dialogPane.lookup(".header-panel").setStyle("-fx-background-color: #1a1a24;");
         }
 
-        // Style the buttons
         ButtonBar buttonBar = (ButtonBar) dialogPane.lookup(".button-bar");
         if (buttonBar != null) {
             buttonBar.getButtons().forEach(b -> b.setStyle("-fx-background-color: #ff2d2d; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"));

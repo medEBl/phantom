@@ -115,7 +115,7 @@ public class AgentDetailsController {
                     if (!isAdmin) {
                         Button btnEditRes = new Button("✎ Modifier");
                         btnEditRes.setStyle("-fx-background-color: transparent; -fx-border-color: #444455; -fx-text-fill: white; -fx-border-radius: 6; -fx-cursor: hand; -fx-padding: 8 20;");
-                        btnEditRes.setOnAction(e -> openReponseScreen());
+                        btnEditRes.setOnAction(e -> openReponseEditScreen());
                         actionBox.getChildren().add(btnEditRes);
                     }
 
@@ -255,5 +255,24 @@ public class AgentDetailsController {
         }
 
         qaContainer.getChildren().add(emptyBox);
+    }
+    private void openReponseEditScreen() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ReponseEdit.fxml"));
+            Parent root = loader.load();
+
+            // 1. Get the Edit controller
+            Controllers.reponse.ReponseEditController controller = loader.getController();
+
+            // 2. Pass the data to it
+            controller.initData(currentAgent);
+
+            // 3. Switch the scene
+            btnRetour.getScene().setRoot(root);
+
+        } catch (Exception ex) {
+            System.err.println("Erreur de navigation vers ReponseEdit: " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 }

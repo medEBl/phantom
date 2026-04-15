@@ -97,10 +97,10 @@ public class ReponseEditController {
         boolean hasQ3 = lblQ3.getText() != null && !lblQ3.getText().trim().isEmpty();
         boolean hasQ4 = lblQ4.getText() != null && !lblQ4.getText().trim().isEmpty();
 
-        // --- CONTRÔLE DE SAISIE: QUESTION 1 ---
+        // --- CONTRÔLE DE SAISIE: QUESTION 1 (Obligatoire) ---
         if (!isValidResponse(r1)) {
             applyValidationStyle(taR1, false);
-            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "La réponse à la question 1 est trop courte. Veuillez écrire au moins 5 caractères.");
+            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "La réponse à la question 1 est obligatoire et doit contenir au moins 5 caractères.");
             return;
         }
         if (BAD_WORDS_PATTERN.matcher(r1).matches()) {
@@ -109,24 +109,25 @@ public class ReponseEditController {
             return;
         }
 
-        // --- CONTRÔLE DE SAISIE: QUESTION 2 ---
+        // --- CONTRÔLE DE SAISIE: QUESTION 2 (Obligatoire) ---
         if (!isValidResponse(r2)) {
             applyValidationStyle(taR2, false);
-            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "La réponse à la question 2 est trop courte. Veuillez écrire au moins 5 caractères.");
+            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "La réponse à la question 2 est obligatoire et doit contenir au moins 5 caractères.");
             return;
         }
 
-        // --- CONTRÔLE DE SAISIE: QUESTION 3 (Si elle existe) ---
-        if (hasQ3 && !isValidResponse(r3)) {
+        // --- CONTRÔLE DE SAISIE: QUESTION 3 (Optionnelle) ---
+        // On vérifie seulement si la question existe ET que l'utilisateur a commencé à taper quelque chose
+        if (hasQ3 && r3 != null && !r3.trim().isEmpty() && !isValidResponse(r3)) {
             applyValidationStyle(taR3, false);
-            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "La réponse à la question 3 est trop courte. Veuillez écrire au moins 5 caractères.");
+            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "La réponse à la question 3 est trop courte. Veuillez écrire au moins 5 caractères ou laisser le champ vide.");
             return;
         }
 
-        // --- CONTRÔLE DE SAISIE: QUESTION 4 (Si elle existe) ---
-        if (hasQ4 && !isValidResponse(r4)) {
+        // --- CONTRÔLE DE SAISIE: QUESTION 4 (Optionnelle) ---
+        if (hasQ4 && r4 != null && !r4.trim().isEmpty() && !isValidResponse(r4)) {
             applyValidationStyle(taR4, false);
-            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "La réponse à la question 4 est trop courte. Veuillez écrire au moins 5 caractères.");
+            showAlert(Alert.AlertType.WARNING, "Erreur de saisie", "La réponse à la question 4 est trop courte. Veuillez écrire au moins 5 caractères ou laisser le champ vide.");
             return;
         }
 
@@ -134,6 +135,8 @@ public class ReponseEditController {
         try {
             existingReponse.setRep1(r1.trim());
             existingReponse.setRep2(r2.trim());
+
+            // Si la question existe, on sauvegarde le texte (même vide), sinon on met null
             existingReponse.setRep3(hasQ3 ? r3.trim() : null);
             existingReponse.setRep4(hasQ4 ? r4.trim() : null);
 
@@ -142,6 +145,7 @@ public class ReponseEditController {
             navigateToDetails();
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Un problème est survenu lors de l'enregistrement.");
         }
     }
 
