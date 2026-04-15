@@ -5,88 +5,91 @@
 <?import javafx.scene.text.*?>
 <?import java.net.*?>
 
-<ScrollPane fitToWidth="true" styleClass="register-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.RegisterController">
+<VBox alignment="CENTER" spacing="20" styleClass="register-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.RegisterController">
    <stylesheets>
       <URL value="@/user/css/style.css" />
    </stylesheets>
-      <content>
-      <VBox alignment="CENTER" spacing="20">
+   <children>
+      <Text styleClass="register-title" text="Register" />
+      
+      <GridPane hgap="30" vgap="20" styleClass="register-form" maxWidth="800">
          <children>
-            <Text styleClass="register-title" text="Register" />
-            
-            <VBox spacing="15" styleClass="register-form" maxWidth="400">
+            <!-- Left Column -->
+            <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="0">
                <children>
-                  <VBox spacing="5">
-                     <children>
-                        <Label styleClass="form-label" text="Email:*" />
-                        <TextField fx:id="emailField" promptText="Enter your email" />
-                        <Label fx:id="emailError" styleClass="error-label" text="" />
-                     </children>
-                  </VBox>
-                  
-                  <VBox spacing="5">
-                     <children>
-                        <Label styleClass="form-label" text="Username:*" />
-                        <TextField fx:id="usernameField" promptText="Enter username" />
-                        <Label fx:id="usernameError" styleClass="error-label" text="" />
-                     </children>
-                  </VBox>
-                  
-                  <VBox spacing="5">
-                     <children>
-                        <Label styleClass="form-label" text="Full Name:*" />
-                        <TextField fx:id="fullNameField" promptText="Enter your full name" />
-                        <Label fx:id="fullNameError" styleClass="error-label" text="" />
-                     </children>
-                  </VBox>
-                  
-                  <VBox spacing="5">
-                     <children>
-                        <Label styleClass="form-label" text="Password:*" />
-                        <PasswordField fx:id="passwordField" promptText="Enter password" />
-                        <Label fx:id="passwordError" styleClass="error-label" text="" />
-                     </children>
-                  </VBox>
-                  
-                  <VBox spacing="5">
-                     <children>
-                        <Label styleClass="form-label" text="Confirm Password:*" />
-                        <PasswordField fx:id="confirmPasswordField" promptText="Confirm password" />
-                        <Label fx:id="confirmPasswordError" styleClass="error-label" text="" />
-                     </children>
-                  </VBox>
-                  
-                  <VBox spacing="5">
-                     <children>
-                        <Label styleClass="form-label" text="Country:*" />
-                        <TextField fx:id="countryField" promptText="Enter your country" />
-                        <Label fx:id="countryError" styleClass="error-label" text="" />
-                     </children>
-                  </VBox>
-                  
-                  <VBox spacing="5">
-                     <children>
-                        <Label styleClass="form-label" text="Birth Date:* (YYYY-MM-DD)" />
-                        <TextField fx:id="birthDateField" promptText="YYYY-MM-DD" />
-                        <Label fx:id="birthDateError" styleClass="error-label" text="" />
-                     </children>
-                  </VBox>
-                  
-                  <VBox spacing="5">
-                     <children>
-                        <Label styleClass="form-label" text="Role:*" />
-                        <ComboBox fx:id="roleComboBox" prefWidth="250" promptText="Select role" />
-                     </children>
-                  </VBox>
-                  
-                  <Button fx:id="registerButton" onAction="#handleRegister" prefWidth="250" styleClass="register-button" text="Register" />
-                  
-                  <Hyperlink fx:id="loginLink" onAction="#handleLogin" styleClass="hyperlink" text="Already have an account? Login here" />
-                  
-                  <Label fx:id="successLabel" styleClass="success-label" text="" />
+                  <Label styleClass="form-label" text="Email:*" />
+                  <TextField fx:id="emailField" promptText="Enter your email" prefWidth="350" />
+                  <Label fx:id="emailError" styleClass="error-label" text="" />
                </children>
             </VBox>
+            
+            <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="0">
+               <children>
+                  <Label styleClass="form-label" text="Username:*" />
+                  <TextField fx:id="usernameField" promptText="Enter username" prefWidth="350" />
+                  <Label fx:id="usernameError" styleClass="error-label" text="" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="0">
+               <children>
+                  <Label styleClass="form-label" text="Password:*" />
+                  <PasswordField fx:id="passwordField" promptText="Enter password" prefWidth="350" />
+                  <Label fx:id="passwordError" styleClass="error-label" text="" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="5" GridPane.rowIndex="3" GridPane.columnIndex="0">
+               <children>
+                  <Label styleClass="form-label" text="Confirm Password:*" />
+                  <PasswordField fx:id="confirmPasswordField" promptText="Confirm password" prefWidth="350" />
+                  <Label fx:id="confirmPasswordError" styleClass="error-label" text="" />
+               </children>
+            </VBox>
+            
+            <!-- Right Column -->
+            <VBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="1">
+               <children>
+                  <Label styleClass="form-label" text="Full Name:*" />
+                  <TextField fx:id="fullNameField" promptText="Enter your full name" prefWidth="350" />
+                  <Label fx:id="fullNameError" styleClass="error-label" text="" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
+               <children>
+                  <Label styleClass="form-label" text="Country:*" />
+                  <TextField fx:id="countryField" promptText="Enter your country" prefWidth="350" />
+                  <Label fx:id="countryError" styleClass="error-label" text="" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1">
+               <children>
+                  <Label styleClass="form-label" text="Birth Date:* (YYYY-MM-DD)" />
+                  <TextField fx:id="birthDateField" promptText="YYYY-MM-DD" prefWidth="350" />
+                  <Label fx:id="birthDateError" styleClass="error-label" text="" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="5" GridPane.rowIndex="3" GridPane.columnIndex="1">
+               <children>
+                  <Label styleClass="form-label" text="Role:*" />
+                  <ComboBox fx:id="roleComboBox" prefWidth="350" promptText="Select role" />
+               </children>
+            </VBox>
+            
+            <!-- Buttons spanning both columns -->
+            <HBox spacing="20" alignment="CENTER" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2">
+               <children>
+                  <Button fx:id="registerButton" onAction="#handleRegister" prefWidth="200" styleClass="register-button" text="Register" />
+                  <Hyperlink fx:id="loginLink" onAction="#handleLogin" styleClass="hyperlink" text="Already have an account? Login here" />
+               </children>
+            </HBox>
+            
+            <!-- Success message spanning both columns -->
+            <Label fx:id="successLabel" styleClass="success-label" text="" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2" />
          </children>
-      </VBox>
-   </content>
-</ScrollPane>
+      </GridPane>
+   </children>
+</VBox>

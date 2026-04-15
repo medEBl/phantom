@@ -141,19 +141,23 @@ public class UserService implements IUserService {
     // ── UPDATE ────────────────────────────────────────────────────────────────
     @Override
     public void updateUser(User user) {
-        String sql = "UPDATE user SET full_name=?, country=?, birth_date=?, role=?, " +
-                "roles=?, is_active=?, profile_photo_url=?, profile_photo_public_id=? " +
+        String sql = "UPDATE user SET full_name=?, username=?, email=?, country=?, " +
+                "birth_date=?, role=?, roles=?, is_active=?, achievement_points=?, " +
+                "profile_photo_url=?, profile_photo_public_id=? " +
                 "WHERE id=?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
             ps.setString(1, user.getFullName());
-            ps.setString(2, user.getCountry());
-            ps.setDate(3, user.getBirthDate() != null ? Date.valueOf(user.getBirthDate()) : null);
-            ps.setString(4, user.getRole());
-            ps.setString(5, user.getRoles());
-            ps.setBoolean(6, user.isActive());
-            ps.setString(7, user.getProfilePhotoUrl());
-            ps.setString(8, user.getProfilePhotoPublicId());
-            ps.setInt(9, user.getId());
+            ps.setString(2, user.getUsername());           // ← was missing
+            ps.setString(3, user.getEmail());              // ← was missing
+            ps.setString(4, user.getCountry());
+            ps.setDate(5, user.getBirthDate() != null ? Date.valueOf(user.getBirthDate()) : null);
+            ps.setString(6, user.getRole());
+            ps.setString(7, user.getRoles());
+            ps.setBoolean(8, user.isActive());
+            ps.setInt(9, user.getAchievementPoints());     // ← was missing
+            ps.setString(10, user.getProfilePhotoUrl());
+            ps.setString(11, user.getProfilePhotoPublicId());
+            ps.setInt(12, user.getId());
 
             int rows = ps.executeUpdate();
             if (rows == 0) throw new RuntimeException("No user found with ID: " + user.getId());
@@ -240,6 +244,109 @@ public class UserService implements IUserService {
         } catch (SQLException e) {
             return false;
         }
+    }
+
+    // ── SEARCH AND FILTER ─────────────────────────────────────────────────────
+    @Override
+    public List<User> searchUsers(String searchTerm, String role, String status, int page, int pageSize) {
+        List<User> list = new ArrayList<>();
+        
+        // Build dynamic SQL query
+        StringBuilder sql = new StringBuilder("SELECT * FROM user WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+        
+        // Add search term filter (search in username, full_name, email)
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            sql.append(" AND (username LIKE ? OR full_name LIKE ? OR email LIKE ?)");
+            String searchPattern = "%" + searchTerm.trim() + "%";
+            params.add(searchPattern);
+            params.add(searchPattern);
+            params.add(searchPattern);
+        }
+        
+        // Add role filter
+        if (role != null && !role.trim().isEmpty() && !"All".equalsIgnoreCase(role)) {
+            sql.append(" AND role = ?");
+            params.add(role.trim().toUpperCase());
+        }
+        
+        // Add status filter
+        if (status != null && !status.trim().isEmpty() && !"All".equalsIgnoreCase(status)) {
+            if ("Active".equalsIgnoreCase(status)) {
+                sql.append(" AND is_active = 1");
+            } else if ("Inactive".equalsIgnoreCase(status)) {
+                sql.append(" AND is_active = 0");
+            }
+        }
+        
+        // Add ordering and pagination
+        sql.append(" ORDER BY created_at DESC");
+        sql.append(" LIMIT ? OFFSET ?");
+        params.add(pageSize);
+        params.add((page - 1) * pageSize);
+        
+        try (PreparedStatement ps = cnx.prepareStatement(sql.toString())) {
+            // Set parameters
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(mapRow(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("searchUsers failed: " + e.getMessage(), e);
+        }
+        
+        return list;
+    }
+
+    @Override
+    public int countUsers(String searchTerm, String role, String status) {
+        // Build dynamic SQL query for counting
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM user WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+        
+        // Add search term filter
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            sql.append(" AND (username LIKE ? OR full_name LIKE ? OR email LIKE ?)");
+            String searchPattern = "%" + searchTerm.trim() + "%";
+            params.add(searchPattern);
+            params.add(searchPattern);
+            params.add(searchPattern);
+        }
+        
+        // Add role filter
+        if (role != null && !role.trim().isEmpty() && !"All".equalsIgnoreCase(role)) {
+            sql.append(" AND role = ?");
+            params.add(role.trim().toUpperCase());
+        }
+        
+        // Add status filter
+        if (status != null && !status.trim().isEmpty() && !"All".equalsIgnoreCase(status)) {
+            if ("Active".equalsIgnoreCase(status)) {
+                sql.append(" AND is_active = 1");
+            } else if ("Inactive".equalsIgnoreCase(status)) {
+                sql.append(" AND is_active = 0");
+            }
+        }
+        
+        try (PreparedStatement ps = cnx.prepareStatement(sql.toString())) {
+            // Set parameters
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("countUsers failed: " + e.getMessage(), e);
+        }
+        
+        return 0;
     }
 
 }

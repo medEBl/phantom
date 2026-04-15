@@ -1,9 +1,10 @@
 /* Phantom Force Gaming Theme CSS for JavaFX - Inspired by basefront.html.twig */
+/* ============================================
+   REGISTER PAGE - MODERN GAMING STYLE
+   Enhanced version with cyber/gaming aesthetics
+   ============================================ */
 
-.root {
-    -fx-background-color: #0b0b0e;
-    -fx-font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-}
+/* Main container - matching login background */
 
 /* ================= MAIN CONTAINERS ================= */
 .login-container, .register-container, .edit-container, .profile-container, .dashboard-container {

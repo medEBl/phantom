@@ -16,6 +16,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.List;
@@ -74,7 +77,7 @@ public class UsersController {
     private TableColumn<User, String> countryColumn;
     
     @FXML
-    private TableColumn<User, String> statusColumn;
+    private TableColumn<User, Boolean> statusColumn;
     
     @FXML
     private TableColumn<User, String> createdDateColumn;
@@ -95,6 +98,7 @@ public class UsersController {
     public void initialize() {
         setupTableColumns();
         setupFilters();
+        setupSearchListeners();
         loadUsers();
     }
 
@@ -112,6 +116,23 @@ public class UsersController {
         roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
         countryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("active"));
+        statusColumn.setCellFactory(column -> new TableCell<User, Boolean>() {
+            @Override
+            protected void updateItem(Boolean isActive, boolean empty) {
+                super.updateItem(isActive, empty);
+                if (empty || isActive == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(isActive ? "Active" : "Inactive");
+                    if (isActive) {
+                        setStyle("-fx-text-fill: #2dff8b; -fx-font-weight: 600;");
+                    } else {
+                        setStyle("-fx-text-fill: #ff2d2d; -fx-font-weight: 600;");
+                    }
+                }
+            }
+        });
         createdDateColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         
         // Set up actions column with edit/delete buttons
@@ -157,14 +178,46 @@ public class UsersController {
         statusFilter.setValue("All");
     }
 
+    private void setupSearchListeners() {
+        // Add listener for search field (with debounce)
+        Timeline searchDelay = new Timeline(
+            new KeyFrame(Duration.millis(300), event -> {
+                currentPage = 1;
+                loadUsers();
+            })
+        );
+        
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> {
+            searchDelay.stop(); // Stop previous timer
+            searchDelay.playFromStart(); // Restart timer
+        });
+        
+        // Add listeners for filters
+        roleFilter.valueProperty().addListener((obs, oldVal, newVal) -> {
+            currentPage = 1;
+            loadUsers();
+        });
+        
+        statusFilter.valueProperty().addListener((obs, oldVal, newVal) -> {
+            currentPage = 1;
+            loadUsers();
+        });
+    }
+
     private void loadUsers() {
         try {
-            // TODO: Implement pagination and filtering
-            List<User> users = userService.getAllUsers();
+            // Get search and filter values
+            String searchTerm = searchField.getText().trim();
+            String role = roleFilter.getValue() != null ? roleFilter.getValue().toString() : "All";
+            String status = statusFilter.getValue() != null ? statusFilter.getValue().toString() : "All";
+            
+            // Get users with search and filters
+            List<User> users = userService.searchUsers(searchTerm, role, status, currentPage, pageSize);
             usersTable.getItems().setAll(users);
             
             // Update pagination info
-            totalPages = (int) Math.ceil((double) users.size() / pageSize);
+            int totalCount = userService.countUsers(searchTerm, role, status);
+            totalPages = (int) Math.ceil((double) totalCount / pageSize);
             updatePaginationInfo();
             
         } catch (Exception e) {
@@ -240,8 +293,8 @@ public class UsersController {
 
     @FXML
     private void handleSearch() {
-        // TODO: Implement search functionality
-        System.out.println("Search users with filters");
+        // Reset to first page when searching
+        currentPage = 1;
         loadUsers();
     }
 
@@ -250,6 +303,7 @@ public class UsersController {
         searchField.clear();
         roleFilter.setValue("All");
         statusFilter.setValue("All");
+        currentPage = 1; // Reset to first page
         loadUsers();
     }
 

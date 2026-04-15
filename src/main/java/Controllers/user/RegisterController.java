@@ -123,7 +123,7 @@ public class RegisterController {
 
         // Confirm password validation
         if (!password.equals(confirmPassword)) {
-            confirmPasswordError.setText("Passwords do not match");
+            confirmPasswordError.setText("Les mots de passe ne correspondent pas");
             hasErrors = true;
         }
 
@@ -154,13 +154,13 @@ public class RegisterController {
         try {
             // Check if email already exists
             if (userService.emailExists(email)) {
-                emailError.setText("This email is already registered");
+                emailError.setText("Cet email est déjà enregistré");
                 return;
             }
 
             // Check if username already exists
             if (userService.usernameExists(username)) {
-                usernameError.setText("This username is already taken");
+                usernameError.setText("Ce nom d'utilisateur est déjà pris");
                 return;
             }
 
@@ -173,7 +173,7 @@ public class RegisterController {
             
             userService.createUser(user);
             
-            showSuccess("Registration successful! Please login with your new account.");
+            showSuccess("Inscription réussie ! Veuillez vous connecter avec votre nouveau compte.");
             clearFields();
 
             // Auto-redirect to login after 2 seconds
@@ -188,7 +188,7 @@ public class RegisterController {
             );
 
         } catch (Exception e) {
-            showError("Registration failed: " + e.getMessage());
+            showError("Échec de l'inscription : " + e.getMessage());
         }
     }
 
@@ -212,107 +212,107 @@ public class RegisterController {
     private List<String> validateEmail(String email) {
         List<String> errors = new ArrayList<>();
         if (email == null || email.isBlank()) {
-            errors.add("Email is required");
+            errors.add("L'adresse email est obligatoire");
             return errors;
         }
         if (email.length() > 180)
-            errors.add("Email must not exceed 180 characters");
+            errors.add("L'email ne doit pas dépasser 180 caractères");
         if (!email.matches("^[\\w._%+\\-]+@[\\w.\\-]+\\.[a-zA-Z]{2,}$"))
-            errors.add("Invalid email format");
+            errors.add("Format d'email invalide (ex: nom@domaine.com)");
         return errors;
     }
 
     private List<String> validateUsername(String username, Integer excludeId) {
         List<String> errors = new ArrayList<>();
         if (username == null || username.isBlank()) {
-            errors.add("Username is required");
+            errors.add("Le nom d'utilisateur est obligatoire");
             return errors;
         }
         if (username.length() < 3)
-            errors.add("Username must be at least 3 characters");
+            errors.add("Le nom d'utilisateur doit contenir au moins 3 caractères");
         if (username.length() > 50)
-            errors.add("Username must not exceed 50 characters");
+            errors.add("Le nom d'utilisateur ne doit pas dépasser 50 caractères");
         if (!username.matches("^[a-zA-Z0-9_]+$"))
-            errors.add("Username can only contain letters, numbers and underscores");
+            errors.add("Le nom d'utilisateur ne peut contenir que des lettres, chiffres et underscores");
         return errors;
     }
 
     private List<String> validateFullName(String fullName) {
         List<String> errors = new ArrayList<>();
         if (fullName == null || fullName.isBlank()) {
-            errors.add("Full name is required");
+            errors.add("Le nom complet est obligatoire");
             return errors;
         }
         if (fullName.length() < 2)
-            errors.add("Full name must be at least 2 characters");
+            errors.add("Le nom complet doit contenir au moins 2 caractères");
         if (fullName.length() > 100)
-            errors.add("Full name must not exceed 100 characters");
+            errors.add("Le nom complet ne doit pas dépasser 100 caractères");
         if (!fullName.matches("^[a-zA-ZÀ-ÿ\\s'\\-]+$"))
-            errors.add("Full name can only contain letters, spaces, hyphens and apostrophes");
+            errors.add("Le nom complet ne peut contenir que des lettres, espaces, tirets et apostrophes");
         return errors;
     }
 
     private List<String> validatePassword(String password) {
         List<String> errors = new ArrayList<>();
         if (password == null || password.isBlank()) {
-            errors.add("Password is required");
+            errors.add("Le mot de passe est obligatoire");
             return errors;
         }
         if (password.length() < 8)
-            errors.add("Password must be at least 8 characters");
+            errors.add("Le mot de passe doit contenir au moins 8 caractères");
         if (!password.matches(".*[A-Z].*"))
-            errors.add("Password must contain at least one uppercase letter");
+            errors.add("Le mot de passe doit contenir au moins une lettre majuscule");
         if (!password.matches(".*[a-z].*"))
-            errors.add("Password must contain at least one lowercase letter");
+            errors.add("Le mot de passe doit contenir au moins une lettre minuscule");
         if (!password.matches(".*[0-9].*"))
-            errors.add("Password must contain at least one digit");
+            errors.add("Le mot de passe doit contenir au moins un chiffre");
         if (!password.matches(".*[^A-Za-z0-9].*"))
-            errors.add("Password must contain at least one special character");
+            errors.add("Le mot de passe doit contenir au moins un caractère spécial");
         return errors;
     }
 
     private List<String> validateCountry(String country) {
         List<String> errors = new ArrayList<>();
         if (country == null || country.isBlank()) {
-            errors.add("Country is required");
+            errors.add("Le pays est obligatoire");
             return errors;
         }
         if (country.length() > 50)
-            errors.add("Country must not exceed 50 characters");
+            errors.add("Le pays ne doit pas dépasser 50 caractères");
         if (!country.matches("^[a-zA-ZÀ-ÿ\\s\\-]+$"))
-            errors.add("Country can only contain letters, spaces and hyphens");
+            errors.add("Le pays ne peut contenir que des lettres, espaces et tirets");
         return errors;
     }
 
     private List<String> validateBirthDate(String dateStr) {
         List<String> errors = new ArrayList<>();
         if (dateStr == null || dateStr.isBlank()) {
-            errors.add("Birth date is required");
+            errors.add("La date de naissance est obligatoire");
             return errors;
         }
         LocalDate birthDate;
         try {
             birthDate = LocalDate.parse(dateStr);
         } catch (Exception e) {
-            errors.add("Invalid date format (use YYYY-MM-DD)");
+            errors.add("Format de date invalide (utilisez AAAA-MM-JJ)");
             return errors;
         }
         int age = Period.between(birthDate, LocalDate.now()).getYears();
         if (age < 13)
-            errors.add("User must be at least 13 years old");
+            errors.add("L'utilisateur doit avoir au moins 13 ans");
         if (age > 100)
-            errors.add("Invalid birth date (over 100 years)");
+            errors.add("Date de naissance invalide (plus de 100 ans)");
         return errors;
     }
 
     private List<String> validateRole(String role) {
         List<String> errors = new ArrayList<>();
         if (role == null || role.isBlank()) {
-            errors.add("Role is required");
+            errors.add("Le rôle est obligatoire");
             return errors;
         }
         if (!List.of("PLAYER", "COACH", "ORGANIZER", "ADMIN").contains(role.toUpperCase()))
-            errors.add("Invalid role. Choose: PLAYER, COACH, ORGANIZER, ADMIN");
+            errors.add("Rôle invalide. Choisissez: PLAYER, COACH, ORGANIZER, ADMIN");
         return errors;
     }
 
@@ -345,7 +345,7 @@ public class RegisterController {
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Registration Error");
+        alert.setTitle("Erreur d'inscription");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

@@ -2,6 +2,7 @@ package Iservices.user;
 import entities.user.User;
 import java.util.List;
 import java.util.Optional;
+
 public interface IUserService {
     // CRUD
     void createUser(User user);
@@ -18,4 +19,8 @@ public interface IUserService {
     // Filters
     List<User> getUsersByRole(String role);
     List<User> getActiveUsers();
+    
+    // Search and Filter
+    List<User> searchUsers(String searchTerm, String role, String status, int page, int pageSize);
+    int countUsers(String searchTerm, String role, String status);
 }

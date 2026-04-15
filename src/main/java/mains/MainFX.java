@@ -24,7 +24,7 @@ public class MainFX extends Application {
 
         Scene scene = new Scene(root, 1920, 1080);
 
-        scene.getStylesheets().add(getClass().getResource("/user/css/login.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/user/css/style.css").toExternalForm());
 
         stage.setScene(scene);
 

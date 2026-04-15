@@ -24,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.application.Platform;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class EditUserController {
 
@@ -88,9 +89,52 @@ public class EditUserController {
     public void initialize() {
         System.out.println("EditUserController initialized");
         setupComboBoxes();
+        setupValidationListeners();
         hideMessages();
     }
+    private void setupValidationListeners() {
+        // Real-time email validation
+        if (emailField != null) {
+            emailField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.trim().isEmpty() && !isValidEmail(newValue.trim())) {
+                    emailField.setStyle("-fx-border-color: #ff2d2d;");
+                } else {
+                    emailField.setStyle("");
+                }
+            });
+        }
 
+        // Real-time username length validation
+        if (usernameField != null) {
+            usernameField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.trim().isEmpty() && newValue.trim().length() < 3) {
+                    usernameField.setStyle("-fx-border-color: #ff2d2d;");
+                } else {
+                    usernameField.setStyle("");
+                }
+            });
+        }
+
+        // Real-time password match validation
+        if (passwordField != null && confirmPasswordField != null) {
+            confirmPasswordField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.isEmpty() && !newValue.equals(passwordField.getText())) {
+                    confirmPasswordField.setStyle("-fx-border-color: #ff2d2d;");
+                } else {
+                    confirmPasswordField.setStyle("");
+                }
+            });
+        }
+
+        // Achievement points — digits only
+        if (achievementPointsField != null) {
+            achievementPointsField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    achievementPointsField.setText(oldValue);
+                }
+            });
+        }
+    }
     public void setCurrentUser(User user) {
         this.currentUser = user;
         loadUserData();
@@ -300,30 +344,29 @@ public class EditUserController {
             return false;
         }
 
-        if (fullNameField.getText().trim().length() < 2) {
-            showError("Full name must be at least 2 characters long.");
+        // Email validation
+        if (!isValidEmail(emailField.getText().trim())) {
+            showError("Please enter a valid email address (e.g., user@example.com).");
+            return false;
+        }
+
+        // Email uniqueness validation
+        String newEmail = emailField.getText().trim();
+        if (!newEmail.equals(currentUser.getEmail()) && userService.emailExists(newEmail)) {
+            showError("Email '" + newEmail + "' is already taken by another user.");
             return false;
         }
 
         // Username validation
-        if (usernameField.getText().trim().isEmpty()) {
-            showError("Username is required.");
-            return false;
-        }
-
         if (usernameField.getText().trim().length() < 3) {
             showError("Username must be at least 3 characters long.");
             return false;
         }
 
-        // Email validation
-        if (emailField.getText().trim().isEmpty()) {
-            showError("Email is required.");
-            return false;
-        }
-
-        if (!isValidEmail(emailField.getText().trim())) {
-            showError("Please enter a valid email address (e.g., user@example.com).");
+        // Check username uniqueness (exclude current user)
+        String newUsername = usernameField.getText().trim();
+        if (!newUsername.equals(currentUser.getUsername()) && userService.usernameExists(newUsername)) {
+            showError("Username '" + newUsername + "' is already taken by another user.");
             return false;
         }
 
