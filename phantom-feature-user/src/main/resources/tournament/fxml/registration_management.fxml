@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+<?import javafx.scene.layout.Region?>
+
+<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.RegistrationManagementController">
+   <stylesheets>
+      <URL value="@/dashboard/css/dashboard.css" />
+   </stylesheets>
+   
+   <top>
+      <VBox styleClass="dashboard-header">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="dashboard-info">
+               <children>
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="logout-button" text="🔙 BACK TO TOURNAMENTS" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Text styleClass="dashboard-title" text="👥 TOURNAMENT" />
+                  <Text styleClass="dashboard-title" fill="#ff2d2d" text="REGISTRATIONS" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label styleClass="admin-label" text="ADMIN: SYSTEM" />
+               </children>
+            </HBox>
+            
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="dashboard-nav" style="-fx-padding: 10 30;">
+               <children>
+                  <Label fx:id="tournamentNameLabel" styleClass="dashboard-title" style="-fx-font-size: 18;" text="Tournament: Loading..." />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="registerButton" onAction="#handleAddRegistration" styleClass="action-button" text="➕ REGISTER TEAM" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="dashboard-scroll" hbarPolicy="NEVER">
+         <content>
+            <VBox spacing="25" styleClass="dashboard-content">
+               <children>
+                  <Text styleClass="section-title" text="📋 REGISTERED TEAMS" />
+                  
+                  <TableView fx:id="registrationTable" styleClass="activity-table" prefHeight="700">
+                     <columns>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="60" />
+                        <TableColumn fx:id="teamNameColumn" text="Team Name" prefWidth="300" />
+                        <TableColumn fx:id="emailColumn" text="Contact Email" prefWidth="300" />
+                        <TableColumn fx:id="dateColumn" text="Registration Date" prefWidth="250" />
+                        <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="150" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

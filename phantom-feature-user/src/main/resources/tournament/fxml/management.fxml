@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+<?import javafx.scene.layout.Region?>
+
+<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.TournamentManagementController">
+   <stylesheets>
+      <URL value="@/dashboard/css/dashboard.css" />
+   </stylesheets>
+   
+   <top>
+      <VBox styleClass="dashboard-header">
+         <children>
+            <!-- Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="dashboard-info">
+               <children>
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="logout-button" text="🔙 BACK TO DASHBOARD" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Text styleClass="dashboard-title" text="🏆 TOURNAMENT" />
+                  <Text styleClass="dashboard-title" fill="#ff2d2d" text="MANAGEMENT" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="adminLabel" styleClass="admin-label" text="ADMIN: SYSTEM" />
+               </children>
+            </HBox>
+            
+            <!-- Navigation / Search Bar -->
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="dashboard-nav" style="-fx-padding: 10 30;">
+               <children>
+                  <TextField fx:id="searchField" promptText="Search tournaments..." styleClass="text-field" prefWidth="300" />
+                  <ComboBox fx:id="gameFilter" promptText="Filter by Game" styleClass="text-field" prefWidth="180" />
+                  <ComboBox fx:id="phaseFilter" promptText="Filter by Phase" styleClass="text-field" prefWidth="180" />
+                  <Button onAction="#handleSearch" styleClass="secondary-button" text="🔍 SEARCH" />
+                  <Button onAction="#handleReset" styleClass="secondary-button" text="♻️ RESET" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="addTournamentButton" onAction="#handleAddTournament" styleClass="action-button" text="➕ ADD TOURNAMENT" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="dashboard-scroll" hbarPolicy="NEVER">
+         <content>
+            <VBox spacing="25" styleClass="dashboard-content">
+               <children>
+                  <Text styleClass="section-title" text="📋 ALL TOURNAMENTS" />
+                  
+                  <TableView fx:id="tournamentTable" styleClass="activity-table" prefHeight="700">
+                     <columns>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="60" />
+                        <TableColumn fx:id="nameColumn" text="Tournament Name" prefWidth="250" />
+                        <TableColumn fx:id="gameColumn" text="Game" prefWidth="150" />
+                        <TableColumn fx:id="startDateColumn" text="Start Date" prefWidth="130" />
+                        <TableColumn fx:id="endDateColumn" text="End Date" prefWidth="130" />
+                        <TableColumn fx:id="phaseColumn" text="Phase" prefWidth="150" />
+                        <TableColumn fx:id="maxTeamsColumn" text="Max Teams" prefWidth="100" />
+                        <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+                        <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="180" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

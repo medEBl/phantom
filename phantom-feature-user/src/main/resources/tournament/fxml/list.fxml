@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+<?import javafx.scene.layout.Region?>
+
+<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.TournamentListController">
+   <stylesheets>
+      <URL value="@/dashboard/css/dashboard.css" />
+   </stylesheets>
+   
+   <top>
+      <VBox styleClass="dashboard-header">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="dashboard-info">
+               <children>
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="logout-button" text="🔙 BACK TO HOME" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Text styleClass="dashboard-title" text="🏆 ESPORTS" />
+                  <Text styleClass="dashboard-title" fill="#ff2d2d" text="TOURNAMENTS" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="addButton" onAction="#handleAdd" styleClass="primary-button" text="➕ ADD TOURNAMENT" visible="false" managed="false" />
+                  <Label fx:id="roleLabel" styleClass="admin-label" text="ROLE: PLAYER" style="-fx-text-fill: #888888;" />
+               </children>
+            </HBox>
+            
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="dashboard-nav" style="-fx-padding: 10 30;">
+               <children>
+                  <TextField fx:id="searchField" promptText="Search tournaments..." styleClass="text-field" prefWidth="350" />
+                  <ComboBox fx:id="gameFilter" promptText="Filter by Game" styleClass="text-field" prefWidth="200" />
+                  <Button onAction="#handleSearch" styleClass="secondary-button" text="🔍 SEARCH" />
+                  <Button onAction="#handleReset" styleClass="secondary-button" text="♻️ RESET" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="dashboard-scroll" hbarPolicy="NEVER">
+         <content>
+            <VBox spacing="30" styleClass="dashboard-content">
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <VBox spacing="5">
+                           <children>
+                              <Text styleClass="section-title" text="ACTIVE TOURNAMENTS" />
+                              <Text fill="#888888" style="-fx-font-size: 14;" text="The ultimate stage for greatness. Join the fight." />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  
+                  <FlowPane fx:id="cardsPane" hgap="30" vgap="30" alignment="TOP_LEFT">
+                     <padding>
+                        <Insets bottom="50" left="0" right="0" top="10" />
+                     </padding>
+                  </FlowPane>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+
+<ScrollPane fitToWidth="true" styleClass="add-user-container" prefWidth="1200" prefHeight="800" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.AddUserController">
+   <stylesheets>
+      <URL value="@/user/css/add-user.css" />
+   </stylesheets>
+   <content>
+      <VBox alignment="CENTER" spacing="30" styleClass="add-user-wrapper">
+         <children>
+            <!-- Header Section -->
+            <VBox alignment="CENTER" spacing="10" styleClass="add-user-header">
+               <children>
+                  <Text styleClass="add-user-title" text="ADD NEW USER" />
+                  <Text styleClass="add-user-subtitle" text="Create a new user account in the system" />
+               </children>
+            </VBox>
+            
+            <!-- Form Container -->
+            <VBox spacing="25" styleClass="add-user-form" maxWidth="600">
+               <children>
+                  <!-- Personal Information Section -->
+                  <VBox spacing="20" styleClass="form-section">
+                     <children>
+                        <Text styleClass="section-title" text="PERSONAL INFORMATION" />
+                        
+                        <!-- Email Field -->
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Email Address*" />
+                              <TextField fx:id="emailField" promptText="user@example.com" styleClass="form-input" />
+                              <Label fx:id="emailError" styleClass="error-label" text="" />
+                           </children>
+                        </VBox>
+                        
+                        <!-- Username Field -->
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Username*" />
+                              <TextField fx:id="usernameField" promptText="username123" styleClass="form-input" />
+                              <Label fx:id="usernameError" styleClass="error-label" text="" />
+                           </children>
+                        </VBox>
+                        
+                        <!-- Full Name Field -->
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Full Name*" />
+                              <TextField fx:id="fullNameField" promptText="John Doe" styleClass="form-input" />
+                              <Label fx:id="fullNameError" styleClass="error-label" text="" />
+                           </children>
+                        </VBox>
+                        
+                        <!-- Country Field -->
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Country*" />
+                              <TextField fx:id="countryField" promptText="United States" styleClass="form-input" />
+                              <Label fx:id="countryError" styleClass="error-label" text="" />
+                           </children>
+                        </VBox>
+                        
+                        <!-- Birth Date Field -->
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Birth Date* (YYYY-MM-DD)" />
+                              <TextField fx:id="birthDateField" promptText="1990-01-01" styleClass="form-input" />
+                              <Label fx:id="birthDateError" styleClass="error-label" text="" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  
+                  <!-- Account Information Section -->
+                  <VBox spacing="20" styleClass="form-section">
+                     <children>
+                        <Text styleClass="section-title" text="ACCOUNT INFORMATION" />
+                        
+                        <!-- Role Selection -->
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Role*" />
+                              <ComboBox fx:id="roleComboBox" styleClass="form-combo" prefWidth="250" />
+                           </children>
+                        </VBox>
+                        
+                        <!-- Password Field -->
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Password*" />
+                              <PasswordField fx:id="passwordField" promptText="Enter secure password" styleClass="form-input" />
+                              <Label fx:id="passwordError" styleClass="error-label" text="" />
+                           </children>
+                        </VBox>
+                        
+                        <!-- Confirm Password Field -->
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Confirm Password*" />
+                              <PasswordField fx:id="confirmPasswordField" promptText="Re-enter password" styleClass="form-input" />
+                              <Label fx:id="confirmPasswordError" styleClass="error-label" text="" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  
+                  <!-- Success Message -->
+                  <Label fx:id="successLabel" styleClass="success-label" text="" />
+                  
+                  <!-- Action Buttons -->
+                  <HBox alignment="CENTER" spacing="20" styleClass="button-container">
+                     <children>
+                        <Button fx:id="saveButton" onAction="#handleSave" styleClass="action-button" text="SAVE USER" prefWidth="150" />
+                        <Button fx:id="clearButton" onAction="#handleClear" styleClass="secondary-button" text="CLEAR FORM" prefWidth="150" />
+                        <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="secondary-button" text="CANCEL" prefWidth="150" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            
+            <!-- Footer Info -->
+            <VBox alignment="CENTER" spacing="5" styleClass="add-user-footer">
+               <children>
+                  <Text styleClass="footer-text" text="All fields marked with * are required" />
+                  <Text styleClass="footer-text" text="Password must be at least 8 characters with uppercase, lowercase, digit, and special character" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
