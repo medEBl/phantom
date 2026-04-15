@@ -109,6 +109,20 @@ public class UserService implements IUserService {
         return Optional.empty();
     }
 
+    // ── READ BY EMAIL ──────────────────────────────────────────────────────────
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        String sql = "SELECT * FROM user WHERE email = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return Optional.of(mapRow(rs));
+        } catch (SQLException e) {
+            throw new RuntimeException("getUserByEmail failed: " + e.getMessage(), e);
+        }
+        return Optional.empty();
+    }
+
     // ── READ BY ROLE ──────────────────────────────────────────────────────────
     @Override
     public List<User> getUsersByRole(String role) {

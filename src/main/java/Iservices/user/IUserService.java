@@ -9,6 +9,7 @@ public interface IUserService {
     void updateUser(User user);
     void deleteUser(int id);
     Optional<User> getUserById(int id);
+    Optional<User> getUserByEmail(String email);
     List<User> getAllUsers();
 
     // Auth
