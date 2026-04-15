@@ -86,15 +86,6 @@
                             <font><Font name="System Bold" size="20.0" /></font>
                         </Label>
 
-                        <VBox fx:id="aiBanner" alignment="CENTER" spacing="10.0" style="-fx-background-color: #111116; -fx-border-color: #4444ff; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 15;">
-                            <children>
-                                <Label text="Get professional feedback on all 4 questions." textFill="#a0a0a0" />
-                                <Button mnemonicParsing="false" prefWidth="300.0" style="-fx-background-color: #ff3344; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold; -fx-cursor: hand;" text="Run AI Analysis">
-                                    <padding><Insets bottom="8.0" top="8.0" /></padding>
-                                </Button>
-                            </children>
-                        </VBox>
-
                         <ScrollPane fitToWidth="true" style="-fx-background: #1a1a24; -fx-border-color: transparent;" VBox.vgrow="ALWAYS">
                             <content>
                                 <VBox fx:id="qaContainer" spacing="15.0" />
