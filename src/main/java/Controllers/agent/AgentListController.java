@@ -21,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
+
 public class AgentListController {
 
     @FXML private Button btnNavQuestionnaires;
@@ -86,31 +87,44 @@ public class AgentListController {
             }
         });
 
-        // Configuration des boutons d'action (Thème Phantom)
+        // Configuration des boutons d'action (Thème Phantom avec Tooltips)
         colActions.setCellFactory(column -> new TableCell<Agent, String>() {
 
-            final Button btnDetails = new Button("👁 Profil");
-            final Button btnRemplir = new Button("📝 Remplir");
-            final Label lblComplete = new Label("✅ Complété");
-            final Label lblNonRempli = new Label("❌ Non rempli");
-
+            // 1. ICÔNES SEULEMENT (Pour gagner de l'espace)
+            final Button btnDetails = new Button("👁");
+            final Button btnRemplir = new Button("📝");
+            final Label lblComplete = new Label("✅");
+            final Label lblNonRempli = new Label("❌");
             final Button btnModifier = new Button("✎");
             final Button btnSupprimer = new Button("🗑");
 
             {
-                btnDetails.setStyle("-fx-background-color: transparent; -fx-border-color: #00ffff; -fx-text-fill: #00ffff; -fx-cursor: hand; -fx-border-radius: 4; -fx-padding: 5 10;");
-                btnRemplir.setStyle("-fx-background-color: #ff3b3f; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 4; -fx-padding: 5 10;");
-                lblComplete.setStyle("-fx-text-fill: #00e676; -fx-font-weight: bold; -fx-padding: 5 10;");
-                lblNonRempli.setStyle("-fx-text-fill: #8a8a98; -fx-font-weight: bold; -fx-padding: 5 10;");
-                btnModifier.setStyle("-fx-background-color: #2a2a35; -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 4; -fx-padding: 5 10;");
-                btnSupprimer.setStyle("-fx-background-color: transparent; -fx-border-color: #ff3b3f; -fx-text-fill: #ff3b3f; -fx-cursor: hand; -fx-border-radius: 4; -fx-padding: 5 10;");
+                // 2. AJOUT DES TOOLTIPS (Pour la compréhension de l'utilisateur)
+                btnDetails.setTooltip(new Tooltip("Voir les détails"));
+                btnRemplir.setTooltip(new Tooltip("Remplir le questionnaire"));
+                lblComplete.setTooltip(new Tooltip("Questionnaire rempli"));
+                lblNonRempli.setTooltip(new Tooltip("Questionnaire non rempli"));
+                btnModifier.setTooltip(new Tooltip("Modifier le profil"));
+                btnSupprimer.setTooltip(new Tooltip("Supprimer l'agent"));
 
+                // 3. STYLES (Utilisation de votre dark-theme.css + ajustements)
+                btnDetails.getStyleClass().addAll("btn-action-small", "btn-profil");
+                btnModifier.getStyleClass().addAll("btn-action-small", "btn-edit");
+                btnSupprimer.getStyleClass().addAll("btn-action-small", "btn-delete");
+
+                // Style spécifique pour le bouton Remplir et les labels de statut
+                btnRemplir.getStyleClass().add("btn-action-small");
+                btnRemplir.setStyle("-fx-border-color: #ff3b3f; -fx-text-fill: #ff3b3f;");
+                lblComplete.setStyle("-fx-text-fill: #2dff8b; -fx-font-size: 14px; -fx-padding: 4 5;");
+                lblNonRempli.setStyle("-fx-text-fill: #8a8a98; -fx-font-size: 14px; -fx-padding: 4 5;");
+
+                // 4. ACTIONS DES BOUTONS
                 btnDetails.setOnAction(event -> openDetailsScreen(getTableView().getItems().get(getIndex())));
                 btnRemplir.setOnAction(event -> openReponseScreen(getTableView().getItems().get(getIndex())));
                 btnModifier.setOnAction(event -> openEditScreen(getTableView().getItems().get(getIndex())));
                 btnSupprimer.setOnAction(event -> {
                     serviceAgent.deleteAgent(getTableView().getItems().get(getIndex()).getId());
-                    loadAgents(); // Reloads data which automatically applies active filters
+                    loadAgents(); // Recharge les données
                 });
             }
 
@@ -121,12 +135,15 @@ public class AgentListController {
                     setGraphic(null);
                 } else {
                     Agent agent = getTableView().getItems().get(getIndex());
-                    HBox actionBox = new HBox(10);
+
+                    // Espacement réduit à 8px (au lieu de 10) pour bien rentrer dans la colonne
+                    HBox actionBox = new HBox(8);
                     actionBox.setAlignment(Pos.CENTER);
 
                     boolean isAdmin = (btnNavQuestionnaires != null || btnDisconnect != null);
                     boolean aRepondu = checkReponseExists(agent.getId());
 
+                    // Logique de rendu (Garde votre logique d'affichage Admin/User intacte !)
                     if (isAdmin) {
                         if (aRepondu) {
                             actionBox.getChildren().addAll(lblComplete, btnDetails, btnModifier, btnSupprimer);

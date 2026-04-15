@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import services.questionnaire.QuestionnaireService;
 
+import javafx.geometry.Pos;
 import java.io.IOException;
 import java.util.List;
 
@@ -63,17 +64,29 @@ public class ListQuestionnairesController {
 
         // 7. Setup Actions Column (View, Edit, Delete buttons)
         colActions.setCellFactory(column -> new TableCell<Questionnaire, String>() {
+
+            // 1. ICÔNES SEULEMENT (Pour gagner de l'espace)
             final Button btnDetails = new Button("👁");
             final Button btnModifier = new Button("✎");
             final Button btnSupprimer = new Button("🗑");
-            final HBox actionButtons = new HBox(10, btnDetails, btnModifier, btnSupprimer);
+
+            // Espacement réduit à 8px pour bien rentrer dans la colonne
+            final HBox actionBox = new HBox(8, btnDetails, btnModifier, btnSupprimer);
 
             {
-                btnDetails.setStyle("-fx-background-color: transparent; -fx-border-color: #4da6ff; -fx-text-fill: #4da6ff; -fx-cursor: hand; -fx-border-radius: 4;");
-                btnModifier.setStyle("-fx-background-color: transparent; -fx-border-color: #d99846; -fx-text-fill: #d99846; -fx-cursor: hand; -fx-border-radius: 4;");
-                btnSupprimer.setStyle("-fx-background-color: transparent; -fx-border-color: #ff3b3f; -fx-text-fill: #ff3b3f; -fx-cursor: hand; -fx-border-radius: 4;");
-                actionButtons.setStyle("-fx-alignment: center;");
+                actionBox.setAlignment(Pos.CENTER);
 
+                // 2. AJOUT DES TOOLTIPS (Pour la compréhension de l'utilisateur)
+                btnDetails.setTooltip(new Tooltip("Voir les détails"));
+                btnModifier.setTooltip(new Tooltip("Modifier le questionnaire"));
+                btnSupprimer.setTooltip(new Tooltip("Supprimer le questionnaire"));
+
+                // 3. STYLES (Utilisation de votre dark-theme.css)
+                btnDetails.getStyleClass().addAll("btn-action-small", "btn-profil");
+                btnModifier.getStyleClass().addAll("btn-action-small", "btn-edit");
+                btnSupprimer.getStyleClass().addAll("btn-action-small", "btn-delete");
+
+                // 4. ACTIONS DES BOUTONS
                 btnDetails.setOnAction(e -> openDetails(getTableView().getItems().get(getIndex())));
                 btnModifier.setOnAction(e -> openEdit(getTableView().getItems().get(getIndex())));
                 btnSupprimer.setOnAction(e -> {
@@ -88,9 +101,8 @@ public class ListQuestionnairesController {
                 if (empty || getIndex() >= getTableView().getItems().size()) {
                     setGraphic(null);
                 } else {
-                    setGraphic(actionButtons);
+                    setGraphic(actionBox);
                 }
-                setStyle("-fx-border-width: 0;");
             }
         });
 

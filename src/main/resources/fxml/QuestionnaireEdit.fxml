@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.questionnaire.QuestionnaireEditController">
+<AnchorPane stylesheets="@../css/dark-theme.css" prefHeight="800.0" prefWidth="1200.0" styleClass="dashboard-container" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.questionnaire.QuestionnaireEditController">
     <children>
-        <VBox layoutX="250.0" layoutY="50.0" prefWidth="700.0" spacing="20.0" style="-fx-background-color: #16161e; -fx-background-radius: 12; -fx-border-color: #2a2a35; -fx-border-radius: 12;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="50.0">
+        <VBox layoutX="250.0" layoutY="50.0" prefWidth="700.0" spacing="20.0" styleClass="module-card" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="50.0">
             <padding>
                 <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
             </padding>
@@ -24,10 +24,10 @@
                                 <Label text="Modifier Questionnaire" textFill="WHITE">
                                     <font><Font name="System Bold" size="24.0" /></font>
                                 </Label>
-                                <Label fx:id="lblSubtitle" text="Édition du questionnaire #ID" textFill="#8a8a98" />
+                                <Label fx:id="lblSubtitle" text="Édition du questionnaire #ID" styleClass="info-label" />
                             </children>
                         </VBox>
-                        <Button fx:id="btnRetour" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-border-color: #444455; -fx-border-radius: 6; -fx-text-fill: white; -fx-cursor: hand;" text="← Retour">
+                        <Button fx:id="btnRetour" mnemonicParsing="false" styleClass="secondary-button" text="← Retour">
                             <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
                         </Button>
                     </children>
@@ -37,36 +37,36 @@
                     <children>
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Jeu (Verrouillé)" textFill="#8a8a98"><font><Font size="12.0" /></font></Label>
-                                <TextField fx:id="tfGame" editable="false" style="-fx-background-color: #1a1a24; -fx-text-fill: #8a8a98; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                                <Label text="Jeu (Verrouillé)" styleClass="form-label" />
+                                <TextField fx:id="tfGame" editable="false" style="-fx-background-color: rgba(20, 20, 25, 0.6); -fx-text-fill: #888888;" />
                             </children>
                         </VBox>
 
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Question 1 (Obligatoire)" textFill="#e0e0e0"><font><Font size="12.0" /></font></Label>
-                                <TextField fx:id="tfQ1" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                                <Label text="Question 1 (Obligatoire)" styleClass="form-label" />
+                                <TextField fx:id="tfQ1" />
                             </children>
                         </VBox>
 
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Question 2 (Obligatoire)" textFill="#e0e0e0"><font><Font size="12.0" /></font></Label>
-                                <TextField fx:id="tfQ2" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                                <Label text="Question 2 (Obligatoire)" styleClass="form-label" />
+                                <TextField fx:id="tfQ2" />
                             </children>
                         </VBox>
 
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Question 3 (Optionnelle)" textFill="#e0e0e0"><font><Font size="12.0" /></font></Label>
-                                <TextField fx:id="tfQ3" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                                <Label text="Question 3 (Optionnelle)" styleClass="form-label" />
+                                <TextField fx:id="tfQ3" />
                             </children>
                         </VBox>
 
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Question 4 (Optionnelle)" textFill="#e0e0e0"><font><Font size="12.0" /></font></Label>
-                                <TextField fx:id="tfQ4" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                                <Label text="Question 4 (Optionnelle)" styleClass="form-label" />
+                                <TextField fx:id="tfQ4" />
                             </children>
                         </VBox>
                     </children>
@@ -74,7 +74,7 @@
 
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
                     <children>
-                        <Button fx:id="btnEnregistrer" mnemonicParsing="false" style="-fx-background-color: #00ffff; -fx-text-fill: black; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" text="Mettre à jour">
+                        <Button fx:id="btnEnregistrer" mnemonicParsing="false" styleClass="update-button" text="Mettre à jour">
                             <padding><Insets bottom="10.0" left="20.0" right="20.0" top="10.0" /></padding>
                         </Button>
                     </children>

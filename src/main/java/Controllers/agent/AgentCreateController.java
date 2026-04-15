@@ -7,7 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ButtonBar;
 import services.agent.AgentService;
 import tools.Phantom;
 
@@ -52,16 +54,13 @@ public class AgentCreateController {
     }
 
     private void setupRealTimeValidation() {
-        // Validation Pseudo (3 to 50 chars)
         if (tfPseudo != null) {
             tfPseudo.textProperty().addListener((obs, oldText, newText) -> {
                 String text = newText == null ? "" : newText.trim();
-                boolean isValid = text.length() >= 3 && text.length() <= 50;
-                applyValidationStyle(tfPseudo, isValid);
+                applyValidationStyle(tfPseudo, text.length() >= 3 && text.length() <= 50);
             });
         }
 
-        // Validation Rank (Not empty, not negative if a number)
         if (tfRank != null) {
             tfRank.textProperty().addListener((obs, oldText, newText) -> {
                 String text = newText == null ? "" : newText.trim();
@@ -69,28 +68,26 @@ public class AgentCreateController {
                 if (isValid) {
                     try {
                         if (Double.parseDouble(text) < 0) isValid = false;
-                    } catch (NumberFormatException e) { /* It's text, which is valid */ }
+                    } catch (NumberFormatException e) { /* Text is valid */ }
                 }
                 applyValidationStyle(tfRank, isValid);
             });
         }
 
-        // Validation Socials (URL Regex)
         if (tfSocials != null) {
             tfSocials.textProperty().addListener((obs, oldText, newText) -> {
                 String text = newText == null ? "" : newText.trim();
                 String urlRegex = "^(https?://)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$";
-                boolean isValid = !text.isEmpty() && text.matches(urlRegex);
-                applyValidationStyle(tfSocials, isValid);
+                applyValidationStyle(tfSocials, !text.isEmpty() && text.matches(urlRegex));
             });
         }
     }
 
     private void applyValidationStyle(TextField field, boolean isValid) {
         if (isValid) {
-            field.setStyle("-fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-background-radius: 8;");
+            field.setStyle("-fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-background-radius: 8; -fx-background-color: rgba(30, 30, 40, 0.9); -fx-text-fill: white;");
         } else {
-            field.setStyle("-fx-border-color: #ff3b3f; -fx-border-radius: 8; -fx-background-radius: 8;");
+            field.setStyle("-fx-border-color: #ff3b3f; -fx-border-radius: 8; -fx-background-radius: 8; -fx-background-color: rgba(30, 30, 40, 0.9); -fx-text-fill: white;");
         }
     }
 
@@ -105,7 +102,6 @@ public class AgentCreateController {
                 while (rsPlayers.next()) {
                     String name = rsPlayers.getString("name");
                     int id = rsPlayers.getInt("id");
-
                     playerMap.put(name, id);
                     cbPlayer.getItems().add(name);
                 }
@@ -119,7 +115,6 @@ public class AgentCreateController {
                 while (rsTeams.next()) {
                     String name = rsTeams.getString("name");
                     int id = rsTeams.getInt("id");
-
                     teamMap.put(name, id);
                     cbTeam.getItems().add(name);
                 }
@@ -139,11 +134,13 @@ public class AgentCreateController {
             st.close();
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Erreur BDD", "Impossible de charger les données (Joueurs, Equipes, Jeux).");
+            showAlert(Alert.AlertType.ERROR, "Erreur BDD", "Impossible de charger les données.");
         }
     }
 
     private void handleCreate() {
+        System.out.println("--- BOUTON CRÉER CLIQUÉ ---"); // Debug to see if button fires
+
         String pseudo = tfPseudo != null ? tfPseudo.getText().trim() : "";
         String rank = tfRank != null ? tfRank.getText().trim() : "";
         String socials = tfSocials != null ? tfSocials.getText().trim() : "";
@@ -152,13 +149,13 @@ public class AgentCreateController {
         String status = cbStatus != null && cbStatus.getValue() != null ? cbStatus.getValue() : "active";
 
         // 1. Validation Player
-        if (player == null) {
+        if (player == null || player.trim().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Joueur manquant", "Veuillez sélectionner un joueur dans la liste.");
             return;
         }
 
         // 2. Validation Game
-        if (game == null) {
+        if (game == null || game.trim().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Jeu manquant", "Veuillez sélectionner un jeu.");
             return;
         }
@@ -176,27 +173,17 @@ public class AgentCreateController {
             showAlert(Alert.AlertType.WARNING, "Rang manquant", "Le champ rang est obligatoire.");
             return;
         }
-        try {
-            if (Double.parseDouble(rank) < 0) {
-                if (tfRank != null) applyValidationStyle(tfRank, false);
-                showAlert(Alert.AlertType.WARNING, "Rang invalide", "Le rang ne peut pas être un nombre négatif.");
-                return;
-            }
-        } catch (NumberFormatException e) { }
-
-        // 5. Validation Socials
-        String urlRegex = "^(https?://)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$";
-        if (socials.isEmpty() || !socials.matches(urlRegex)) {
-            if (tfSocials != null) applyValidationStyle(tfSocials, false);
-            showAlert(Alert.AlertType.WARNING, "Lien social invalide", "Veuillez entrer une URL valide (ex: https://twitter.com/...).");
-            return;
-        }
 
         // Save if everything is valid
         try {
-            int selectedPlayerId = playerMap.get(player);
+            // Safe extraction of IDs to prevent NullPointerExceptions
+            Integer selectedPlayerId = playerMap.get(player);
+            if (selectedPlayerId == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur Joueur", "Le joueur sélectionné est invalide.");
+                return;
+            }
 
-            // ---> THE ERROR MESSAGE BLOCK <---
+            // DUPLICATE CHECK
             if (service.agentExistsForPlayerAndGame(selectedPlayerId, game)) {
                 showAlert(Alert.AlertType.ERROR, "Doublon détecté", "Vous avez déjà créé un Agent pour ce jeu !");
                 return;
@@ -211,7 +198,8 @@ public class AgentCreateController {
             agent.setIdPlayer(selectedPlayerId);
 
             if (cbTeam != null && cbTeam.getValue() != null && !cbTeam.getValue().equals("Free Agent (Aucune)")) {
-                agent.setIdTeam(teamMap.get(cbTeam.getValue()));
+                Integer teamId = teamMap.get(cbTeam.getValue());
+                agent.setIdTeam(teamId);
             } else {
                 agent.setIdTeam(null);
             }
@@ -236,11 +224,31 @@ public class AgentCreateController {
         }
     }
 
+    // --- DARK THEMED ALERT BOX ---
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
+
+        // Apply dark styling to the Dialog
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: #1a1a24; -fx-border-color: #2a2a35; -fx-border-width: 2;");
+
+        // Style the text
+        if (dialogPane.lookup(".content.label") != null) {
+            dialogPane.lookup(".content.label").setStyle("-fx-text-fill: #e6e6e6; -fx-font-size: 14px; -fx-font-weight: bold;");
+        }
+        if (dialogPane.lookup(".header-panel") != null) {
+            dialogPane.lookup(".header-panel").setStyle("-fx-background-color: #1a1a24;");
+        }
+
+        // Style the buttons
+        ButtonBar buttonBar = (ButtonBar) dialogPane.lookup(".button-bar");
+        if (buttonBar != null) {
+            buttonBar.getButtons().forEach(b -> b.setStyle("-fx-background-color: #ff2d2d; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"));
+        }
+
         alert.showAndWait();
     }
 }

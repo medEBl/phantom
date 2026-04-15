@@ -11,30 +11,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@../css/dark-theme.css" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #121216;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentListController">
+<AnchorPane stylesheets="@../home/home.css" styleClass="home-container" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentListController">
     <children>
         <VBox layoutX="40.0" layoutY="40.0" prefHeight="620.0" prefWidth="920.0" spacing="25.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">
             <children>
 
                 <HBox alignment="CENTER_LEFT" spacing="20.0">
                     <children>
-                        <Button fx:id="btnCreateAgent" mnemonicParsing="false" style="-fx-background-color: #ff3344; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-weight: bold; -fx-cursor: hand;" text="Créer un Agent +">
+                        <Button fx:id="btnCreateAgent" mnemonicParsing="false" styleClass="primary-button" text="Créer un Agent +">
                             <padding>
                                 <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                             </padding>
-                            <font>
-                                <Font size="14.0" />
-                            </font>
                         </Button>
                         <HBox HBox.hgrow="ALWAYS" />
                         <VBox alignment="CENTER_RIGHT">
                             <children>
-                                <Label text="Mes Profils d'Agent" textFill="WHITE">
-                                    <font>
-                                        <Font name="System Bold" size="24.0" />
-                                    </font>
-                                </Label>
-                                <Label text="Un agent par jeu." textFill="#a0a0a0" />
+                                <Label text="Mes Profils d'Agent" styleClass="section-title" />
+                                <Label text="Un agent par jeu." styleClass="form-label" />
                             </children>
                         </VBox>
                     </children>

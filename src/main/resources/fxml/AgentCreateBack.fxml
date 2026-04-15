@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentCreateController">
+<HBox stylesheets="@../css/dark-theme.css" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentCreateController">
     <children>
         <VBox prefWidth="250.0" spacing="40.0" style="-fx-background-color: #1a1a24; -fx-border-color: #2a2a35; -fx-border-width: 0 1 0 0;">
             <padding><Insets bottom="30.0" left="20.0" right="20.0" top="40.0" /></padding>
@@ -43,46 +43,46 @@
                         <VBox HBox.hgrow="ALWAYS">
                             <children>
                                 <Label text="Nouveau Profil Agent" textFill="WHITE"><font><Font name="System Bold" size="24.0" /></font></Label>
-                                <Label text="Création administrative d'un profil joueur complet" textFill="#8a8a98" />
+                                <Label text="Création administrative d'un profil joueur complet" styleClass="info-label" />
                             </children>
                         </VBox>
-                        <Button fx:id="btnRetour" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-border-color: #444455; -fx-text-fill: white; -fx-cursor: hand;" text="← Retour">
+                        <Button fx:id="btnRetour" mnemonicParsing="false" styleClass="secondary-button" text="← Retour">
                             <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
                         </Button>
                     </children>
                 </HBox>
 
-                <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent; -fx-border-color: transparent;" VBox.vgrow="ALWAYS">
+                <ScrollPane fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
                     <content>
-                        <VBox spacing="15.0" style="-fx-background-color: #16161e; -fx-padding: 20; -fx-background-radius: 12;">
+                        <VBox spacing="15.0" styleClass="module-card">
                             <children>
                                 <VBox spacing="5.0">
-                                    <Label text="JOUEUR" textFill="#e0e0e0"><font><Font name="System Bold" size="11.0" /></font></Label>
-                                    <ComboBox fx:id="cbPlayer" prefWidth="800.0" style="-fx-background-color: #1e1e28; -fx-border-color: #2a2a35; -fx-text-fill: white;" />
+                                    <Label text="JOUEUR" styleClass="form-label" />
+                                    <ComboBox fx:id="cbPlayer" prefWidth="800.0" />
                                 </VBox>
                                 <VBox spacing="5.0">
-                                    <Label text="ÉQUIPE (TEAM)" textFill="#e0e0e0"><font><Font name="System Bold" size="11.0" /></font></Label>
-                                    <ComboBox fx:id="cbTeam" prefWidth="800.0" style="-fx-background-color: #1e1e28; -fx-border-color: #2a2a35; -fx-text-fill: white;" />
+                                    <Label text="ÉQUIPE (TEAM)" styleClass="form-label" />
+                                    <ComboBox fx:id="cbTeam" prefWidth="800.0" />
                                 </VBox>
                                 <VBox spacing="5.0">
-                                    <Label text="JEU" textFill="#e0e0e0"><font><Font name="System Bold" size="11.0" /></font></Label>
-                                    <ComboBox fx:id="cbGame" prefWidth="800.0" style="-fx-background-color: #1e1e28; -fx-border-color: #2a2a35; -fx-text-fill: white;" />
+                                    <Label text="JEU" styleClass="form-label" />
+                                    <ComboBox fx:id="cbGame" prefWidth="800.0" />
                                 </VBox>
                                 <VBox spacing="5.0">
-                                    <Label text="PSEUDO" textFill="#e0e0e0"><font><Font name="System Bold" size="11.0" /></font></Label>
-                                    <TextField fx:id="tfPseudo" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-padding: 10;" />
+                                    <Label text="PSEUDO" styleClass="form-label" />
+                                    <TextField fx:id="tfPseudo" />
                                 </VBox>
                                 <VBox spacing="5.0">
-                                    <Label text="RANG" textFill="#e0e0e0"><font><Font name="System Bold" size="11.0" /></font></Label>
-                                    <TextField fx:id="tfRank" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-padding: 10;" />
+                                    <Label text="RANG" styleClass="form-label" />
+                                    <TextField fx:id="tfRank" />
                                 </VBox>
                                 <VBox spacing="5.0">
-                                    <Label text="STATUT" textFill="#e0e0e0"><font><Font name="System Bold" size="11.0" /></font></Label>
-                                    <ComboBox fx:id="cbStatus" prefWidth="800.0" style="-fx-background-color: #1e1e28; -fx-border-color: #2a2a35; -fx-text-fill: white;" />
+                                    <Label text="STATUT" styleClass="form-label" />
+                                    <ComboBox fx:id="cbStatus" prefWidth="800.0" />
                                 </VBox>
                                 <VBox spacing="5.0">
-                                    <Label text="LIENS SOCIAUX" textFill="#e0e0e0"><font><Font name="System Bold" size="11.0" /></font></Label>
-                                    <TextField fx:id="tfSocials" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-padding: 10;" />
+                                    <Label text="LIENS SOCIAUX" styleClass="form-label" />
+                                    <TextField fx:id="tfSocials" />
                                 </VBox>
                             </children>
                         </VBox>
@@ -90,10 +90,10 @@
                 </ScrollPane>
 
                 <HBox alignment="CENTER_RIGHT" spacing="15.0">
-                    <Button fx:id="btnAnnuler" mnemonicParsing="false" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-cursor: hand;" text="Annuler">
+                    <Button fx:id="btnAnnuler" mnemonicParsing="false" styleClass="secondary-button" text="Annuler">
                         <padding><Insets bottom="10.0" left="20.0" right="20.0" top="10.0" /></padding>
                     </Button>
-                    <Button fx:id="btnCreer" mnemonicParsing="false" style="-fx-background-color: #00ffff; -fx-text-fill: black; -fx-font-weight: bold; -fx-cursor: hand;" text="Créer le Profil">
+                    <Button fx:id="btnCreer" mnemonicParsing="false" styleClass="action-button" text="Créer le Profil">
                         <padding><Insets bottom="10.0" left="30.0" right="30.0" top="10.0" /></padding>
                     </Button>
                 </HBox>

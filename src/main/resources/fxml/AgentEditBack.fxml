@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentEditController">
+<AnchorPane stylesheets="@../css/dark-theme.css" prefHeight="800.0" prefWidth="1200.0" styleClass="dashboard-container" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentEditController">
     <children>
-        <VBox layoutX="300.0" layoutY="50.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #16161e; -fx-background-radius: 12; -fx-border-color: #2a2a35; -fx-border-radius: 12;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="50.0">
+        <VBox layoutX="300.0" layoutY="50.0" prefWidth="600.0" spacing="20.0" styleClass="module-card" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="50.0">
             <padding>
                 <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
             </padding>
@@ -27,10 +27,10 @@
                                         <Font name="System Bold" size="24.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="lblSubtitle" text="Édition Administrative" textFill="#8a8a98" />
+                                <Label fx:id="lblSubtitle" text="Édition Administrative" styleClass="info-label" />
                             </children>
                         </VBox>
-                        <Button fx:id="btnRetour" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-border-color: #444455; -fx-border-radius: 6; -fx-text-fill: white; -fx-cursor: hand;" text="← Retour">
+                        <Button fx:id="btnRetour" mnemonicParsing="false" styleClass="secondary-button" text="← Retour">
                             <padding>
                                 <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
                             </padding>
@@ -42,36 +42,36 @@
                     <children>
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Jeu (Verrouillé)" textFill="#8a8a98"><font><Font size="12.0" /></font></Label>
-                                <TextField fx:id="tfGame" editable="false" style="-fx-background-color: #1a1a24; -fx-text-fill: #8a8a98; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                                <Label text="Jeu (Verrouillé)" styleClass="form-label" />
+                                <TextField fx:id="tfGame" editable="false" />
                             </children>
                         </VBox>
 
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Pseudo / Gamer Tag" textFill="#e0e0e0"><font><Font size="12.0" /></font></Label>
-                                <TextField fx:id="tfPseudo" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                                <Label text="Pseudo / Gamer Tag" styleClass="form-label" />
+                                <TextField fx:id="tfPseudo" />
                             </children>
                         </VBox>
 
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Rang Actuel" textFill="#e0e0e0"><font><Font size="12.0" /></font></Label>
-                                <TextField fx:id="tfRank" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                                <Label text="Rang Actuel" styleClass="form-label" />
+                                <TextField fx:id="tfRank" />
                             </children>
                         </VBox>
 
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Statut du Profil" textFill="#e0e0e0"><font><Font size="12.0" /></font></Label>
-                                <ComboBox fx:id="cbStatus" prefWidth="520.0" style="-fx-background-color: #1e1e28; -fx-border-color: #2a2a35; -fx-border-radius: 6;" />
+                                <Label text="Statut du Profil" styleClass="form-label" />
+                                <ComboBox fx:id="cbStatus" prefWidth="520.0" />
                             </children>
                         </VBox>
 
                         <VBox spacing="5.0">
                             <children>
-                                <Label text="Lien Social" textFill="#e0e0e0"><font><Font size="12.0" /></font></Label>
-                                <TextField fx:id="tfSocials" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-padding: 10;" />
+                                <Label text="Lien Social" styleClass="form-label" />
+                                <TextField fx:id="tfSocials" />
                             </children>
                         </VBox>
                     </children>
@@ -79,12 +79,12 @@
 
                 <HBox alignment="CENTER_RIGHT" spacing="15.0">
                     <children>
-                        <Button fx:id="btnAnnuler" mnemonicParsing="false" style="-fx-background-color: #1e1e28; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand;" text="Annuler">
+                        <Button fx:id="btnAnnuler" mnemonicParsing="false" styleClass="secondary-button" text="Annuler">
                             <padding>
                                 <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                             </padding>
                         </Button>
-                        <Button fx:id="btnEnregistrer" mnemonicParsing="false" style="-fx-background-color: #00ffff; -fx-text-fill: black; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" text="Mettre à jour">
+                        <Button fx:id="btnEnregistrer" mnemonicParsing="false" styleClass="update-button" text="Mettre à jour">
                             <padding>
                                 <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                             </padding>

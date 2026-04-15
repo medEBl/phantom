@@ -11,22 +11,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #121216;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentDetailsController">
+<AnchorPane stylesheets="@../home/home.css" styleClass="home-container" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentDetailsController">
     <children>
         <HBox layoutX="30.0" layoutY="30.0" prefHeight="640.0" prefWidth="940.0" spacing="30.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
             <children>
 
-                <VBox prefWidth="450.0" spacing="20.0" style="-fx-background-color: #1a1a24; -fx-background-radius: 12; -fx-border-color: #2a2a36; -fx-border-radius: 12;">
+                <VBox prefWidth="450.0" spacing="20.0" styleClass="activity-section">
                     <padding>
                         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                     </padding>
                     <children>
 
-                        <Button fx:id="btnRetour" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-border-color: #444455; -fx-border-radius: 6; -fx-text-fill: white; -fx-cursor: hand;" text="← Retour" />
+                        <Button fx:id="btnRetour" mnemonicParsing="false" styleClass="secondary-button" text="← Retour" />
 
-                        <Label text="Détails de l'Agent" textFill="WHITE">
-                            <font><Font name="System Bold" size="20.0" /></font>
-                        </Label>
+                        <Label text="Détails de l'Agent" styleClass="section-title" />
 
                         <GridPane hgap="20.0" vgap="20.0">
                             <rowConstraints>
@@ -37,58 +35,56 @@
                             <children>
                                 <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
                                     <children>
-                                        <Label text="PSEUDO" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
+                                        <Label text="PSEUDO" styleClass="form-label" />
                                         <Label fx:id="lblPseudo" text="-" textFill="WHITE"><font><Font name="System Bold" size="16.0" /></font></Label>
                                     </children>
                                 </VBox>
                                 <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
                                     <children>
-                                        <Label text="JEU" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
+                                        <Label text="JEU" styleClass="form-label" />
                                         <Label fx:id="lblJeu" text="-" textFill="WHITE"><font><Font name="System Bold" size="16.0" /></font></Label>
                                     </children>
                                 </VBox>
                                 <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
                                     <children>
-                                        <Label text="RANG" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
+                                        <Label text="RANG" styleClass="form-label" />
                                         <Label fx:id="lblRang" text="-" textFill="WHITE"><font><Font name="System Bold" size="16.0" /></font></Label>
                                     </children>
                                 </VBox>
                                 <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <children>
-                                        <Label text="STATUT" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
-                                        <Label fx:id="lblStatut" text="-" textFill="#ff4444"><font><Font name="System Bold" size="16.0" /></font></Label>
+                                        <Label text="STATUT" styleClass="form-label" />
+                                        <Label fx:id="lblStatut" text="-" textFill="#ff2d2d"><font><Font name="System Bold" size="16.0" /></font></Label>
                                     </children>
                                 </VBox>
                                 <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
                                     <children>
-                                        <Label text="CRÉÉ LE" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
+                                        <Label text="CRÉÉ LE" styleClass="form-label" />
                                         <Label fx:id="lblDate" text="-" textFill="WHITE"><font><Font name="System Bold" size="16.0" /></font></Label>
                                     </children>
                                 </VBox>
                             </children>
                         </GridPane>
 
-                        <VBox style="-fx-background-color: #22222d; -fx-background-radius: 8; -fx-padding: 15;">
+                        <VBox style="-fx-background-color: rgba(30, 30, 40, 0.6); -fx-background-radius: 8; -fx-padding: 15; -fx-border-color: rgba(255, 45, 45, 0.15); -fx-border-radius: 8;">
                             <children>
-                                <Label text="LIEN SOCIAL" textFill="#a0a0a0"><font><Font size="10.0" /></font></Label>
-                                <Label fx:id="lblLien" text="-" textFill="#4499ff" />
+                                <Label text="LIEN SOCIAL" styleClass="form-label" />
+                                <Label fx:id="lblLien" text="-" textFill="#ff5e5e" />
                             </children>
                         </VBox>
                     </children>
                 </VBox>
 
-                <VBox prefWidth="460.0" spacing="20.0" style="-fx-background-color: #1a1a24; -fx-background-radius: 12; -fx-border-color: #2a2a36; -fx-border-radius: 12;" HBox.hgrow="ALWAYS">
+                <VBox prefWidth="460.0" spacing="20.0" styleClass="activity-section" HBox.hgrow="ALWAYS">
                     <padding>
                         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                     </padding>
                     <children>
-                        <Label text="Questionnaire" textFill="WHITE">
-                            <font><Font name="System Bold" size="20.0" /></font>
-                        </Label>
+                        <Label text="Questionnaire" styleClass="section-title" />
 
-                        <ScrollPane fitToWidth="true" style="-fx-background: #1a1a24; -fx-border-color: transparent;" VBox.vgrow="ALWAYS">
+                        <ScrollPane fitToWidth="true" styleClass="home-scroll" VBox.vgrow="ALWAYS">
                             <content>
-                                <VBox fx:id="qaContainer" spacing="15.0" />
+                                <VBox fx:id="qaContainer" spacing="15.0" style="-fx-background-color: transparent;" />
                             </content>
                         </ScrollPane>
                     </children>
