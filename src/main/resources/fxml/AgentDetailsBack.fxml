@@ -84,10 +84,6 @@
 
                         <VBox spacing="20.0" style="-fx-background-color: #16161e; -fx-padding: 20; -fx-background-radius: 12;" HBox.hgrow="ALWAYS">
                             <children>
-                                <VBox fx:id="aiBanner" alignment="CENTER" spacing="10.0" style="-fx-background-color: #111116; -fx-border-color: #00ffff; -fx-padding: 15; -fx-border-radius: 8;">
-                                    <Label text="Get professional feedback on all 4 questions." textFill="#a0a0a0" />
-                                    <Button fx:id="btnRunAI" mnemonicParsing="false" prefWidth="300.0" style="-fx-background-color: #00ffff; -fx-text-fill: black; -fx-font-weight: bold;" text="Run AI Analysis" />
-                                </VBox>
                                 <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent; -fx-border-color: transparent;" VBox.vgrow="ALWAYS">
                                     <content><VBox fx:id="qaContainer" spacing="15.0" /></content>
                                 </ScrollPane>

@@ -146,16 +146,20 @@ public class AgentDetailsController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ReponseCreate.fxml"));
             Parent root = loader.load();
 
-            ReponseCreateController formController = loader.getController();
-            formController.initData(currentAgent);
+            // 1. Get the controller using the correct package
+            Controllers.reponse.ReponseCreateController controller = loader.getController();
 
+            // 2. Pass the data to it
+            controller.initData(currentAgent);
+
+            // 3. Switch the scene
             btnRetour.getScene().setRoot(root);
+
         } catch (Exception ex) {
             System.err.println("Erreur de navigation vers ReponseCreate: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
-
     private void deleteResponses() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Voulez-vous vraiment supprimer les réponses de cet agent ?", ButtonType.YES, ButtonType.NO);
         confirm.setTitle("Confirmation de suppression");

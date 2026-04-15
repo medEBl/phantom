@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AgentCreateController {
@@ -32,6 +34,9 @@ public class AgentCreateController {
     private Map<String, Integer> playerMap = new HashMap<>();
     private Map<String, Integer> teamMap = new HashMap<>();
 
+    // Master list of all games available in the questionnaire
+    private List<String> allAvailableGames = new ArrayList<>();
+
     public void setAdminMode(boolean isAdmin) {
         this.isAdminMode = isAdmin;
     }
@@ -39,10 +44,16 @@ public class AgentCreateController {
     @FXML
     public void initialize() {
         if (cbStatus != null) cbStatus.getItems().addAll("active", "banned", "pending");
-        if (cbGame != null) cbGame.getItems().addAll("League of Legends", "Valorant", "Apex Legends", "Overwatch 2", "Counter-Strike 2", "Rocket League");
 
         // Load dynamic data from the database
         loadDynamicData();
+
+        // Listen for player selection changes to filter the games
+        if (cbPlayer != null) {
+            cbPlayer.valueProperty().addListener((obs, oldVal, newVal) -> {
+                updateGameDropdown(newVal);
+            });
+        }
 
         // --- REAL-TIME VALIDATION LISTENERS ---
         setupRealTimeValidation();
@@ -50,6 +61,51 @@ public class AgentCreateController {
         if (btnRetour != null) btnRetour.setOnAction(e -> navigateBack());
         if (btnAnnuler != null) btnAnnuler.setOnAction(e -> navigateBack());
         if (btnCreer != null) btnCreer.setOnAction(e -> handleCreate());
+    }
+
+    // --- UPDATED METHOD to filter games safely ---
+    private void updateGameDropdown(String playerName) {
+        if (playerName == null || cbGame == null) {
+            if (cbGame != null) {
+                cbGame.setDisable(true);
+                cbGame.setPromptText("Sélectionnez d'abord un joueur");
+            }
+            return;
+        }
+
+        // Get the selected player's ID
+        int playerId = playerMap.get(playerName);
+
+        // Ask the database which games this player already has
+        List<String> usedGames = service.getGamesForPlayer(playerId);
+
+        // Normalize the used games list (lowercase + remove extra spaces)
+        List<String> normalizedUsedGames = new java.util.ArrayList<>();
+        for (String g : usedGames) {
+            if (g != null) normalizedUsedGames.add(g.trim().toLowerCase());
+        }
+
+        // Rebuild the Game dropdown
+        cbGame.getItems().clear();
+        for (String game : allAvailableGames) {
+            if (game != null) {
+                String normalizedAvailableGame = game.trim().toLowerCase();
+
+                // Only add the game if it's NOT in the normalized used list
+                if (!normalizedUsedGames.contains(normalizedAvailableGame)) {
+                    cbGame.getItems().add(game);
+                }
+            }
+        }
+
+        // Handle UI states
+        if (cbGame.getItems().isEmpty()) {
+            cbGame.setDisable(true);
+            cbGame.setPromptText("Tous les profils créés");
+        } else {
+            cbGame.setDisable(false);
+            cbGame.setPromptText("Choisissez un jeu");
+        }
     }
 
     private void setupRealTimeValidation() {
@@ -89,10 +145,8 @@ public class AgentCreateController {
 
     private void applyValidationStyle(TextField field, boolean isValid) {
         if (isValid) {
-            // Standard Phantom border
             field.setStyle("-fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-background-radius: 8;");
         } else {
-            // Error Red border
             field.setStyle("-fx-border-color: #ff3b3f; -fx-border-radius: 8; -fx-background-radius: 8;");
         }
     }
@@ -128,10 +182,24 @@ public class AgentCreateController {
                 }
                 rsTeams.close();
             }
+
+            // 3. Load Games from Questionnaires and store in master list
+            if (cbGame != null) {
+                ResultSet rsGames = st.executeQuery("SELECT DISTINCT game FROM questionnaire_agent");
+                while (rsGames.next()) {
+                    allAvailableGames.add(rsGames.getString("game"));
+                }
+                rsGames.close();
+
+                // Disable the game dropdown until a player is selected
+                cbGame.setDisable(true);
+                cbGame.setPromptText("Sélectionnez d'abord un joueur");
+            }
+
             st.close();
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Erreur BDD", "Impossible de charger les joueurs et les équipes.");
+            showAlert(Alert.AlertType.ERROR, "Erreur BDD", "Impossible de charger les données (Joueurs, Equipes, Jeux).");
         }
     }
 
