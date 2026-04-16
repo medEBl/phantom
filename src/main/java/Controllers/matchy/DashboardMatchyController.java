@@ -1,29 +1,32 @@
 package Controllers.matchy;
 
 import entities.matchy.Matchy;
-import javafx.stage.Modality;
+import entities.team.Team;
 import Iservices.matchy.IMatchyService;
+import Iservices.team.ITeamService;
+import javafx.stage.Modality;
 import services.matchy.MatchyService;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import services.team.TeamService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-public class MatchyController implements IDashboardMatchyController {
+public class DashboardMatchyController implements IDashboardMatchyController {
     
     private final IMatchyService matchyService = new MatchyService();
-    private ObservableList<Matchy> matchyList = FXCollections.observableArrayList();
+    private final ITeamService teamService = new TeamService();
+    private ObservableList<Matchy> matchyList;
     
     @FXML
     private TableView<Matchy> matchyTableView;
@@ -38,19 +41,25 @@ public class MatchyController implements IDashboardMatchyController {
     private TableColumn<Matchy, LocalDateTime> matchDateColumn;
     
     @FXML
-    private TableColumn<Matchy, String> statusColumn;
-    
-    @FXML
     private TableColumn<Matchy, String> team1Column;
     
     @FXML
     private TableColumn<Matchy, String> team2Column;
     
     @FXML
-    private TableColumn<Matchy, Integer> score1Column;
+    private TableColumn<Matchy, String> scoreColumn;
     
     @FXML
-    private TableColumn<Matchy, Integer> score2Column;
+    private TableColumn<Matchy, String> locationColumn;
+    
+    @FXML
+    private TableColumn<Matchy, String> winnerColumn;
+    
+    @FXML
+    private TableColumn<Matchy, String> statusColumn;
+    
+    @FXML
+    private TableColumn<Matchy, Void> actionsColumn;
     
     @FXML
     private TextField searchField;
@@ -62,7 +71,7 @@ public class MatchyController implements IDashboardMatchyController {
     private ComboBox<String> statusFilterComboBox;
     
     @FXML
-    private Label totalMatchesLabel;
+    private Button refreshButton;
     
     @FXML
     private Button createMatchButton;
@@ -74,32 +83,51 @@ public class MatchyController implements IDashboardMatchyController {
     private Button deleteMatchButton;
     
     @FXML
-    private Button refreshButton;
+    private Button backButton;
     
     @FXML
-    private Button backButton;
+    private Label totalMatchesLabel;
     
     public void initialize() {
         setupTableColumns();
         setupFilters();
-        loadMatches();
+        loadMatchesData();
         setupTableSelection();
-        setupSearchListener();
     }
     
     private void setupTableColumns() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         gameColumn.setCellValueFactory(new PropertyValueFactory<>("game"));
         matchDateColumn.setCellValueFactory(new PropertyValueFactory<>("matchDate"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         team1Column.setCellValueFactory(new PropertyValueFactory<>("team1Name"));
         team2Column.setCellValueFactory(new PropertyValueFactory<>("team2Name"));
-        score1Column.setCellValueFactory(new PropertyValueFactory<>("scoreTeam1"));
-        score2Column.setCellValueFactory(new PropertyValueFactory<>("scoreTeam2"));
+        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
         
-        // Format the match date
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        matchDateColumn.setCellFactory(column -> new TableCell<Matchy, LocalDateTime>() {
+        // Custom cell factory for score display
+        scoreColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setText(null);
+                } else {
+                    Matchy match = getTableRow().getItem();
+                    if (match.getScoreTeam1() != null && match.getScoreTeam2() != null) {
+                        setText(match.getScoreTeam1() + " - " + match.getScoreTeam2());
+                    } else {
+                        setText("N/A");
+                    }
+                }
+            }
+        });
+        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        winnerColumn.setCellValueFactory(new PropertyValueFactory<>("winnerTeamName"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        
+        // Format date column
+        matchDateColumn.setCellFactory(column -> new TableCell<>() {
+            private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            
             @Override
             protected void updateItem(LocalDateTime item, boolean empty) {
                 super.updateItem(item, empty);
@@ -111,42 +139,17 @@ public class MatchyController implements IDashboardMatchyController {
             }
         });
         
-        // Format scores to show "N/A" when null
-        score1Column.setCellFactory(column -> new TableCell<Matchy, Integer>() {
+        // Color code status column
+        statusColumn.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText("N/A");
-                } else {
-                    setText(String.valueOf(item));
-                }
-            }
-        });
-        
-        score2Column.setCellFactory(column -> new TableCell<Matchy, Integer>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText("N/A");
-                } else {
-                    setText(String.valueOf(item));
-                }
-            }
-        });
-        
-        // Color code status
-        statusColumn.setCellFactory(column -> new TableCell<Matchy, String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+                if (empty || status == null) {
                     setText(null);
                     setStyle("");
                 } else {
-                    setText(item.toUpperCase());
-                    switch (item.toLowerCase()) {
+                    setText(status);
+                    switch (status.toLowerCase()) {
                         case "planned":
                             setStyle("-fx-text-fill: #3498db; -fx-font-weight: bold;");
                             break;
@@ -165,6 +168,44 @@ public class MatchyController implements IDashboardMatchyController {
                 }
             }
         });
+        
+        // Add action buttons to each row
+        actionsColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button viewButton = new Button("View");
+            private final Button editButton = new Button("Edit");
+            private final Button deleteButton = new Button("Delete");
+            
+            {
+                viewButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
+                editButton.setStyle("-fx-background-color: #f39c12; -fx-text-fill: white;");
+                deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+                
+                viewButton.setOnAction(e -> {
+                    Matchy match = getTableView().getItems().get(getIndex());
+                    handleViewMatch(match);
+                });
+                editButton.setOnAction(e -> {
+                    Matchy match = getTableView().getItems().get(getIndex());
+                    handleEditMatch(match);
+                });
+                deleteButton.setOnAction(e -> {
+                    Matchy match = getTableView().getItems().get(getIndex());
+                    handleDeleteMatch(match);
+                });
+            }
+            
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    HBox buttons = new HBox(5);
+                    buttons.getChildren().addAll(viewButton, editButton, deleteButton);
+                    setGraphic(buttons);
+                }
+            }
+        });
     }
     
     private void setupFilters() {
@@ -177,6 +218,8 @@ public class MatchyController implements IDashboardMatchyController {
         statusFilterComboBox.setItems(FXCollections.observableArrayList(statuses));
         statusFilterComboBox.setValue("All");
         statusFilterComboBox.setOnAction(e -> filterMatches());
+        
+        searchField.textProperty().addListener((obs, old, newVal) -> filterMatches());
     }
     
     private void setupTableSelection() {
@@ -187,19 +230,37 @@ public class MatchyController implements IDashboardMatchyController {
             });
     }
     
-    private void setupSearchListener() {
-        searchField.textProperty().addListener((obs, oldText, newText) -> filterMatches());
-    }
-    
-    public void loadMatches() {
+    private void loadMatchesData() {
         try {
             List<Matchy> matches = matchyService.getAllMatches();
-            matchyList.clear();
-            matchyList.addAll(matches);
+            
+            // Load team names for each match
+            for (Matchy match : matches) {
+                loadTeamNames(match);
+            }
+            
+            matchyList = FXCollections.observableArrayList(matches);
             matchyTableView.setItems(matchyList);
             updateStats();
         } catch (Exception e) {
             showError("Error loading matches: " + e.getMessage());
+        }
+    }
+    
+    private void loadTeamNames(Matchy match) {
+        try {
+            Optional<Team> team1 = teamService.getTeamById(match.getTeam1Id());
+            Optional<Team> team2 = teamService.getTeamById(match.getTeam2Id());
+            
+            team1.ifPresent(t -> match.setTeam1Name(t.getName()));
+            team2.ifPresent(t -> match.setTeam2Name(t.getName()));
+            
+            if (match.getWinnerTeamId() != null) {
+                Optional<Team> winner = teamService.getTeamById(match.getWinnerTeamId());
+                winner.ifPresent(t -> match.setWinnerTeamName(t.getName()));
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading team names for match " + match.getId() + ": " + e.getMessage());
         }
     }
     
@@ -211,16 +272,16 @@ public class MatchyController implements IDashboardMatchyController {
         ObservableList<Matchy> filteredList = FXCollections.observableArrayList();
         
         for (Matchy match : matchyList) {
-            boolean matchesSearch = match.getGame().toLowerCase().contains(searchText) ||
-                                   (match.getTeam1Name() != null && match.getTeam1Name().toLowerCase().contains(searchText)) ||
-                                   (match.getTeam2Name() != null && match.getTeam2Name().toLowerCase().contains(searchText)) ||
-                                   (match.getLocation() != null && match.getLocation().toLowerCase().contains(searchText));
+            boolean matchesSearch = searchText.isEmpty() || 
+                match.getGame().toLowerCase().contains(searchText) ||
+                (match.getTeam1Name() != null && match.getTeam1Name().toLowerCase().contains(searchText)) ||
+                (match.getTeam2Name() != null && match.getTeam2Name().toLowerCase().contains(searchText));
             
             boolean matchesGame = "All".equals(selectedGame) || 
-                                selectedGame.equals(match.getGame());
+                match.getGame().equals(selectedGame);
             
             boolean matchesStatus = "All".equals(selectedStatus) || 
-                                  selectedStatus.equals(match.getStatus());
+                match.getStatus().equals(selectedStatus);
             
             if (matchesSearch && matchesGame && matchesStatus) {
                 filteredList.add(match);
@@ -239,10 +300,10 @@ public class MatchyController implements IDashboardMatchyController {
     @FXML
     private void handleCreateMatch() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/create.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/dashboardMatchyCreate.fxml"));
             Parent root = loader.load();
             
-            MatchyCreateController controller = loader.getController();
+            DashboardMatchyCreateController controller = loader.getController();
             controller.setMatchyController(this);
             
             Stage stage = (Stage) createMatchButton.getScene().getWindow();
@@ -257,7 +318,7 @@ public class MatchyController implements IDashboardMatchyController {
     }
     
     @FXML
-    private void handleEditMatch() {
+    private void handleEditMatchFromTable() {
         Matchy selectedMatch = matchyTableView.getSelectionModel().getSelectedItem();
         if (selectedMatch == null) {
             showWarning("Please select a match to edit.");
@@ -265,10 +326,10 @@ public class MatchyController implements IDashboardMatchyController {
         }
         
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/edit.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/dashboardMatchyEdit.fxml"));
             Parent root = loader.load();
             
-            MatchyEditController controller = loader.getController();
+            DashboardMatchyEditController controller = loader.getController();
             controller.setMatch(selectedMatch);
             controller.setMatchyController(this);
             
@@ -284,6 +345,13 @@ public class MatchyController implements IDashboardMatchyController {
     }
     
     @FXML
+    private void handleEditMatch(Matchy match) {
+        // This method handles edit requests from table row buttons
+        // Redirect to the table-based edit method
+        handleEditMatchFromTable();
+    }
+    
+    @FXML
     private void handleDeleteMatch() {
         Matchy selectedMatch = matchyTableView.getSelectionModel().getSelectedItem();
         if (selectedMatch == null) {
@@ -292,10 +360,10 @@ public class MatchyController implements IDashboardMatchyController {
         }
         
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/delete.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/dashboardMatchyDelete.fxml"));
             Parent root = loader.load();
             
-            MatchyDeleteController controller = loader.getController();
+            DashboardMatchyDeleteController controller = loader.getController();
             controller.setMatch(selectedMatch);
             controller.setMatchyController(this);
             
@@ -311,54 +379,58 @@ public class MatchyController implements IDashboardMatchyController {
     }
     
     @FXML
+    private void handleDeleteMatch(Matchy match) {
+        // This method handles delete requests from table row buttons
+        // Redirect to the table-based delete method
+        handleDeleteMatch();
+    }
+    
+    @FXML
+    private void handleViewMatch(Matchy match) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/view.fxml"));
+            Parent root = loader.load();
+            
+            MatchyViewController controller = loader.getController();
+            controller.setMatch(match);
+            
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root, 600, 400));
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Match Details - Phantom App");
+            stage.showAndWait();
+        } catch (Exception e) {
+            showError("Error opening match details: " + e.getMessage());
+        }
+    }
+    
+    @FXML
     private void handleRefresh() {
-        loadMatches();
+        loadMatchesData();
         searchField.clear();
         gameFilterComboBox.setValue("All");
         statusFilterComboBox.setValue("All");
     }
     
     @FXML
-    private void handleBackToHome() {
+    private void handleBackToDashboard() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/home/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/dashboard/dashboard.fxml"));
             Parent root = loader.load();
             
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(root, 1920, 1080));
             stage.setMaximized(true);
             stage.setFullScreen(true);
-            stage.setTitle("Home - Phantom App");
+            stage.setTitle("Dashboard - Phantom App");
             stage.show();
         } catch (Exception e) {
-            showError("Error returning to home: " + e.getMessage());
+            showError("Error returning to dashboard: " + e.getMessage());
         }
     }
     
-    @FXML
-    private void handleViewMatch(MouseEvent event) {
-        if (event.getClickCount() == 2) {
-            Matchy selectedMatch = matchyTableView.getSelectionModel().getSelectedItem();
-            if (selectedMatch != null) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/view.fxml"));
-                    Parent root = loader.load();
-                    
-                    MatchyViewController controller = loader.getController();
-                    controller.setMatch(selectedMatch);
-                    
-                    Stage stage = new Stage();
-                    stage.setTitle("Match Details: " + selectedMatch.getGame());
-                    stage.setScene(new Scene(root, 700, 600));
-                    stage.setResizable(false);
-                    stage.show();
-                } catch (Exception e) {
-                    showError("Error opening match details: " + e.getMessage());
-                }
-            }
-        }
-    }
-    
+    @Override
     public void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -367,6 +439,7 @@ public class MatchyController implements IDashboardMatchyController {
         alert.showAndWait();
     }
     
+    @Override
     public void showWarning(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
@@ -375,6 +448,7 @@ public class MatchyController implements IDashboardMatchyController {
         alert.showAndWait();
     }
     
+    @Override
     public void showSuccess(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
@@ -385,7 +459,12 @@ public class MatchyController implements IDashboardMatchyController {
     
     @Override
     public void setMatchyController(IDashboardMatchyController matchyController) {
-        // This method is required by the interface but not used in the original MatchyController
-        // The dashboard controllers will handle their own controller references
+        // This method is required by the interface but not used in the dashboard controller
+        // The dashboard controller manages its own state
+    }
+    
+    public void loadMatches() {
+        // This method is called from outside to refresh the matches list
+        loadMatchesData();
     }
 }

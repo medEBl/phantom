@@ -1,0 +1,380 @@
+/* Phantom Force Teams CSS - Professional Edition */
+/* Color Palette: Red, Dark Red, Black */
+
+.root {
+    -fx-background-color: #0b0b0e;
+    -fx-font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
+}
+
+/* ================= MAIN CONTAINER ================= */
+.teams-container {
+    -fx-background: radial-gradient(center 50% 50%, radius 80%, #1a1a22 0%, #07070a 100%);
+    -fx-background-color: #0b0b0e;
+}
+
+.create-team-container, .edit-team-container, .view-team-container {
+    -fx-background: radial-gradient(center 50% 50%, radius 80%, #1a1a22 0%, #07070a 100%);
+    -fx-background-color: #0b0b0e;
+}
+
+/* ================= HEADER ================= */
+.teams-header {
+    -fx-background-color: rgba(10, 10, 15, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 0 0 1 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.teams-info {
+    -fx-background-color: transparent;
+    -fx-padding: 18 40;
+}
+
+.teams-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.3), 5, 0, 0, 0);
+}
+
+/* ================= CONTROLS BAR ================= */
+.teams-controls {
+    -fx-background-color: rgba(20, 20, 25, 0.9);
+    -fx-padding: 15 40;
+    -fx-border-color: rgba(255, 45, 45, 0.1);
+    -fx-border-width: 0 0 1 0;
+}
+
+.teams-stats {
+    -fx-background-color: rgba(20, 20, 25, 0.7);
+    -fx-padding: 10 40;
+}
+
+.stat-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #ff2d2d;
+}
+
+.help-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+    -fx-font-style: italic;
+}
+
+/* ================= BUTTON STYLES ================= */
+.primary-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border: none;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 20;
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 5, 0, 0, 2);
+}
+
+.primary-button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #cc0000, #ff2d2d);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.4), 10, 0, 0, 4);
+    -fx-translate-y: -2;
+}
+
+.primary-button:pressed {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #990000, #cc0000);
+    -fx-translate-y: 0;
+}
+
+.secondary-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-text-fill: #e6e6e6;
+    -fx-cursor: hand;
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 20;
+}
+
+.secondary-button:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.15);
+    -fx-border-color: #ff2d2d;
+    -fx-text-fill: #ff2d2d;
+    -fx-translate-y: -2;
+}
+
+.danger-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #cc0000, #990000);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border: none;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 20;
+}
+
+.danger-button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #990000, #660000);
+    -fx-translate-y: -2;
+}
+
+/* ================= FORM ELEMENTS ================= */
+.search-field, .form-input, .form-input-readonly {
+    -fx-font-size: 14px;
+    -fx-font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    -fx-background-color: rgba(30, 30, 40, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #666666;
+    -fx-padding: 10 14;
+}
+
+.form-input-readonly {
+    -fx-background-color: rgba(40, 40, 50, 0.7);
+    -fx-text-fill: #b3b3b3;
+}
+
+.search-field:focused, .form-input:focused {
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 2px;
+    -fx-background-color: rgba(40, 40, 50, 0.95);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 8, 0, 0, 0);
+}
+
+.filter-combo, .form-combo {
+    -fx-font-size: 14px;
+    -fx-background-color: rgba(30, 30, 40, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 8 12;
+}
+
+.filter-combo:focused, .form-combo:focused {
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 2px;
+}
+
+.filter-combo .list-cell, .form-combo .list-cell {
+    -fx-background-color: rgba(30, 30, 40, 0.95);
+    -fx-text-fill: #ffffff;
+    -fx-padding: 8 12;
+}
+
+.filter-combo .list-cell:hover, .form-combo .list-cell:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.2);
+}
+
+/* ================= TABLE STYLES ================= */
+.teams-table {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+
+.teams-table .column-header {
+    -fx-background-color: rgba(20, 20, 25, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 12 16;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #ff2d2d;
+}
+
+.teams-table .table-row-cell {
+    -fx-background-color: rgba(30, 30, 40, 0.7);
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 12 16;
+}
+
+.teams-table .table-row-cell:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.1);
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-cursor: hand;
+}
+
+.teams-table .table-row-cell:selected {
+    -fx-background-color: rgba(255, 45, 45, 0.2);
+    -fx-border-color: #ff2d2d;
+}
+
+.teams-table .table-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-padding: 8 12;
+}
+
+/* ================= SCROLL PANE ================= */
+.teams-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.teams-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.teams-scroll .scroll-bar:vertical {
+    -fx-background-color: rgba(20, 20, 25, 0.9);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 0 0 0 1px;
+}
+
+.teams-scroll .scroll-bar:vertical .track {
+    -fx-background-color: rgba(30, 30, 40, 0.9);
+}
+
+.teams-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: #ff2d2d;
+    -fx-background-radius: 4px;
+}
+
+.teams-scroll .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #ff5e5e;
+}
+
+/* ================= FORM LAYOUT ================= */
+.create-header, .edit-header, .view-header {
+    -fx-background-color: rgba(20, 20, 25, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 0 0 1px 0;
+    -fx-alignment: CENTER;
+}
+
+.create-title, .edit-title, .view-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e);
+}
+
+.create-subtitle, .edit-subtitle, .view-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: 500;
+}
+
+.create-form, .edit-form, .view-form {
+    -fx-background-color: rgba(20, 20, 25, 0.9);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1px;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 15, 0, 0, 0);
+}
+
+.form-field, .view-field {
+    -fx-background-color: transparent;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.form-label, .view-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: 600;
+}
+
+.view-value {
+    -fx-font-size: 15px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 500;
+    -fx-background-color: rgba(30, 30, 40, 0.7);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10 14;
+}
+
+.error-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #ff2d2d;
+    -fx-font-weight: 600;
+    -fx-background-color: rgba(255, 45, 45, 0.1);
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8 12;
+}
+
+/* ================= ACTIONS BAR ================= */
+.create-actions, .edit-actions, .view-actions {
+    -fx-background-color: rgba(20, 20, 25, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1px 0 0 0;
+}
+
+/* ================= TOOLTIP ================= */
+.tooltip {
+    -fx-background-color: rgba(20, 20, 25, 0.98);
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-padding: 8 12;
+}
+
+/* ================= NAVIGATION ================= */
+.teams-nav {
+    -fx-background-color: rgba(20, 20, 25, 0.9);
+    -fx-padding: 0;
+    -fx-border-color: rgba(255, 45, 45, 0.1);
+    -fx-border-width: 0 0 1px 0;
+}
+
+.nav-button, .nav-button-active {
+    -fx-background-color: transparent;
+    -fx-text-fill: #b3b3b3;
+    -fx-cursor: hand;
+    -fx-font-weight: 600;
+    -fx-font-size: 14px;
+    -fx-padding: 14 24;
+}
+
+.nav-button:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.1);
+    -fx-text-fill: #ff2d2d;
+    -fx-translate-y: -2;
+}
+
+.nav-button-active {
+    -fx-background-color: rgba(255, 45, 45, 0.15);
+    -fx-text-fill: #ff2d2d;
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 0 0 2px 0;
+}
+
+/* ================= USER INFO ================= */
+.user-container {
+    -fx-background-color: rgba(255, 255, 255, 0.03);
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 8 16;
+}
+
+.user-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #e6e6e6;
+}
+
+.user-role {
+    -fx-font-size: 12px;
+    -fx-text-fill: #b3b3b3;
+}

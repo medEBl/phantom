@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<BorderPane styleClass="create-match-container" prefWidth="1400" prefHeight="900" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.matchy.DashboardMatchyCreateController">
+    <stylesheets>
+      <URL value="@/matchy/css/dashboardMatchy.css" />
+    </stylesheets>
+
+    <top>
+      <VBox styleClass="create-header" spacing="10">
+         <children>
+            <Text styleClass="create-title" text="Create New Match" />
+            <Text styleClass="create-subtitle" text="Fill in the details to create a new match" />
+         </children>
+         <padding>
+            <Insets top="20" right="20" bottom="10" left="20" />
+         </padding>
+      </VBox>
+    </top>
+
+    <center>
+      <ScrollPane styleClass="create-scroll" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+         <content>
+            <VBox styleClass="create-form" spacing="20" alignment="CENTER">
+               <children>
+                  <!-- Game Selection -->
+                  <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+                     <children>
+                        <Label styleClass="form-label" text="Game *" />
+                        <TextField fx:id="gameField" promptText="Enter game name (e.g., League of Legends)" styleClass="form-input" prefWidth="400" />
+                     </children>
+                  </VBox>
+
+                  <!-- Team 1 Selection -->
+                  <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+                     <children>
+                        <Label styleClass="form-label" text="Team 1 *" />
+                        <ComboBox fx:id="team1ComboBox" promptText="Select team 1" styleClass="form-combo" prefWidth="400" />
+                        <Label fx:id="team1NameLabel" styleClass="team-info" text="" />
+                     </children>
+                  </VBox>
+
+                  <!-- Team 2 Selection -->
+                  <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+                     <children>
+                        <Label styleClass="form-label" text="Team 2 *" />
+                        <ComboBox fx:id="team2ComboBox" promptText="Select team 2" styleClass="form-combo" prefWidth="400" />
+                        <Label fx:id="team2NameLabel" styleClass="team-info" text="" />
+                     </children>
+                  </VBox>
+
+                  <!-- Match Date -->
+                  <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+                     <children>
+                        <Label styleClass="form-label" text="Match Date *" />
+                        <DatePicker fx:id="matchDatePicker" styleClass="form-date" prefWidth="400" />
+                     </children>
+                  </VBox>
+
+                  <!-- Match Time -->
+                  <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+                     <children>
+                        <Label styleClass="form-label" text="Match Time *" />
+                        <TextField fx:id="matchTimeField" promptText="HH:MM" styleClass="form-input" prefWidth="400" />
+                     </children>
+                  </VBox>
+
+                  <!-- Status -->
+                  <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+                     <children>
+                        <Label styleClass="form-label" text="Status *" />
+                        <ComboBox fx:id="statusComboBox" promptText="Select status" styleClass="form-combo" prefWidth="400" />
+                     </children>
+                  </VBox>
+
+                  <!-- Location -->
+                  <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+                     <children>
+                        <Label styleClass="form-label" text="Location" />
+                        <TextField fx:id="locationField" promptText="Enter match location" styleClass="form-input" prefWidth="400" />
+                     </children>
+                  </VBox>
+
+                  <!-- Coordinates -->
+                  <HBox spacing="15" alignment="CENTER_LEFT">
+                     <children>
+                        <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+                           <children>
+                              <Label styleClass="form-label" text="Latitude" />
+                              <TextField fx:id="latitudeField" promptText="Enter latitude" styleClass="form-input" prefWidth="190" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+                           <children>
+                              <Label styleClass="form-label" text="Longitude" />
+                              <TextField fx:id="longitudeField" promptText="Enter longitude" styleClass="form-input" prefWidth="190" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                  <!-- Scores (for finished matches) -->
+                  <HBox spacing="15" alignment="CENTER_LEFT">
+                     <children>
+                        <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+                           <children>
+                              <Label styleClass="form-label" text="Team 1 Score" />
+                              <TextField fx:id="score1Field" promptText="Score" styleClass="form-input" prefWidth="190" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+                           <children>
+                              <Label styleClass="form-label" text="Team 2 Score" />
+                              <TextField fx:id="score2Field" promptText="Score" styleClass="form-input" prefWidth="190" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                  <!-- Buttons -->
+                  <HBox spacing="20" alignment="CENTER">
+                     <children>
+                        <Button fx:id="createButton" text="Create Match" styleClass="create-button" prefWidth="150" onAction="#handleCreateMatch" />
+                        <Button fx:id="cancelButton" text="Cancel" styleClass="cancel-button" prefWidth="150" onAction="#handleBackToMatches" />
+                     </children>
+                  </HBox>
+
+                  <!-- Error Label -->
+                  <Label fx:id="errorLabel" styleClass="error-label" text="" visible="false" />
+               </children>
+               <padding>
+                  <Insets top="20" right="20" bottom="20" left="20" />
+               </padding>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

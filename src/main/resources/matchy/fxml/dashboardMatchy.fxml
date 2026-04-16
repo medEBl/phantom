@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<BorderPane styleClass="matchy-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.matchy.DashboardMatchyController">
+   <stylesheets>
+      <URL value="@/matchy/css/style.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="matchy-header">
+         <children>
+            <!-- Header with title and navigation -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="matchy-info">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="12">
+                     <children>
+                        <Text styleClass="matchy-title" text="PHANTOM" />
+                        <Text styleClass="matchy-title" fill="#ff2d2d" text="MATCHES MANAGEMENT" />
+                     </children>
+                  </HBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  
+                  <!-- Navigation back to dashboard -->
+                  <Button fx:id="backButton" onAction="#handleBackToDashboard" styleClass="secondary-button" text="← Back to Dashboard" />
+               </children>
+            </HBox>
+            
+            <!-- Control bar with search and filters -->
+            <HBox styleClass="matchy-controls" spacing="15">
+               <children>
+                  <TextField fx:id="searchField" promptText="Search matches..." styleClass="search-field" />
+                  <ComboBox fx:id="gameFilterComboBox" promptText="Filter by Game" styleClass="filter-combo" />
+                  <ComboBox fx:id="statusFilterComboBox" promptText="Filter by Status" styleClass="filter-combo" />
+                  <Button fx:id="refreshButton" onAction="#handleRefresh" styleClass="primary-button" text="Refresh" />
+               </children>
+            </HBox>
+            
+            <!-- Action buttons -->
+            <HBox styleClass="matchy-actions" spacing="10">
+               <children>
+                  <Button fx:id="createMatchButton" onAction="#handleCreateMatch" styleClass="success-button" text="+ Create Match" />
+                  <Button fx:id="editMatchButton" onAction="#handleEditMatchFromTable" styleClass="warning-button" text="Edit Match" disable="true" />
+                  <Button fx:id="deleteMatchButton" onAction="#handleDeleteMatch" styleClass="danger-button" text="🗑 Delete Match" disable="true" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+
+   <center>
+      <!-- Matches table -->
+      <ScrollPane styleClass="matchy-scroll" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+         <content>
+            <TableView fx:id="matchyTableView" styleClass="matchy-table">
+               <columns>
+                  <TableColumn fx:id="idColumn" text="ID" prefWidth="60" />
+                  <TableColumn fx:id="gameColumn" text="Game" prefWidth="120" />
+                  <TableColumn fx:id="matchDateColumn" text="Match Date" prefWidth="130" />
+                  <TableColumn fx:id="team1Column" text="Team 1" prefWidth="120" />
+                  <TableColumn fx:id="team2Column" text="Team 2" prefWidth="120" />
+                  <TableColumn fx:id="scoreColumn" text="Score" prefWidth="80" />
+                  <TableColumn fx:id="locationColumn" text="Location" prefWidth="100" />
+                  <TableColumn fx:id="winnerColumn" text="Winner" prefWidth="100" />
+                  <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+                  <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="180" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </content>
+      </ScrollPane>
+   </center>
+
+   <bottom>
+      <!-- Stats bar -->
+      <HBox styleClass="matchy-stats" alignment="CENTER_LEFT">
+         <children>
+            <Label fx:id="totalMatchesLabel" styleClass="stats-label" text="Total Matches: 0" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label styleClass="stats-label" text="Dashboard Matches Management System" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>

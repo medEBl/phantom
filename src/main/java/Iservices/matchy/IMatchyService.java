@@ -22,6 +22,6 @@ public interface IMatchyService {
     List<Matchy> getFinishedMatches();
 
     // Opérations spécifiques
-    void updateMatchResult(int matchId, int scoreTeam1, int scoreTeam2, int winnerTeamId);
+    void updateMatchResult(int matchId, int scoreTeam1, int scoreTeam2);
     void cancelMatch(int matchId);
 }

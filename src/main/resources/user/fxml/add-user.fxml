@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.AddUserController">
+   <stylesheets>
+      <URL value="@/dashboard/css/dashboard.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="dashboard-header">
+         <children>
+            <!-- Admin Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="dashboard-info">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <children>
+                        <Text styleClass="dashboard-title" text="⚔️ ADMIN" />
+                        <Text styleClass="dashboard-title" fill="#ff2d2d" text="ADD USER" />
+                     </children>
+                  </HBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="logout-button" text="🔙 BACK TO USERS" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+
+   <center>
+      <ScrollPane styleClass="dashboard-scroll" fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+         <content>
+            <VBox spacing="30" styleClass="dashboard-content" alignment="CENTER">
+               <children>
+                  <!-- Add User Form -->
+                  <VBox spacing="25" styleClass="form-container" prefWidth="600">
+                     <children>
+                        <Text styleClass="section-title" text="👤 ADD NEW USER" />
+                        
+                        <!-- Personal Information -->
+                        <VBox spacing="15">
+                           <children>
+                              <Text styleClass="form-subtitle" text="📋 PERSONAL INFORMATION" />
+                              
+                              <GridPane hgap="15" vgap="15">
+                                 <children>
+                                    <Label text="Full Name:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <TextField fx:id="fullNameField" promptText="Enter full name" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                    
+                                    <Label text="Username:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                    <TextField fx:id="usernameField" promptText="Enter username" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    
+                                    <Label text="Email:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                    <TextField fx:id="emailField" promptText="Enter email address" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    
+                                                                        
+                                    <Label text="Country:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                    <TextField fx:id="countryField" promptText="Enter country" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints prefWidth="150" />
+                                    <ColumnConstraints prefWidth="400" />
+                                 </columnConstraints>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                        
+                        <!-- Account Information -->
+                        <VBox spacing="15">
+                           <children>
+                              <Text styleClass="form-subtitle" text="🔐 ACCOUNT INFORMATION" />
+                              
+                              <GridPane hgap="15" vgap="15">
+                                 <children>
+                                    <Label text="Password:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                    
+                                    <Label text="Confirm Password:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                    <PasswordField fx:id="confirmPasswordField" promptText="Confirm password" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    
+                                    <Label text="Role:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                    <ComboBox fx:id="roleComboBox" promptText="Select role" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    
+                                    <Label text="Status:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="statusComboBox" promptText="Select status" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints prefWidth="150" />
+                                    <ColumnConstraints prefWidth="400" />
+                                 </columnConstraints>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                        
+                        <!-- Game Information -->
+                        <VBox spacing="15">
+                           <children>
+                              <Text styleClass="form-subtitle" text="🎮 GAME INFORMATION" />
+                              
+                              <GridPane hgap="15" vgap="15">
+                                 <children>
+                                    <Label text="Achievement Points:" styleClass="form-label" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <TextField fx:id="achievementPointsField" promptText="Enter initial points" styleClass="text-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                    
+                                                                     </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints prefWidth="150" />
+                                    <ColumnConstraints prefWidth="400" />
+                                 </columnConstraints>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                        
+                        <!-- Error and Success Messages -->
+                        <Label fx:id="errorLabel" styleClass="error-label" text="" visible="false" />
+                        <Label fx:id="successLabel" styleClass="success-label" text="" visible="false" />
+                        
+                        <!-- Action Buttons -->
+                        <HBox spacing="20" alignment="CENTER">
+                           <children>
+                              <Button fx:id="clearButton" onAction="#handleClear" styleClass="secondary-button" text="🗑️ CLEAR FORM" prefWidth="150" />
+                              <Button fx:id="addButton" onAction="#handleAddUser" styleClass="action-button" text="➕ ADD USER" prefWidth="150" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<BorderPane styleClass="teams-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.team.TeamController">
+   <stylesheets>
+      <URL value="@/team/css/teams.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="teams-header">
+         <children>
+            <!-- Header with title and navigation -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="teams-info">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="12">
+                     <children>
+                        <Text styleClass="teams-title" text="PHANTOM" />
+                        <Text styleClass="teams-title" fill="#ff2d2d" text="TEAMS" />
+                     </children>
+                  </HBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  
+                  <!-- Navigation back to home -->
+                  <Button fx:id="backButton" onAction="#handleBackToHome" styleClass="secondary-button" text="← Back to Home" />
+               </children>
+            </HBox>
+
+            <!-- Controls Bar -->
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="teams-controls">
+               <children>
+                  <TextField fx:id="searchField" promptText="Search teams..." styleClass="search-field" prefWidth="300" />
+                  <ComboBox fx:id="gameFilterComboBox" prefWidth="200" styleClass="filter-combo" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  
+                  <Button fx:id="createTeamButton" onAction="#handleCreateTeam" styleClass="primary-button" text="➕ Create Team" />
+                  <Button fx:id="editTeamButton" onAction="#handleEditTeam" styleClass="secondary-button" text="✏️ Edit" disable="true" />
+                  <Button fx:id="deleteTeamButton" onAction="#handleDeleteTeam" styleClass="danger-button" text="🗑️ Delete" disable="true" />
+                  <Button fx:id="refreshButton" onAction="#handleRefresh" styleClass="secondary-button" text="🔄 Refresh" />
+               </children>
+            </HBox>
+            
+            <!-- Stats Bar -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="teams-stats">
+               <children>
+                  <Label fx:id="totalTeamsLabel" styleClass="stat-label" text="Total Teams: 0" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Text styleClass="help-text" text="Double-click a row to view team details" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+
+   <center>
+      <ScrollPane styleClass="teams-scroll" fitToWidth="true" fitToHeight="true" hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED">
+         <content>
+            <VBox alignment="CENTER" spacing="20" styleClass="teams-content">
+               <children>
+                  <TableView fx:id="teamTableView" styleClass="teams-table" onMouseClicked="#handleViewTeam">
+                     <columns>
+                           <TableColumn fx:id="idColumn" text="ID" prefWidth="80" />
+                           <TableColumn fx:id="nameColumn" text="Team Name" prefWidth="200" />
+                           <TableColumn fx:id="gameColumn" text="Game" prefWidth="150" />
+                           <TableColumn fx:id="creationDateColumn" text="Created" prefWidth="180" />
+                           <TableColumn fx:id="coachNameColumn" text="Coach" prefWidth="150" />
+                     </columns>
+                     <columnResizePolicy>
+                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

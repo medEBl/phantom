@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<VBox styleClass="matchy-form-container" prefWidth="400" prefHeight="300" spacing="20" alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.matchy.MatchyDeleteController">
+   <stylesheets>
+      <URL value="@/matchy/css/style.css" />
+   </stylesheets>
+
+   <padding>
+      <Insets top="30" right="30" bottom="30" left="30" />
+   </padding>
+
+   <children>
+      <!-- Header -->
+      <VBox spacing="10" alignment="CENTER">
+         <children>
+            <Text styleClass="form-title" text="Delete Match" />
+            <Text styleClass="form-subtitle" text="Are you sure you want to delete this match?" />
+         </children>
+      </VBox>
+
+      <!-- Match Details -->
+      <VBox spacing="15" styleClass="delete-details" alignment="CENTER">
+         <children>
+            <Label fx:id="matchIdLabel" styleClass="detail-label" text="Match ID: " />
+            <Label fx:id="gameLabel" styleClass="detail-label" text="Game: " />
+            <Label fx:id="team1Label" styleClass="detail-label" text="Team 1: " />
+            <Label fx:id="team2Label" styleClass="detail-label" text="Team 2: " />
+            <Label fx:id="dateLabel" styleClass="detail-label" text="Date: " />
+            <Label fx:id="statusLabel" styleClass="detail-label" text="Status: " />
+         </children>
+      </VBox>
+
+      <!-- Warning Label -->
+      <Label fx:id="warningLabel" styleClass="warning-label" text="" visible="false" wrapText="true" />
+
+      <!-- Buttons -->
+      <HBox spacing="15" alignment="CENTER">
+         <children>
+            <Button fx:id="confirmButton" onAction="#handleConfirm" styleClass="danger-button" text="Delete" />
+            <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="secondary-button" text="Cancel" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

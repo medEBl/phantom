@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.team.DashboardTeamsController">
+   <stylesheets>
+      <URL value="@/team/css/dashboardTeams.css" />
+   </stylesheets>
+
+   <top>
+      <VBox spacing="20">
+         <children>
+            <!-- Header Section -->
+            <HBox styleClass="header-section" alignment="CENTER_LEFT">
+               <children>
+                  <VBox spacing="5">
+                     <children>
+                        <Text styleClass="header-title" text="Teams Management" />
+                        <Text styleClass="header-subtitle" text="Manage your gaming teams and players" />
+                     </children>
+                  </VBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="backButton" onAction="#handleBackToDashboard" styleClass="back-button" text="Back to Dashboard" />
+               </children>
+            </HBox>
+
+            <!-- Stats Section -->
+            <HBox styleClass="stats-section" alignment="CENTER">
+               <children>
+                  <VBox styleClass="stat-card" alignment="CENTER">
+                     <children>
+                        <Label fx:id="totalTeamsLabel" styleClass="stat-number" text="0" />
+                        <Text styleClass="stat-label" text="Total Teams" />
+                     </children>
+                  </VBox>
+                  <VBox styleClass="stat-card" alignment="CENTER">
+                     <children>
+                        <Label fx:id="activeTeamsLabel" styleClass="stat-number" text="0" />
+                        <Text styleClass="stat-label" text="Active Teams" />
+                     </children>
+                  </VBox>
+                  <VBox styleClass="stat-card" alignment="CENTER">
+                     <children>
+                        <Label fx:id="gamesLabel" styleClass="stat-number" text="6" />
+                        <Text styleClass="stat-label" text="Games" />
+                     </children>
+                  </VBox>
+                  <VBox styleClass="stat-card" alignment="CENTER">
+                     <children>
+                        <Label fx:id="coachesLabel" styleClass="stat-number" text="0" />
+                        <Text styleClass="stat-label" text="Coaches" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <!-- Search and Filter Section -->
+            <HBox styleClass="filter-section" alignment="CENTER_LEFT">
+               <children>
+                  <TextField fx:id="searchField" promptText="Search teams..." styleClass="search-field" prefWidth="300" />
+                  <ComboBox fx:id="gameFilterComboBox" promptText="Filter by Game" styleClass="filter-combo" prefWidth="200" />
+                  <Button fx:id="refreshButton" onAction="#handleRefresh" text="Refresh" styleClass="action-button" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  
+                  <!-- Action Buttons -->
+                  <Button fx:id="createTeamButton" onAction="#handleCreateTeam" text="Create Team" styleClass="create-button" />
+                  <Button fx:id="editTeamButton" onAction="#handleEditTeam" text="Edit Team" styleClass="edit-button" />
+                  <Button fx:id="deleteTeamButton" onAction="#handleDeleteTeam" text="Delete Team" styleClass="delete-button" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+
+   <center>
+      <VBox styleClass="table-section" VBox.vgrow="ALWAYS">
+         <children>
+            <!-- Teams Table -->
+            <TableView fx:id="teamsTableView" styleClass="team-table" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="idColumn" text="ID" prefWidth="80" />
+                  <TableColumn fx:id="nameColumn" text="Team Name" prefWidth="250" />
+                  <TableColumn fx:id="gameColumn" text="Game" prefWidth="150" />
+                  <TableColumn fx:id="coachColumn" text="Coach ID" prefWidth="100" />
+                  <TableColumn fx:id="createdAtColumn" text="Created At" prefWidth="200" />
+                  <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="250" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

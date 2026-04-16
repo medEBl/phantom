@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+
+<VBox alignment="CENTER" spacing="20" styleClass="login-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.LoginController">
+   <stylesheets>
+      <URL value="@/user/css/style.css" />
+   </stylesheets>
+         <children>
+      <Text styleClass="login-title" text="Login" />
+      
+      <VBox spacing="15" styleClass="login-form">
+         <children>
+            <VBox spacing="5">
+               <children>
+                  <Label styleClass="form-label" text="Email:" />
+                  <TextField fx:id="emailField" prefWidth="250" promptText="Enter your email" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="5">
+               <children>
+                  <Label styleClass="form-label" text="Password:" />
+                  <PasswordField fx:id="passwordField" prefWidth="250" promptText="Enter your password" />
+               </children>
+            </VBox>
+            
+            <Button fx:id="loginButton" onAction="#handleLogin" prefWidth="250" styleClass="login-button" text="Login" />
+            
+            <Hyperlink fx:id="registerLink" onAction="#handleRegister" styleClass="register-link" text="Don't have an account? Register here" />
+         </children>
+      </VBox>
+      
+      <Label fx:id="errorLabel" styleClass="error-label" text="" />
+   </children>
+</VBox>

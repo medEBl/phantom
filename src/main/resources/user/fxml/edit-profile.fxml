@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+
+<ScrollPane fitToWidth="true" styleClass="edit-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.EditProfileController">
+   <stylesheets>
+      <URL value="@/user/css/style.css" />
+   </stylesheets>
+      <content>
+      <VBox alignment="CENTER" spacing="20">
+         <children>
+            <Text styleClass="edit-title" text="Edit Profile" />
+            
+            <VBox spacing="15" styleClass="edit-form" maxWidth="400">
+               <children>
+                  <VBox spacing="5">
+                     <children>
+                        <Label styleClass="form-label" text="Full Name:*" />
+                        <TextField fx:id="fullNameField" promptText="Enter your full name" />
+                        <Label fx:id="fullNameError" styleClass="error-label" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label styleClass="form-label" text="Country:*" />
+                        <TextField fx:id="countryField" promptText="Enter your country" />
+                        <Label fx:id="countryError" styleClass="error-label" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label styleClass="form-label" text="Birth Date:* (YYYY-MM-DD)" />
+                        <TextField fx:id="birthDateField" promptText="YYYY-MM-DD" />
+                        <Label fx:id="birthDateError" styleClass="error-label" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <Separator style="-fx-padding: 10 0;" />
+                  
+                  <Text styleClass="form-label" text="Change Password (Optional)" />
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label styleClass="form-label" text="Current Password:" />
+                        <PasswordField fx:id="currentPasswordField" promptText="Enter current password" />
+                        <Label fx:id="currentPasswordError" styleClass="error-label" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label styleClass="form-label" text="New Password:" />
+                        <PasswordField fx:id="newPasswordField" promptText="Enter new password" />
+                        <Label fx:id="newPasswordError" styleClass="error-label" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="5">
+                     <children>
+                        <Label styleClass="form-label" text="Confirm New Password:" />
+                        <PasswordField fx:id="confirmNewPasswordField" promptText="Confirm new password" />
+                        <Label fx:id="confirmNewPasswordError" styleClass="error-label" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <HBox spacing="15" alignment="CENTER">
+                     <children>
+                        <Button fx:id="saveButton" onAction="#handleSave" prefWidth="120" styleClass="save-button" text="Save" />
+                        <Button fx:id="cancelButton" onAction="#handleCancel" prefWidth="120" styleClass="login-button" text="Cancel" />
+                     </children>
+                  </HBox>
+                  
+                  <Label fx:id="successLabel" styleClass="success-label" text="" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
