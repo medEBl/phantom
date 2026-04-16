@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Phantom {
-    String url ="jdbc:mysql://localhost:3306/phantom";
+    String url ="jdbc:mysql://localhost:3306/phantome";
     String user="root";
     String mdp="";
     private Connection cnx;

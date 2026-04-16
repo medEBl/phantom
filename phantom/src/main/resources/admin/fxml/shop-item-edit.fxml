@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<?import java.net.URL?>
+<BorderPane styleClass="admin-container" prefWidth="1920" prefHeight="1080" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.admin.AdminEditShopItemController">
+   <stylesheets>
+      <URL value="@/admin/css/admin.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="admin-header">
+         <children>
+            <!-- Admin Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="admin-info">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <children>
+                        <Text styleClass="admin-title" text="SHOP ITEMS" />
+                        <Text styleClass="admin-subtitle" text="EDIT ITEM" />
+                     </children>
+                  </HBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="back-button" text="🔙 BACK TO ITEMS" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+
+   <center>
+      <VBox spacing="30" alignment="CENTER" styleClass="form-container">
+         <children>
+            <!-- Form Title -->
+            <Text styleClass="form-title" text="EDIT SHOP ITEM" />
+
+            <!-- Shop Item Form -->
+            <GridPane hgap="20" vgap="15" alignment="CENTER" maxWidth="600">
+               <children>
+                  <!-- ID Field (Readonly) -->
+                  <Label text="Item ID:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                  <TextField fx:id="idField" editable="false" styleClass="form-input readonly" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                  <!-- Buyer ID Field -->
+                  <Label text="Buyer ID:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                  <TextField fx:id="buyerIdField" promptText="Enter new buyer ID (optional)" styleClass="form-input" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                  <!-- Item Name Field -->
+                  <Label text="Item Name:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                  <TextField fx:id="itemNameField" promptText="Enter new item name (optional)" styleClass="form-input" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                  <!-- Item Description Field -->
+                  <Label text="Item Description:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                  <TextField fx:id="itemDescriptionField" promptText="Enter new description (optional)" styleClass="form-input" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                  <!-- Item Category Field -->
+                  <Label text="Item Category:" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                  <TextField fx:id="itemCategoryField" promptText="Enter new category (optional)" styleClass="form-input" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                  <!-- Price Field -->
+                  <Label text="Price (DT):" styleClass="form-label" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                  <TextField fx:id="priceField" promptText="Enter new price (optional)" styleClass="form-input" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+                  <!-- Quantity Field -->
+                  <Label text="Quantity:" styleClass="form-label" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                  <TextField fx:id="quantityField" promptText="Enter new quantity (optional)" styleClass="form-input" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+
+                  <!-- Status Field -->
+                  <Label text="Status:" styleClass="form-label" GridPane.rowIndex="7" GridPane.columnIndex="0" />
+                  <TextField fx:id="statusField" promptText="pending, confirmed, cancelled, refunded" styleClass="form-input" GridPane.rowIndex="7" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+
+            <!-- Form Buttons -->
+            <HBox spacing="20" alignment="CENTER">
+               <children>
+                  <Button fx:id="saveButton" onAction="#handleUpdateShopItem" styleClass="primary-button" text="💾 UPDATE ITEM" prefWidth="150" />
+                  <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="secondary-button" text="🚫 CANCEL" prefWidth="150" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

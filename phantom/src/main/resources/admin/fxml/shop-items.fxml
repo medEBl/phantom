@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<?import java.net.URL?>
+<BorderPane styleClass="admin-container" prefWidth="1920" prefHeight="1080" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.admin.ShopItemController">
+   <stylesheets>
+      <URL value="@/admin/css/admin.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="admin-header">
+         <children>
+            <!-- Admin Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="admin-info">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <children>
+                        <Text styleClass="admin-title" text="SHOP ITEMS" />
+                        <Text styleClass="admin-subtitle" text="MANAGEMENT" />
+                     </children>
+                  </HBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="back-button" text="🔙 BACK TO DASHBOARD" />
+               </children>
+            </HBox>
+
+            <!-- Shop Navigation -->
+            <HBox alignment="CENTER_LEFT" spacing="0" styleClass="dashboard-nav">
+               <children>
+                  <Button fx:id="navShopItems" styleClass="nav-button-active" text="📦 SHOP ITEMS" />
+                  <Button fx:id="navPayments" onAction="#handlePayments" styleClass="nav-button" text="💳 PAYMENTS" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="addShopItemButton" onAction="#handleAddShopItem" styleClass="action-button" text="➕ ADD ITEM" />
+                  <Button fx:id="refreshButton" onAction="#handleRefresh" styleClass="action-button" text="🔄 REFRESH" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+
+   <center>
+      <VBox spacing="20" styleClass="main-content">
+         <children>
+            <!-- Search and Filter Bar -->
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="search-bar">
+               <children>
+                  <TextField fx:id="searchField" promptText="🔍 Search shop items..." prefWidth="300" />
+                  <ComboBox fx:id="filterCategoryCombo" prefWidth="200" />
+                  <ComboBox fx:id="filterStatusCombo" prefWidth="200" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="editShopItemButton" onAction="#handleEditShopItem" styleClass="action-button" text="✏️ EDIT" />
+                  <Button fx:id="deleteShopItemButton" onAction="#handleDeleteShopItem" styleClass="action-button delete" text="🗑 DELETE" />
+               </children>
+            </HBox>
+
+            <!-- Statistics Cards -->
+            <HBox spacing="20" alignment="CENTER">
+               <children>
+                  <VBox styleClass="stat-card" prefWidth="250">
+                     <children>
+                        <Text styleClass="stat-title" text="📊 TOTAL ITEMS" />
+                        <Text fx:id="totalItemsLabel" styleClass="stat-value" text="0" />
+                     </children>
+                  </VBox>
+                  <VBox styleClass="stat-card" prefWidth="250">
+                     <children>
+                        <Text styleClass="stat-title" text="💰 TOTAL VALUE" />
+                        <Text fx:id="totalValueLabel" styleClass="stat-value" text="0.00 DT" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <!-- Shop Items Table -->
+            <TableView fx:id="shopItemsTable" styleClass="table-view" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="colId" text="ID" prefWidth="80" />
+                  <TableColumn fx:id="colBuyerId" text="Buyer ID" prefWidth="100" />
+                  <TableColumn fx:id="colItemName" text="Item Name" prefWidth="200" />
+                  <TableColumn fx:id="colItemDescription" text="Description" prefWidth="250" />
+                  <TableColumn fx:id="colItemCategory" text="Category" prefWidth="120" />
+                  <TableColumn fx:id="colPrice" text="Price" prefWidth="100" />
+                  <TableColumn fx:id="colQuantity" text="Quantity" prefWidth="80" />
+                  <TableColumn fx:id="colTotalPrice" text="Total Price" prefWidth="120" />
+                  <TableColumn fx:id="colStatus" text="Status" prefWidth="100" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

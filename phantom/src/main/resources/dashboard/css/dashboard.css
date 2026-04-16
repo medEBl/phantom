@@ -1,0 +1,486 @@
+/* Phantom Force Admin Dashboard CSS - Ultimate Gaming Theme */
+
+.root {
+    -fx-background-color: #0b0b0e;
+    -fx-font-family: 'Inter', 'Segoe UI', 'Arial Black', sans-serif;
+}
+
+/* ================= MAIN CONTAINER ================= */
+.dashboard-container {
+    -fx-background: radial-gradient(center 50% 50%, radius 70%, #1a1a22 0%, #07070a 100%);
+    -fx-background-color: #0b0b0e;
+}
+
+/* ================= HEADER ================= */
+.dashboard-header {
+    -fx-background-color: rgba(10, 10, 15, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 0 0 1 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.dashboard-info {
+    -fx-background-color: transparent;
+    -fx-padding: 18 30;
+}
+
+.dashboard-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e, #ff8a8a);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.3), 5, 0, 0, 0);
+}
+
+.admin-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: 600;
+    -fx-background-color: rgba(255, 45, 45, 0.15);
+    -fx-padding: 8 16;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.logout-button {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border: none;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18;
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 5, 0, 0, 2);
+}
+
+.logout-button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #ff5e5e, #ff8a8a);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.4), 8, 0, 0, 3);
+    -fx-translate-y: -1;
+}
+
+/* ================= NAVIGATION ================= */
+.dashboard-nav {
+    -fx-background-color: rgba(20, 20, 25, 0.9);
+    -fx-padding: 0;
+    -fx-border-color: rgba(255, 45, 45, 0.1);
+    -fx-border-width: 0 0 1 0;
+}
+
+.nav-button, .nav-button-active {
+    -fx-background-color: transparent;
+    -fx-text-fill: #b3b3b3;
+    -fx-cursor: hand;
+    -fx-font-weight: 600;
+    -fx-font-size: 13px;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 12 22;
+    -fx-letter-spacing: 0.5px;
+}
+
+.nav-button:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.1);
+    -fx-text-fill: #ff2d2d;
+    -fx-translate-y: -2;
+}
+
+.nav-button-active {
+    -fx-background-color: rgba(255, 45, 45, 0.15);
+    -fx-text-fill: #ff2d2d;
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 0 0 2 0;
+}
+
+/* ================= SCROLL PANE ================= */
+.dashboard-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.dashboard-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.dashboard-scroll .scroll-bar:vertical {
+    -fx-background-color: rgba(20, 20, 25, 0.9);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 0 0 0 1;
+    -fx-pref-width: 8;
+}
+
+.dashboard-scroll .scroll-bar:vertical .track {
+    -fx-background-color: rgba(30, 30, 40, 0.9);
+}
+
+.dashboard-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: #ff2d2d;
+    -fx-background-radius: 4;
+}
+
+.dashboard-scroll .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #ff5e5e;
+}
+
+/* ================= CONTENT ================= */
+.dashboard-content {
+    -fx-padding: 30;
+    -fx-background-color: transparent;
+}
+
+/* ================= STATS CARDS ================= */
+.stat-card {
+    -fx-background-color: rgba(20, 20, 25, 0.85);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-padding: 25;
+    -fx-alignment: CENTER;
+    -fx-pref-width: 220;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+    -fx-transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    -fx-border-color: #ff2d2d;
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 15, 0, 0, 0);
+    -fx-translate-y: -5;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.stat-title {
+    -fx-font-size: 13px;
+    -fx-fill: #b3b3b3;
+    -fx-font-weight: 600;
+    -fx-letter-spacing: 1px;
+}
+
+.stat-value {
+    -fx-font-size: 38px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #ff2d2d;
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.3), 5, 0, 0, 0);
+}
+
+.stat-icon {
+    -fx-font-size: 32px;
+    -fx-fill: #ff2d2d;
+    -fx-opacity: 0.7;
+}
+
+.stat-trend-up {
+    -fx-text-fill: #2dff8b;
+    -fx-font-size: 12px;
+}
+
+.stat-trend-down {
+    -fx-text-fill: #ff2d2d;
+    -fx-font-size: 12px;
+}
+
+/* ================= SECTIONS ================= */
+.activity-section, .actions-section, .charts-section, .recent-section {
+    -fx-background-color: rgba(20, 20, 25, 0.85);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 30;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+
+.section-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 0%, #ffffff, #e6e6e6);
+}
+
+.section-subtitle {
+    -fx-font-size: 13px;
+    -fx-fill: #b3b3b3;
+}
+
+/* ================= TABLE VIEW ================= */
+.activity-table {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.activity-table .column-header-background {
+    -fx-background-color: rgba(30, 30, 40, 0.9);
+    -fx-background-radius: 12 12 0 0;
+}
+
+.activity-table .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255, 255, 255, 0.1);
+    -fx-border-width: 0 0 1 0;
+}
+
+.activity-table .column-header .label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #ff2d2d;
+    -fx-padding: 12 8;
+}
+
+.activity-table .table-row-cell {
+    -fx-background-color: rgba(25, 25, 32, 0.6);
+    -fx-border-color: rgba(255, 255, 255, 0.03);
+    -fx-border-width: 0 0 1 0;
+}
+
+.activity-table .table-row-cell:odd {
+    -fx-background-color: rgba(20, 20, 25, 0.6);
+}
+
+.activity-table .table-row-cell:selected {
+    -fx-background-color: rgba(255, 45, 45, 0.15);
+    -fx-border-color: #ff2d2d;
+}
+
+.activity-table .table-cell {
+    -fx-font-size: 13px;
+    -fx-text-fill: #e6e6e6;
+    -fx-padding: 12 8;
+}
+
+/* Status badges in table */
+.status-badge {
+    -fx-padding: 4 12;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+}
+
+.status-success {
+    -fx-background-color: rgba(45, 255, 139, 0.2);
+    -fx-text-fill: #2dff8b;
+}
+
+.status-warning {
+    -fx-background-color: rgba(255, 193, 7, 0.2);
+    -fx-text-fill: #ffc107;
+}
+
+.status-danger {
+    -fx-background-color: rgba(255, 45, 45, 0.2);
+    -fx-text-fill: #ff2d2d;
+}
+
+.status-info {
+    -fx-background-color: rgba(77, 124, 255, 0.2);
+    -fx-text-fill: #4d7cff;
+}
+
+/* ================= ACTION BUTTONS ================= */
+.action-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border: none;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 12 28;
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 5, 0, 0, 2);
+}
+
+.action-button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #ff5e5e, #ff8a8a);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.4), 10, 0, 0, 4);
+    -fx-translate-y: -2;
+}
+
+.action-button:pressed {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #cc0000, #ff2d2d);
+    -fx-translate-y: 0;
+}
+
+.secondary-button {
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-text-fill: #e6e6e6;
+    -fx-cursor: hand;
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10 22;
+}
+
+.secondary-button:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.15);
+    -fx-border-color: #ff2d2d;
+    -fx-text-fill: #ff2d2d;
+    -fx-translate-y: -1;
+}
+
+/* ================= CHART CARDS ================= */
+.chart-card {
+    -fx-background-color: rgba(30, 30, 40, 0.8);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+}
+
+.chart-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-fill: #ffffff;
+}
+
+/* ================= PROGRESS BAR ================= */
+.progress-bar {
+    -fx-accent: #ff2d2d;
+}
+
+.progress-bar .track {
+    -fx-background-color: rgba(40, 40, 50, 0.9);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.progress-bar .bar {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e);
+    -fx-background-radius: 10;
+}
+
+/* ================= RECENT ITEMS LIST ================= */
+.recent-item {
+    -fx-background-color: rgba(30, 30, 40, 0.6);
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 15;
+    -fx-border-radius: 0;
+    -fx-background-radius: 10;
+}
+
+.recent-item:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.1);
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+}
+
+.recent-icon {
+    -fx-font-size: 20px;
+    -fx-fill: #ff2d2d;
+}
+
+.recent-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-fill: #ffffff;
+}
+
+.recent-description {
+    -fx-font-size: 12px;
+    -fx-fill: #b3b3b3;
+}
+
+.recent-time {
+    -fx-font-size: 11px;
+    -fx-fill: #888888;
+}
+
+/* ================= FORM ELEMENTS ================= */
+.form-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: 600;
+}
+
+.text-field, .password-field, .combo-box, .text-area {
+    -fx-font-size: 14px;
+    -fx-font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    -fx-background-color: rgba(30, 30, 40, 0.9);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #888888;
+    -fx-padding: 12 16;
+}
+
+.text-field:focused, .password-field:focused, .combo-box:focused, .text-area:focused {
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 2;
+    -fx-background-color: rgba(40, 40, 50, 0.9);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 8, 0, 0, 0);
+}
+
+/* ================= TOOLTIP ================= */
+.tooltip {
+    -fx-background-color: rgba(20, 20, 25, 0.95);
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-padding: 8 12;
+}
+
+/* ================= SPLIT PANE ================= */
+.split-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.split-pane .split-pane-divider {
+    -fx-background-color: rgba(255, 45, 45, 0.2);
+    -fx-padding: 0 1;
+}
+
+/* ================= TAB PANE ================= */
+.tab-pane {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab-header-area {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab {
+    -fx-background-color: rgba(30, 30, 40, 0.9);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 0 1 0 0;
+    -fx-padding: 10 20;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: rgba(255, 45, 45, 0.2);
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 0 0 2 0;
+}
+
+.tab-pane .tab .tab-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #ffffff;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #ff2d2d;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.stat-card, .activity-section, .actions-section {
+    -fx-animation: fadeInUp 0.5s ease-out;
+}

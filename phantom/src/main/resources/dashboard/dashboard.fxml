@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+<?import java.net.*?>
+
+<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.admin.DashboardController">
+   <stylesheets>
+      <URL value="@/dashboard/css/dashboard.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="dashboard-header">
+         <children>
+            <!-- Admin Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="dashboard-info">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <children>
+                        <Text styleClass="dashboard-title" text="⚔️ ADMIN" />
+                        <Text styleClass="dashboard-title" fill="#ff2d2d" text="DASHBOARD" />
+                     </children>
+                  </HBox>
+                  <Region HBox.hgrow="ALWAYS" />
+
+                  <!-- Admin Stats Summary -->
+                  <HBox alignment="CENTER" spacing="15">
+                     <children>
+                        <Label fx:id="adminNameLabel" styleClass="admin-label" text="👑 ADMIN: LOADING..." />
+                        <Label fx:id="lastLoginLabel" styleClass="admin-label" text="📅 Last login: Today" />
+                        <Button fx:id="logoutButton" onAction="#handleLogout" styleClass="logout-button" text="🚪 LOGOUT" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+
+            <!-- Admin Navigation -->
+            <HBox alignment="CENTER_LEFT" spacing="0" styleClass="dashboard-nav">
+               <children>
+                  <Button fx:id="navDashboard" styleClass="nav-button-active" text="📊 DASHBOARD" />
+                  <Button fx:id="navUsers" onAction="#handleUsers" styleClass="nav-button" text="👥 USERS" />
+                  <Button fx:id="navTournaments" onAction="#handleTournaments" styleClass="nav-button" text="🏆 TOURNAMENTS" />
+                  <Button fx:id="navTeams" onAction="#handleTeams" styleClass="nav-button" text="👥 TEAMS" />
+                  <Button fx:id="navMatches" onAction="#handleMatches" styleClass="nav-button" text="🎮 MATCHES" />
+                  <Button fx:id="navCoaching" onAction="#handleCoaching" styleClass="nav-button" text="📚 COACHING" />
+                  <Button fx:id="navShop" onAction="#handleShop" styleClass="nav-button" text="🛒 SHOP" />
+                  <Button fx:id="navPayments" onAction="#handlePayments" styleClass="nav-button" text="💳 PAYMENTS" />
+                  <Button fx:id="navReports" onAction="#handleReports" styleClass="nav-button" text="📋 REPORTS" />
+                  <Button fx:id="navSettings" onAction="#handleSettings" styleClass="nav-button" text="⚙️ SETTINGS" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+
+   <center>
+      <ScrollPane styleClass="dashboard-scroll" fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+         <content>
+            <VBox spacing="30" styleClass="dashboard-content">
+               <children>
+                  <!-- Welcome Banner -->
+                  <HBox alignment="CENTER_LEFT" spacing="20" styleClass="activity-section">
+                     <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text styleClass="section-title" text="Welcome back, Administrator!" />
+                              <Text styleClass="section-subtitle" text="Here's what's happening with your platform today." />
+                           </children>
+                        </VBox>
+                        <HBox spacing="15">
+                           <children>
+                              <Text styleClass="stat-trend-up" text="📈 +23% vs last week" />
+                              <Button styleClass="action-button" text="📊 Generate Report" onAction="#handleGenerateReport" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+
+                  <!-- Stats Overview - Row 1 -->
+                  <HBox spacing="20" alignment="CENTER">
+                     <children>
+                        <VBox spacing="8" styleClass="stat-card" alignment="CENTER">
+                           <children>
+                              <Text styleClass="stat-icon" text="👥" />
+                              <Text styleClass="stat-title" text="TOTAL USERS" />
+                              <Label fx:id="totalUsersLabel" styleClass="stat-value" />
+                              <Text styleClass="stat-trend-up" text="↑ +12.5%" />
+                           </children>
+                        </VBox>
+
+                        <VBox spacing="8" styleClass="stat-card" alignment="CENTER">
+                           <children>
+                              <Text styleClass="stat-icon" text="🏆" />
+                              <Text styleClass="stat-title" text="ACTIVE TOURNAMENTS" />
+                              <Label fx:id="activeTournamentsLabel" styleClass="stat-value" />
+                              <Text styleClass="stat-trend-up" text="↑ +3" />
+                           </children>
+                        </VBox>
+
+                        <VBox spacing="8" styleClass="stat-card" alignment="CENTER">
+                           <children>
+                              <Text styleClass="stat-icon" text="👥" />
+                              <Text styleClass="stat-title" text="TOTAL TEAMS" />
+                              <Label fx:id="totalTeamsLabel" styleClass="stat-value" />
+                              <Text styleClass="stat-trend-up" text="↑ +5" />
+                           </children>
+                        </VBox>
+
+                        <VBox spacing="8" styleClass="stat-card" alignment="CENTER">
+                           <children>
+                              <Text styleClass="stat-icon" text="⏳" />
+                              <Text styleClass="stat-title" text="PENDING APPROVALS" />
+                              <Label fx:id="pendingApprovalsLabel" styleClass="stat-value" />
+                              <Text styleClass="stat-trend-down" text="↓ -2" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                  <!-- Stats Overview - Row 2 -->
+                  <HBox spacing="20" alignment="CENTER">
+                     <children>
+                        <VBox spacing="8" styleClass="stat-card" alignment="CENTER">
+                           <children>
+                              <Text styleClass="stat-icon" text="💰" />
+                              <Text styleClass="stat-title" text="TOTAL REVENUE" />
+                              <Label fx:id="totalRevenueLabel" styleClass="stat-value" />
+                              <Text styleClass="stat-trend-up" text="↑ +18.3%" />
+                           </children>
+                        </VBox>
+
+                        <VBox spacing="8" styleClass="stat-card" alignment="CENTER">
+                           <children>
+                              <Text styleClass="stat-icon" text="🎮" />
+                              <Text styleClass="stat-title" text="MATCHES PLAYED" />
+                              <Label fx:id="matchesPlayedLabel" styleClass="stat-value" />
+                              <Text styleClass="stat-trend-up" text="↑ +156" />
+                           </children>
+                        </VBox>
+
+                        <VBox spacing="8" styleClass="stat-card" alignment="CENTER">
+                           <children>
+                              <Text styleClass="stat-icon" text="⭐" />
+                              <Text styleClass="stat-title" text="ACTIVE PLAYERS" />
+                              <Label fx:id="activePlayersLabel" styleClass="stat-value" />
+                              <Text styleClass="stat-trend-up" text="↑ +8.2%" />
+                           </children>
+                        </VBox>
+
+                        <VBox spacing="8" styleClass="stat-card" alignment="CENTER">
+                           <children>
+                              <Text styleClass="stat-icon" text="📊" />
+                              <Text styleClass="stat-title" text="CONVERSION RATE" />
+                              <Label fx:id="conversionRateLabel" styleClass="stat-value" />
+                              <Text styleClass="stat-trend-up" text="↑ +4.1%" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                  <!-- Charts Section -->
+                  <HBox spacing="20" alignment="CENTER" styleClass="charts-section">
+                     <children>
+                        <VBox spacing="15" HBox.hgrow="ALWAYS" styleClass="chart-card">
+                           <children>
+                              <Text styleClass="chart-title" text="📈 User Growth (Last 30 Days)" />
+                              <LineChart fx:id="userGrowthChart" prefHeight="250" prefWidth="400">
+                                 <xAxis>
+                                    <CategoryAxis label="Days" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis label="Users" />
+                                 </yAxis>
+                              </LineChart>
+                           </children>
+                        </VBox>
+
+                        <VBox spacing="15" HBox.hgrow="ALWAYS" styleClass="chart-card">
+                           <children>
+                              <Text styleClass="chart-title" text="🎯 Tournament Participation" />
+                              <PieChart fx:id="tournamentChart" prefHeight="250" prefWidth="400" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                  <!-- Split View: Recent Activity + Quick Stats -->
+                  <HBox spacing="20">
+                     <children>
+                        <!-- Recent Activity Table -->
+                        <VBox spacing="15" styleClass="activity-section" HBox.hgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Text styleClass="section-title" text="📋 RECENT ACTIVITY" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Button styleClass="secondary-button" text="View All" onAction="#handleViewAllActivity" />
+                                 </children>
+                              </HBox>
+
+                              <TableView fx:id="activityTable" styleClass="activity-table" prefHeight="350">
+                                 <columns>
+                                    <TableColumn fx:id="timestampColumn" text="🕐 Timestamp" prefWidth="180" />
+                                    <TableColumn fx:id="activityColumn" text="📝 Activity" prefWidth="350" />
+                                    <TableColumn fx:id="userColumn" text="👤 User" prefWidth="150" />
+                                    <TableColumn fx:id="statusColumn" text="🏷️ Status" prefWidth="120" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </VBox>
+
+                        <!-- Right Sidebar Stats -->
+                        <VBox spacing="15" styleClass="activity-section" prefWidth="350">
+                           <children>
+                              <Text styleClass="section-title" text="⚡ SERVER STATUS" />
+
+                              <VBox spacing="10">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="10">
+                                       <children>
+                                          <Text styleClass="stat-trend-up" text="🟢" />
+                                          <Label text="CPU Usage" styleClass="form-label" HBox.hgrow="ALWAYS" />
+                                          <Label fx:id="cpuUsageLabel" styleClass="stat-value" style="-fx-font-size: 16px;" text="45%" />
+                                       </children>
+                                    </HBox>
+                                    <ProgressBar fx:id="cpuProgressBar" progress="0.45" prefWidth="Infinity" />
+
+                                    <HBox alignment="CENTER_LEFT" spacing="10">
+                                       <children>
+                                          <Text styleClass="stat-trend-up" text="🟢" />
+                                          <Label text="Memory Usage" styleClass="form-label" HBox.hgrow="ALWAYS" />
+                                          <Label fx:id="memoryUsageLabel" styleClass="stat-value" style="-fx-font-size: 16px;" text="62%" />
+                                       </children>
+                                    </HBox>
+                                    <ProgressBar fx:id="memoryProgressBar" progress="0.62" prefWidth="Infinity" />
+
+                                    <HBox alignment="CENTER_LEFT" spacing="10">
+                                       <children>
+                                          <Text styleClass="stat-trend-up" text="🟢" />
+                                          <Label text="Active Connections" styleClass="form-label" HBox.hgrow="ALWAYS" />
+                                          <Label fx:id="connectionsLabel" styleClass="stat-value" style="-fx-font-size: 16px;" text="1,234" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                  <!-- Quick Actions -->
+                  <VBox spacing="20" styleClass="actions-section">
+                     <children>
+                        <Text styleClass="section-title" text="🚀 QUICK ACTIONS" />
+
+                        <GridPane hgap="15" vgap="15" alignment="CENTER">
+                           <children>
+                              <Button fx:id="createTournamentButton" onAction="#handleCreateTournament" styleClass="action-button" text="🏆 CREATE TOURNAMENT" prefWidth="200" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                              <Button fx:id="manageUsersButton" onAction="#handleUsers" styleClass="action-button" text="👥 MANAGE USERS" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                              <Button fx:id="createTeamButton" onAction="#handleCreateTeam" styleClass="action-button" text="👥 CREATE TEAM" prefWidth="200" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                              <Button fx:id="scheduleMatchButton" onAction="#handleScheduleMatch" styleClass="action-button" text="🎮 SCHEDULE MATCH" prefWidth="200" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                              <Button fx:id="viewReportsButton" onAction="#handleReports" styleClass="action-button" text="📋 VIEW REPORTS" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Button fx:id="systemSettingsButton" onAction="#handleSettings" styleClass="action-button" text="⚙️ SYSTEM SETTINGS" prefWidth="200" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Button fx:id="exportDataButton" onAction="#handleExportData" styleClass="secondary-button" text="📥 EXPORT DATA" prefWidth="200" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                              <Button fx:id="backupDatabaseButton" onAction="#handleBackupDatabase" styleClass="secondary-button" text="💾 BACKUP DATABASE" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Button fx:id="clearCacheButton" onAction="#handleClearCache" styleClass="secondary-button" text="🗑️ CLEAR CACHE" prefWidth="200" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                           </children>
+
+                           <columnConstraints>
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
+
+                  <!-- Recent Users & Teams -->
+                  <HBox spacing="20">
+                     <children>
+                        <VBox spacing="15" styleClass="recent-section" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text styleClass="section-title" text="👥 RECENT USERS" />
+
+                              <VBox spacing="8" fx:id="recentUsersList">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="recent-item">
+                                       <children>
+                                          <Text styleClass="recent-icon" text="👤" />
+                                          <VBox HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text styleClass="recent-title" text="JohnDoe_Pro" />
+                                                <Text styleClass="recent-description" text="Joined: 2 hours ago" />
+                                             </children>
+                                          </VBox>
+                                          <Label styleClass="status-success" text="Active" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="recent-item">
+                                       <children>
+                                          <Text styleClass="recent-icon" text="👤" />
+                                          <VBox HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text styleClass="recent-title" text="GamerGirl_Xo" />
+                                                <Text styleClass="recent-description" text="Joined: 5 hours ago" />
+                                             </children>
+                                          </VBox>
+                                          <Label styleClass="status-success" text="Active" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="recent-item">
+                                       <children>
+                                          <Text styleClass="recent-icon" text="👤" />
+                                          <VBox HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text styleClass="recent-title" text="ShadowStrike" />
+                                                <Text styleClass="recent-description" text="Joined: Yesterday" />
+                                             </children>
+                                          </VBox>
+                                          <Label styleClass="status-warning" text="Pending" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+
+                        <VBox spacing="15" styleClass="recent-section" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Text styleClass="section-title" text="🏆 TOP PERFORMERS" />
+
+                              <VBox spacing="8">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="recent-item">
+                                       <children>
+                                          <Text styleClass="recent-icon" text="🥇" />
+                                          <VBox HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text styleClass="recent-title" text="NightSlayer" />
+                                                <Text styleClass="recent-description" text="ELO: 2847" />
+                                             </children>
+                                          </VBox>
+                                          <Label styleClass="status-success" text="#1" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="recent-item">
+                                       <children>
+                                          <Text styleClass="recent-icon" text="🥈" />
+                                          <VBox HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text styleClass="recent-title" text="PhoenixRising" />
+                                                <Text styleClass="recent-description" text="ELO: 2732" />
+                                             </children>
+                                          </VBox>
+                                          <Label styleClass="status-success" text="#2" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="recent-item">
+                                       <children>
+                                          <Text styleClass="recent-icon" text="🥉" />
+                                          <VBox HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text styleClass="recent-title" text="DragonMaster" />
+                                                <Text styleClass="recent-description" text="ELO: 2658" />
+                                             </children>
+                                          </VBox>
+                                          <Label styleClass="status-success" text="#3" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

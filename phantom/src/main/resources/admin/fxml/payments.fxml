@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<?import java.net.URL?>
+<BorderPane styleClass="admin-container" prefWidth="1920" prefHeight="1080" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.admin.PaymentController">
+   <stylesheets>
+      <URL value="@/admin/css/admin.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="admin-header">
+         <children>
+            <!-- Admin Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="admin-info">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <children>
+                        <Text styleClass="admin-title" text="💳 PAYMENTS" />
+                        <Text styleClass="admin-subtitle" text="MANAGE PAYMENTS" />
+                     </children>
+                  </HBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="back-button" text="🔙 BACK TO DASHBOARD" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+
+   <center>
+      <VBox spacing="20" styleClass="main-content">
+         <children>
+            <!-- Search and Filter Bar -->
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="search-bar">
+               <children>
+                  <TextField fx:id="searchField" promptText="🔍 Search payments..." prefWidth="300" />
+                  <ComboBox fx:id="filterStatusCombo" prefWidth="200" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="addPaymentButton" onAction="#handleAddPayment" styleClass="action-button" text="➕ ADD PAYMENT" />
+                  <Button fx:id="editPaymentButton" onAction="#handleEditPayment" styleClass="action-button" text="✏️ EDIT" />
+                  <Button fx:id="deletePaymentButton" onAction="#handleDeletePayment" styleClass="action-button delete" text="🗑 DELETE" />
+                  <Button fx:id="refreshButton" onAction="#handleRefresh" styleClass="action-button" text="🔄 REFRESH" />
+               </children>
+            </HBox>
+
+            <!-- Statistics Cards -->
+            <HBox spacing="20" alignment="CENTER">
+               <children>
+                  <VBox styleClass="stat-card" prefWidth="250">
+                     <children>
+                        <Text styleClass="stat-title" text="📊 TOTAL PAYMENTS" />
+                        <Text fx:id="totalPaymentsLabel" styleClass="stat-value" text="0" />
+                     </children>
+                  </VBox>
+                  <VBox styleClass="stat-card" prefWidth="250">
+                     <children>
+                        <Text styleClass="stat-title" text="💰 TOTAL REVENUE" />
+                        <Text fx:id="totalRevenueLabel" styleClass="stat-value" text="0.00 DT" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <!-- Payments Table -->
+            <TableView fx:id="paymentsTable" styleClass="table-view" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="colId" text="ID" prefWidth="80" />
+                  <TableColumn fx:id="colAmount" text="Amount" prefWidth="120" />
+                  <TableColumn fx:id="colMethod" text="Method" prefWidth="150" />
+                  <TableColumn fx:id="colStatus" text="Status" prefWidth="120" />
+                  <TableColumn fx:id="colTransactionRef" text="Transaction Ref" prefWidth="200" />
+                  <TableColumn fx:id="colShopItemId" text="Shop Item ID" prefWidth="120" />
+               </columns>
+                           </TableView>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

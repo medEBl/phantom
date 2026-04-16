@@ -54,6 +54,18 @@ public class PaymentService {
         }
     }
 
+    public void updatePaymentMethod(int id, String newMethod) {
+        String sql = "UPDATE payment SET payment_method = ? WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, newMethod);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+            System.out.println("✅ Méthode du paiement ID " + id + " mis à jour : " + newMethod);
+        } catch (SQLException e) {
+            throw new RuntimeException("updatePaymentMethod failed: " + e.getMessage(), e);
+        }
+    }
+
     public void deletePayment(int id) {
         String sql = "DELETE FROM payment WHERE id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
@@ -113,5 +125,29 @@ public class PaymentService {
             throw new RuntimeException("getPaymentByTransactionRef failed: " + e.getMessage(), e);
         }
         return Optional.empty();
+    }
+
+    public void updatePaymentAmount(int id, double newAmount) {
+        String sql = "UPDATE payment SET amount = ? WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setDouble(1, newAmount);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+            System.out.println("✅ Montant du paiement ID " + id + " mis à jour : " + newAmount);
+        } catch (SQLException e) {
+            throw new RuntimeException("updatePaymentAmount failed: " + e.getMessage(), e);
+        }
+    }
+
+    public void updatePaymentShopItemId(int id, int newShopItemId) {
+        String sql = "UPDATE payment SET shop_item_id = ? WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, newShopItemId);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+            System.out.println("✅ Shop Item ID du paiement ID " + id + " mis à jour : " + newShopItemId);
+        } catch (SQLException e) {
+            throw new RuntimeException("updatePaymentShopItemId failed: " + e.getMessage(), e);
+        }
     }
 }

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+
+<BorderPane styleClass="users-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.UsersController">
+   <stylesheets>
+      <URL value="@/user/css/style.css" />
+   </stylesheets>
+   
+   <top>
+      <VBox styleClass="users-header">
+         <children>
+            <!-- Users Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="users-info">
+               <children>
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="login-button" text="BACK" />
+                  <Text styleClass="users-title" text="USERS MANAGEMENT" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="currentUserLabel" styleClass="admin-label" text="USER: LOADING..." />
+               </children>
+            </HBox>
+            
+            <!-- Search and Filter Bar -->
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="users-nav">
+               <children>
+                  <TextField fx:id="searchField" promptText="Search users..." styleClass="text-field" prefWidth="300" />
+                  <ComboBox fx:id="roleFilter" promptText="Filter by role" styleClass="text-field" prefWidth="150" />
+                  <ComboBox fx:id="statusFilter" promptText="Filter by status" styleClass="text-field" prefWidth="150" />
+                  <Button fx:id="searchButton" onAction="#handleSearch" styleClass="login-button" text="SEARCH" />
+                  <Button fx:id="clearButton" onAction="#handleClear" styleClass="login-button" text="CLEAR" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="addUserButton" onAction="#handleAddUser" styleClass="save-button" text="ADD USER" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="users-scroll">
+         <content>
+            <VBox spacing="20" styleClass="users-content">
+               <children>
+                  <!-- Users Table -->
+                  <TableView fx:id="usersTable" styleClass="users-table">
+                     <columns>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="80" />
+                        <TableColumn fx:id="usernameColumn" text="Username" prefWidth="150" />
+                        <TableColumn fx:id="fullNameColumn" text="Full Name" prefWidth="200" />
+                        <TableColumn fx:id="emailColumn" text="Email" prefWidth="250" />
+                        <TableColumn fx:id="roleColumn" text="Role" prefWidth="100" />
+                        <TableColumn fx:id="countryColumn" text="Country" prefWidth="120" />
+                        <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+                        <TableColumn fx:id="createdDateColumn" text="Created Date" prefWidth="150" />
+                        <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="200" />
+                     </columns>
+                  </TableView>
+                  
+                  <!-- Pagination -->
+                  <HBox alignment="CENTER" spacing="10">
+                     <children>
+                        <Button fx:id="prevPageButton" onAction="#handlePrevPage" styleClass="login-button" text="PREVIOUS" />
+                        <Label fx:id="pageInfoLabel" styleClass="form-label" text="Page 1 of 1" />
+                        <Button fx:id="nextPageButton" onAction="#handleNextPage" styleClass="login-button" text="NEXT" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

@@ -1,0 +1,420 @@
+/* Phantom Force Home CSS - Modern Gaming Theme Inspired by basefront.html.twig */
+
+.root {
+    -fx-background-color: #0b0b0e;
+    -fx-font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
+}
+
+/* ================= MAIN CONTAINER ================= */
+.home-container {
+    -fx-background: radial-gradient(center 50% 50%, radius 70%, #1a1a22 0%, #07070a 100%);
+    -fx-background-color: #0b0b0e;
+}
+
+/* ================= HEADER ================= */
+.home-header {
+    -fx-background-color: rgba(10, 10, 15, 0.9);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 0 0 1 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.home-info {
+    -fx-background-color: transparent;
+    -fx-padding: 18 40;
+}
+
+.home-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.3), 5, 0, 0, 0);
+}
+
+/* User info */
+.user-container {
+    -fx-background-color: rgba(255, 255, 255, 0.03);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 8 16;
+}
+
+.user-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #e6e6e6;
+}
+
+.user-role {
+    -fx-font-size: 12px;
+    -fx-text-fill: #b3b3b3;
+}
+
+/* ================= BUTTON STYLES ================= */
+.primary-button, .logout-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border: none;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10 20;
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 5, 0, 0, 2);
+}
+
+.primary-button:hover, .logout-button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #ff5e5e, #ff8a8a);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.4), 10, 0, 0, 4);
+    -fx-translate-y: -2;
+}
+
+.primary-button:pressed, .logout-button:pressed {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #cc0000, #ff2d2d);
+    -fx-translate-y: 0;
+}
+
+.secondary-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-text-fill: #e6e6e6;
+    -fx-cursor: hand;
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10 20;
+}
+
+.secondary-button:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.15);
+    -fx-border-color: #ff2d2d;
+    -fx-text-fill: #ff2d2d;
+    -fx-translate-y: -2;
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 5, 0, 0, 0);
+}
+
+/* ================= NAVIGATION ================= */
+.home-nav {
+    -fx-background-color: rgba(20, 20, 25, 0.8);
+    -fx-padding: 0;
+    -fx-border-color: rgba(255, 45, 45, 0.1);
+    -fx-border-width: 0 0 1 0;
+}
+
+.nav-button, .nav-button-active {
+    -fx-background-color: transparent;
+    -fx-text-fill: #b3b3b3;
+    -fx-cursor: hand;
+    -fx-font-weight: 600;
+    -fx-font-size: 14px;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 14 24;
+    -fx-transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.1);
+    -fx-text-fill: #ff2d2d;
+    -fx-translate-y: -2;
+}
+
+.nav-button-active {
+    -fx-background-color: rgba(255, 45, 45, 0.15);
+    -fx-text-fill: #ff2d2d;
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 0 0 2 0;
+}
+
+/* ================= CONTENT AREA ================= */
+.home-content {
+    -fx-padding: 40;
+    -fx-background-color: transparent;
+}
+
+/* ================= WELCOME SECTION ================= */
+.welcome-section {
+    -fx-background-color: rgba(20, 20, 25, 0.85);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 50;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 20, 0, 0, 0);
+    -fx-alignment: CENTER;
+}
+
+.welcome-title {
+    -fx-font-size: 52px;
+    -fx-font-weight: 800;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e, #ff8a8a);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.3), 15, 0, 0, 0);
+}
+
+.welcome-subtitle {
+    -fx-font-size: 18px;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: 500;
+}
+
+.role-badge {
+    -fx-background-color: rgba(255, 45, 45, 0.2);
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 1;
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-padding: 8 24;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #ff2d2d;
+}
+
+/* ================= ACTION CARDS GRID ================= */
+.action-cards-grid {
+    -fx-padding: 20;
+    -fx-hgap: 25;
+    -fx-vgap: 20;
+}
+
+.action-card {
+    -fx-background-color: rgba(20, 20, 25, 0.85);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-padding: 30;
+    -fx-alignment: CENTER;
+    -fx-pref-width: 280;
+    -fx-pref-height: 180;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+    -fx-cursor: hand;
+}
+
+.action-card:hover {
+    -fx-border-color: #ff2d2d;
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.3), 15, 0, 0, 0);
+    -fx-translate-y: -8;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.action-icon {
+    -fx-font-size: 48px;
+    -fx-fill: #ff2d2d;
+}
+
+.action-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+    -fx-fill: #ffffff;
+    -fx-margin-top: 15;
+}
+
+.action-description {
+    -fx-font-size: 13px;
+    -fx-text-fill: #b3b3b3;
+    -fx-text-alignment: CENTER;
+}
+
+/* ================= STATS SECTION ================= */
+.stats-section {
+    -fx-background-color: rgba(20, 20, 25, 0.85);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 35;
+}
+
+.stats-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 0%, #ffffff, #e6e6e6);
+}
+
+.stats-container {
+    -fx-spacing: 30;
+    -fx-alignment: CENTER;
+}
+
+.stat-card {
+    -fx-background-color: rgba(30, 30, 40, 0.9);
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-padding: 25;
+    -fx-alignment: CENTER;
+    -fx-pref-width: 180;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 0);
+}
+
+.stat-card:hover {
+    -fx-border-color: #ff2d2d;
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 10, 0, 0, 0);
+    -fx-translate-y: -5;
+}
+
+.stat-value {
+    -fx-font-size: 36px;
+    -fx-font-weight: 800;
+    -fx-fill: #ff2d2d;
+}
+
+.stat-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: 600;
+    -fx-letter-spacing: 1px;
+}
+
+/* ================= ACTIVITY SECTION ================= */
+.activity-section {
+    -fx-background-color: rgba(20, 20, 25, 0.85);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 35;
+}
+
+.section-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+    -fx-fill: #ffffff;
+}
+
+.activity-list {
+    -fx-background-color: rgba(30, 30, 40, 0.6);
+    -fx-border-color: rgba(255, 45, 45, 0.15);
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-spacing: 12;
+}
+
+.activity-item {
+    -fx-background-color: rgba(40, 40, 50, 0.8);
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-width: 0 0 1 0;
+    -fx-border-radius: 0;
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+}
+
+.activity-item:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.1);
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+}
+
+.activity-icon {
+    -fx-font-size: 20px;
+    -fx-fill: #ff2d2d;
+}
+
+.activity-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-fill: #ffffff;
+}
+
+.activity-description {
+    -fx-font-size: 13px;
+    -fx-text-fill: #b3b3b3;
+}
+
+.activity-time {
+    -fx-font-size: 11px;
+    -fx-text-fill: #888888;
+}
+
+/* ================= SCROLL PANE ================= */
+.home-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.home-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.home-scroll .scroll-bar:vertical {
+    -fx-background-color: rgba(20, 20, 25, 0.9);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 0 0 0 1;
+}
+
+.home-scroll .scroll-bar:vertical .track {
+    -fx-background-color: rgba(30, 30, 40, 0.9);
+}
+
+.home-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: #ff2d2d;
+    -fx-background-radius: 4;
+}
+
+.home-scroll .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #ff5e5e;
+}
+
+/* ================= FORM ELEMENTS ================= */
+.form-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: 600;
+}
+
+.text-field, .password-field {
+    -fx-font-size: 14px;
+    -fx-font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    -fx-background-color: rgba(30, 30, 40, 0.9);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #888888;
+    -fx-padding: 12 16;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 2;
+    -fx-background-color: rgba(40, 40, 50, 0.9);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 8, 0, 0, 0);
+}
+
+/* ================= TOOLTIP ================= */
+.tooltip {
+    -fx-background-color: rgba(20, 20, 25, 0.95);
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-padding: 8 12;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { -fx-translate-y: 30; opacity: 0; }
+    to { -fx-translate-y: 0; opacity: 1; }
+}
+
+.welcome-section, .stats-section, .activity-section {
+    -fx-animation: slideUp 0.6s ease-out;
+}
+
+.action-card {
+    -fx-animation: fadeIn 0.5s ease-out;
+}
