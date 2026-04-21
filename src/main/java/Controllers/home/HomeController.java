@@ -1,5 +1,6 @@
 package Controllers.home;
 
+import Controllers.tournament.TournamentListController;
 import entities.user.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -294,14 +295,17 @@ public class HomeController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tournament/fxml/list.fxml"));
             Parent root = loader.load();
-            
-            Stage stage = (Stage) navTournaments.getScene().getWindow();
+
+            TournamentListController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+
+            Stage stage = (Stage) navHome.getScene().getWindow();
             stage.setScene(new Scene(root, 1920, 1080));
             stage.setMaximized(true);
             stage.setFullScreen(true);
             stage.setTitle("Tournaments - Phantom App");
             stage.show();
-            
+
         } catch (Exception e) {
             System.err.println("Error loading tournaments screen: " + e.getMessage());
             showError("Cannot open tournaments: " + e.getMessage());

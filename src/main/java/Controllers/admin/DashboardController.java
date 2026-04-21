@@ -272,9 +272,22 @@ public class DashboardController {
 
     @FXML
     private void handleTournaments() {
-        // TODO: Navigate to tournaments management
-    }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tournament/fxml/management.fxml"));
+            Parent root = loader.load();
 
+            Stage stage = (Stage) navTournaments.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.show();
+            stage.setTitle("Tournament Management - Phantom Admin");
+
+        } catch (IOException e) {
+            System.err.println("Cannot open tournament management: " + e.getMessage());
+        }
+    }
     @FXML
     private void handleTeams() {
         try {
@@ -555,8 +568,21 @@ public class DashboardController {
 
     @FXML
     private void handleCreateTournament() {
-        // TODO: Open create tournament dialog
-        System.out.println("Create New Tournament");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tournament/fxml/form.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) createTournamentButton.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.show();
+            stage.setTitle("Create Tournament - Phantom Admin");
+
+        } catch (IOException e) {
+            System.err.println("Cannot open tournament form: " + e.getMessage());
+        }
     }
 
     @FXML

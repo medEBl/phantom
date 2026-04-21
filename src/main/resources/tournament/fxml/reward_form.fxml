@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+<?import javafx.scene.layout.Region?>
+
+<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.TournamentRewardFormController">
+   <stylesheets>
+      <URL value="@/dashboard/css/dashboard.css" />
+   </stylesheets>
+   
+   <top>
+      <VBox styleClass="dashboard-header">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="dashboard-info">
+               <children>
+                  <Button fx:id="backButton" onAction="#handleCancel" styleClass="logout-button" text="🔙 CANCEL" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Text fx:id="formTitle" styleClass="dashboard-title" text="🎁 REWARD" />
+                  <Text fx:id="formSubtitle" styleClass="dashboard-title" fill="#ff2d2d" text="FORM" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label styleClass="admin-label" text="ADMIN: SYSTEM" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <VBox alignment="CENTER" spacing="30" styleClass="dashboard-content">
+         <children>
+            <VBox maxWidth="500" spacing="25" styleClass="activity-section" style="-fx-padding: 40;">
+               <children>
+                  <Text fx:id="sectionTitle" styleClass="section-title" text="ADD REWARD" />
+                  <Label fx:id="tournamentLabel" styleClass="form-label" text="Tournament: " />
+                  
+                  <VBox spacing="20">
+                     <children>
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Rank (e.g. 1 for 1st place)" />
+                              <TextField fx:id="rankField" promptText="Enter rank" styleClass="text-field" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Reward Type" />
+                              <ComboBox fx:id="typeCombo" promptText="Select type" styleClass="text-field" prefWidth="Infinity" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Reward Value" />
+                              <TextField fx:id="valueField" promptText="e.g. 500$, Pro Skin, Trophy" styleClass="text-field" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  
+                  <HBox alignment="CENTER" spacing="20" style="-fx-padding: 20 0 0 0;">
+                     <children>
+                        <Button onAction="#handleCancel" styleClass="secondary-button" text="❌ CANCEL" prefWidth="120" />
+                        <Button onAction="#handleSave" styleClass="action-button" text="💾 SAVE REWARD" prefWidth="180" />
+                     </children>
+                  </HBox>
+                  
+                  <Label fx:id="errorLabel" styleClass="error-label" text="" visible="false" alignment="CENTER" maxWidth="Infinity" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

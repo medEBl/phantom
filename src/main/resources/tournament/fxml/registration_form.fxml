@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+<?import javafx.scene.layout.Region?>
+
+<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.RegistrationFormController">
+   <stylesheets>
+      <URL value="@/dashboard/css/dashboard.css" />
+   </stylesheets>
+   
+   <top>
+      <VBox styleClass="dashboard-header">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="dashboard-info">
+               <children>
+                  <Button fx:id="backButton" onAction="#handleCancel" styleClass="logout-button" text="🔙 CANCEL" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Text styleClass="dashboard-title" text="👥 TEAM" />
+                  <Text styleClass="dashboard-title" fill="#ff2d2d" text="REGISTRATION" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label styleClass="admin-label" text="ADMIN: SYSTEM" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <VBox alignment="CENTER" spacing="30" styleClass="dashboard-content">
+         <children>
+            <VBox maxWidth="500" spacing="25" styleClass="activity-section" style="-fx-padding: 40;">
+               <children>
+                  <Text fx:id="sectionTitle" styleClass="section-title" text="REGISTER NEW TEAM" />
+                  <Label fx:id="tournamentLabel" styleClass="form-label" text="Tournament: " />
+                  
+                  <VBox spacing="20">
+                     <children>
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Team Name" />
+                              <TextField fx:id="teamNameField" promptText="Enter team name" styleClass="text-field" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Contact Email" />
+                              <TextField fx:id="emailField" promptText="e.g. captain@team.com" styleClass="text-field" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  
+                  <HBox alignment="CENTER" spacing="20" style="-fx-padding: 20 0 0 0;">
+                     <children>
+                        <Button onAction="#handleCancel" styleClass="secondary-button" text="❌ CANCEL" prefWidth="120" />
+                        <Button onAction="#handleSave" styleClass="action-button" text="💾 REGISTER TEAM" prefWidth="200" />
+                     </children>
+                  </HBox>
+                  
+                  <Label fx:id="errorLabel" styleClass="error-label" text="" visible="false" alignment="CENTER" maxWidth="Infinity" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
