@@ -1,0 +1,484 @@
+/* Phantom Force Matchy CSS - Professional Edition */
+/* Color Palette: Red (#ff2d2d, #cc0000, #990000) | Dark Red (#8B0000) | Black (#0b0b0e, #1a1a22) */
+
+.root {
+    -fx-background-color: #0b0b0e;
+    -fx-font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
+}
+
+/* ================= MAIN CONTAINER ================= */
+.matchy-container {
+    -fx-background: radial-gradient(center 50% 50%, radius 80%, #1a1a22 0%, #07070a 100%);
+    -fx-background-color: #0b0b0e;
+}
+
+/* ================= HEADER ================= */
+.matchy-header {
+    -fx-background-color: rgba(10, 10, 15, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.25);
+    -fx-border-width: 0 0 1px 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.matchy-info {
+    -fx-background-color: transparent;
+    -fx-padding: 18 40;
+}
+
+.matchy-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.3), 5, 0, 0, 0);
+}
+
+/* ================= CONTROLS BAR ================= */
+.matchy-controls {
+    -fx-background-color: rgba(20, 20, 25, 0.9);
+    -fx-padding: 15 40;
+    -fx-border-color: rgba(255, 45, 45, 0.15);
+    -fx-border-width: 0 0 1px 0;
+}
+
+.matchy-stats {
+    -fx-background-color: rgba(30, 30, 40, 0.7);
+    -fx-padding: 12 40;
+    -fx-border-color: rgba(255, 45, 45, 0.15);
+    -fx-border-width: 0 0 1px 0;
+}
+
+.stat-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #e6e6e6;
+}
+
+.help-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+    -fx-font-style: italic;
+}
+
+/* ================= BUTTON STYLES ================= */
+.primary-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border: none;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 24;
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.25), 6, 0, 0, 2);
+}
+
+.primary-button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #cc0000, #ff2d2d);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.4), 10, 0, 0, 4);
+    -fx-translate-y: -2px;
+}
+
+.primary-button:pressed {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #990000, #cc0000);
+    -fx-translate-y: 0px;
+}
+
+.secondary-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-text-fill: #e6e6e6;
+    -fx-cursor: hand;
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 20;
+}
+
+.secondary-button:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.15);
+    -fx-border-color: #ff2d2d;
+    -fx-text-fill: #ff2d2d;
+    -fx-translate-y: -2px;
+}
+
+.danger-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #cc0000, #990000);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border: none;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 20;
+}
+
+.danger-button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #990000, #660000);
+    -fx-translate-y: -2px;
+}
+
+/* ================= FORM ELEMENTS ================= */
+.search-field, .filter-combo {
+    -fx-font-size: 14px;
+    -fx-font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    -fx-background-color: rgba(30, 30, 40, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.25);
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #666666;
+    -fx-padding: 10 14;
+}
+
+.search-field:focused, .filter-combo:focused {
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 2px;
+    -fx-background-color: rgba(40, 40, 50, 0.95);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 8, 0, 0, 0);
+}
+
+/* ================= CONTENT AREA ================= */
+.matchy-content {
+    -fx-padding: 20;
+    -fx-background-color: transparent;
+    -fx-alignment: CENTER;
+}
+
+/* ================= TABLE STYLES ================= */
+.matchy-table {
+    -fx-background-color: rgba(20, 20, 25, 0.9);
+    -fx-border-color: rgba(255, 45, 45, 0.25);
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+
+.matchy-table .column-header {
+    -fx-background-color: rgba(255, 45, 45, 0.15);
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-border-width: 0 0 1px 0;
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 12 16;
+}
+
+.matchy-table .column-header-background {
+    -fx-background-color: transparent;
+}
+
+.matchy-table .table-cell {
+    -fx-background-color: rgba(30, 30, 40, 0.8);
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-width: 0 0 1px 0;
+    -fx-text-fill: #e6e6e6;
+    -fx-font-size: 13px;
+    -fx-padding: 10 16;
+}
+
+.matchy-table .table-row-cell:selected {
+    -fx-background-color: rgba(255, 45, 45, 0.2);
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 1px;
+}
+
+.matchy-table .table-row-cell:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.1);
+}
+
+/* ================= SCROLL PANE ================= */
+.matchy-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.matchy-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.matchy-scroll .scroll-bar:vertical {
+    -fx-background-color: rgba(20, 20, 25, 0.9);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 0 0 0 1px;
+}
+
+.matchy-scroll .scroll-bar:vertical .track {
+    -fx-background-color: rgba(30, 30, 40, 0.9);
+}
+
+.matchy-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: #ff2d2d;
+    -fx-background-radius: 4px;
+}
+
+.matchy-scroll .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #ff5e5e;
+}
+
+/* ================= FORM CONTAINER ================= */
+.matchy-form-container {
+    -fx-background-color: rgba(20, 20, 25, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.25);
+    -fx-border-width: 1px;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 20, 0, 0, 0);
+}
+
+.form-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 0%, #ff2d2d, #ff5e5e);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.3), 8, 0, 0, 0);
+}
+
+.form-id-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #b3b3b3;
+}
+
+.form-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: 500;
+}
+
+.form-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.form-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.form-content {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}
+
+.form-section {
+    -fx-background-color: rgba(30, 30, 40, 0.7);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 20;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+    -fx-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 3, 0, 0, 0);
+}
+
+.form-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: 600;
+}
+
+.form-input {
+    -fx-font-size: 14px;
+    -fx-font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    -fx-background-color: rgba(40, 40, 50, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.25);
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #666666;
+    -fx-padding: 12 16;
+}
+
+.form-input:focused {
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 2px;
+    -fx-background-color: rgba(50, 50, 60, 0.95);
+    -fx-effect: dropshadow(gaussian, rgba(255,45,45,0.2), 8, 0, 0, 0);
+}
+
+.form-input:disabled {
+    -fx-background-color: rgba(30, 30, 40, 0.6);
+    -fx-border-color: rgba(255, 255, 255, 0.1);
+    -fx-text-fill: #666666;
+}
+
+.team-name-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #666666;
+    -fx-font-style: italic;
+}
+
+.error-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #ff2d2d;
+    -fx-font-weight: 600;
+    -fx-background-color: rgba(255, 45, 45, 0.1);
+    -fx-border-color: #ff2d2d;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10 15;
+}
+
+.warning-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #f39c12;
+    -fx-font-weight: 600;
+    -fx-background-color: rgba(243, 156, 18, 0.1);
+    -fx-border-color: #f39c12;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10 15;
+}
+
+/* ================= DELETE DIALOG ================= */
+.delete-details {
+    -fx-background-color: rgba(30, 30, 40, 0.85);
+    -fx-border-color: rgba(255, 45, 45, 0.25);
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 20;
+}
+
+.detail-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #e6e6e6;
+    -fx-font-weight: 500;
+}
+
+/* ================= VIEW DIALOG ================= */
+.view-content {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}
+
+.view-section {
+    -fx-background-color: rgba(30, 30, 40, 0.7);
+    -fx-border-color: rgba(255, 45, 45, 0.2);
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 20;
+}
+
+.view-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: 600;
+}
+
+.view-value {
+    -fx-font-size: 14px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 500;
+    -fx-wrap-text: true;
+}
+
+.status-badge {
+    -fx-background-color: #ff2d2d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 4 8;
+    -fx-background-radius: 4px;
+    -fx-font-size: 11px;
+}
+
+/* ================= COMBO BOX ================= */
+.filter-combo .list-cell {
+    -fx-background-color: rgba(30, 30, 40, 0.95);
+    -fx-text-fill: #ffffff;
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 8 12;
+}
+
+.filter-combo .list-cell:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.2);
+}
+
+.filter-combo .list-cell:selected {
+    -fx-background-color: rgba(255, 45, 45, 0.3);
+}
+
+.filter-combo .list-view {
+    -fx-background-color: rgba(20, 20, 25, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+/* ================= DATE PICKER ================= */
+.date-picker .arrow-button {
+    -fx-background-color: rgba(255, 45, 45, 0.2);
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-border-width: 0 0 0 1px;
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.3);
+}
+
+.date-picker .arrow {
+    -fx-background-color: #ff2d2d;
+}
+
+.date-picker-popup {
+    -fx-background-color: rgba(20, 20, 25, 0.95);
+    -fx-border-color: rgba(255, 45, 45, 0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.date-picker-popup .month-year-pane {
+    -fx-background-color: rgba(255, 45, 45, 0.15);
+}
+
+.date-picker-popup .day-cell {
+    -fx-background-color: rgba(30, 30, 40, 0.95);
+    -fx-text-fill: #ffffff;
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+}
+
+.date-picker-popup .day-cell:hover {
+    -fx-background-color: rgba(255, 45, 45, 0.2);
+}
+
+.date-picker-popup .day-cell:selected {
+    -fx-background-color: #ff2d2d;
+    -fx-text-fill: white;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.matchy-form-container, .view-section, .form-section {
+    -fx-animation: slideUp 0.6s ease-out;
+}
+
+.primary-button, .secondary-button, .danger-button {
+    -fx-animation: fadeIn 0.5s ease-out;
+}

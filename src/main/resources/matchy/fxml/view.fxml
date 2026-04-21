@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<VBox styleClass="matchy-form-container" prefWidth="700" prefHeight="600" spacing="20" alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.matchy.MatchyViewController">
+   <stylesheets>
+      <URL value="@/matchy/css/style.css" />
+   </stylesheets>
+
+   <padding>
+      <Insets top="30" right="30" bottom="30" left="30" />
+   </padding>
+
+   <children>
+      <!-- Header -->
+      <VBox spacing="10" alignment="CENTER">
+         <children>
+            <Text styleClass="form-title" text="Match Details" />
+            <Label fx:id="matchIdLabel" styleClass="form-id-label" text="Match ID: " />
+         </children>
+      </VBox>
+
+      <!-- Match Content -->
+      <ScrollPane styleClass="form-scroll" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+         <content>
+            <VBox spacing="25" styleClass="view-content">
+               <children>
+                  <!-- Basic Information -->
+                  <VBox spacing="15" styleClass="view-section">
+                     <children>
+                        <Text styleClass="section-title" text="Basic Information" />
+                        
+                        <GridPane hgap="20" vgap="12">
+                           <children>
+                              <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="view-label" text="Game:" />
+                                    <Label fx:id="gameLabel" styleClass="view-value" text="" />
+                                 </children>
+                              </VBox>
+                              
+                              <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="view-label" text="Date  Time:" />
+                                    <Label fx:id="matchDateLabel" styleClass="view-value" text="" />
+                                 </children>
+                              </VBox>
+                              
+                              <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label styleClass="view-label" text="Status:" />
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                       <children>
+                                          <Label fx:id="statusLabel" styleClass="view-value" text="" />
+                                          <Label fx:id="statusBadge" styleClass="status-badge" text="" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              
+                              <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label styleClass="view-label" text="Location:" />
+                                    <Label fx:id="locationLabel" styleClass="view-value" text="" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints percentWidth="50" />
+                              <ColumnConstraints percentWidth="50" />
+                           </columnConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
+
+                  <!-- Teams Information -->
+                  <VBox spacing="15" styleClass="view-section">
+                     <children>
+                        <Text styleClass="section-title" text="Teams" />
+                        
+                        <GridPane hgap="20" vgap="12">
+                           <children>
+                              <!-- Team 1 -->
+                              <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="view-label" text="Team 1:" />
+                                    <Label fx:id="team1IdLabel" styleClass="view-value" text="" />
+                                    <Label fx:id="team1NameLabel" styleClass="view-value" text="" />
+                                 </children>
+                              </VBox>
+                              
+                              <!-- Team 2 -->
+                              <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="view-label" text="Team 2:" />
+                                    <Label fx:id="team2IdLabel" styleClass="view-value" text="" />
+                                    <Label fx:id="team2NameLabel" styleClass="view-value" text="" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints percentWidth="50" />
+                              <ColumnConstraints percentWidth="50" />
+                           </columnConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
+
+                  <!-- Match Result -->
+                  <VBox spacing="15" styleClass="view-section">
+                     <children>
+                        <Text styleClass="section-title" text="Match Result" />
+                        
+                        <GridPane hgap="20" vgap="12">
+                           <children>
+                              <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="view-label" text="Score:" />
+                                    <Label fx:id="scoreLabel" styleClass="view-value" text="" />
+                                 </children>
+                              </VBox>
+                              
+                              <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="view-label" text="Winner:" />
+                                    <Label fx:id="winnerLabel" styleClass="view-value" text="" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints percentWidth="50" />
+                              <ColumnConstraints percentWidth="50" />
+                           </columnConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
+
+                  <!-- Location Details -->
+                  <VBox spacing="15" styleClass="view-section">
+                     <children>
+                        <Text styleClass="section-title" text="Location Details" />
+                        
+                        <GridPane hgap="20" vgap="12">
+                           <children>
+                              <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="view-label" text="Coordinates:" />
+                                    <Label fx:id="coordinatesLabel" styleClass="view-value" text="" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints percentWidth="100" />
+                           </columnConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+
+      <!-- Close Button -->
+      <HBox spacing="15" alignment="CENTER">
+         <children>
+            <Button fx:id="closeButton" onAction="#handleClose" styleClass="primary-button" text="Close" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

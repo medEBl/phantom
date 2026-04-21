@@ -103,4 +103,36 @@ public class AgentService implements IAgentService {
         }
         return list;
     }
+
+    // --- NOUVEAU CONTRÔLE : Vérifie si un joueur possède déjà un profil pour un jeu donné ---
+    // --- UPDATED CONTRÔLE : Vérifie les doublons en ignorant la casse et les espaces ---
+    public boolean agentExistsForPlayerAndGame(int idPlayer, String game) {
+        // Use LOWER() and TRIM() to ensure perfect matching
+        String sql = "SELECT 1 FROM agent WHERE id_player = ? AND LOWER(TRIM(game)) = LOWER(TRIM(?))";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, idPlayer);
+            ps.setString(2, game);
+            ResultSet rs = ps.executeQuery();
+            return rs.next(); // True if a match is found
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la vérification des doublons : " + e.getMessage());
+            return true; // Block creation on error for safety
+        }
+    }
+
+    // --- NOUVEAU MÉTHODE : Récupère la liste des jeux pour lesquels un joueur a déjà un agent ---
+    public List<String> getGamesForPlayer(int idPlayer) {
+        List<String> usedGames = new ArrayList<>();
+        String sql = "SELECT game FROM agent WHERE id_player = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, idPlayer);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                usedGames.add(rs.getString("game"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur getGamesForPlayer: " + e.getMessage());
+        }
+        return usedGames;
+    }
 }

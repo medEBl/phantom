@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox stylesheets="@../css/dark-theme.css" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentCreateController">
+    <children>
+        <VBox prefWidth="250.0" spacing="40.0" style="-fx-background-color: #1a1a24; -fx-border-color: #2a2a35; -fx-border-width: 0 1 0 0;">
+            <padding><Insets bottom="30.0" left="20.0" right="20.0" top="40.0" /></padding>
+            <children>
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="PHANTOM" textFill="#00ffff"><font><Font name="System Bold" size="24.0" /></font></Label>
+                        <Label text="ADMIN PANEL" textFill="WHITE"><font><Font name="System Bold" size="14.0" /></font></Label>
+                    </children>
+                </VBox>
+                <VBox spacing="10.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Button fx:id="btnNavAgents" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #2a2a35; -fx-border-color: #00ffff; -fx-border-width: 0 0 0 4; -fx-text-fill: #00ffff; -fx-alignment: CENTER_LEFT;" text="👥 Agents">
+                            <font><Font name="System Bold" size="16.0" /></font>
+                            <padding><Insets bottom="12.0" left="11.0" top="12.0" /></padding>
+                        </Button>
+                        <Button fx:id="btnNavQuestionnaires" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #8a8a98; -fx-alignment: CENTER_LEFT;" text="📝 Questionnaires">
+                            <font><Font size="16.0" /></font>
+                            <padding><Insets bottom="12.0" left="15.0" top="12.0" /></padding>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+
+        <VBox spacing="20.0" style="-fx-padding: 30 50;" HBox.hgrow="ALWAYS">
+            <children>
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Nouveau Profil Agent" textFill="WHITE"><font><Font name="System Bold" size="24.0" /></font></Label>
+                                <Label text="Création administrative d'un profil joueur complet" styleClass="info-label" />
+                            </children>
+                        </VBox>
+                        <Button fx:id="btnRetour" mnemonicParsing="false" styleClass="secondary-button" text="← Retour">
+                            <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <ScrollPane fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox spacing="15.0" styleClass="module-card">
+                            <children>
+                                <VBox spacing="5.0">
+                                    <Label text="JOUEUR" styleClass="form-label" />
+                                    <ComboBox fx:id="cbPlayer" prefWidth="800.0" />
+                                </VBox>
+                                <VBox spacing="5.0">
+                                    <Label text="ÉQUIPE (TEAM)" styleClass="form-label" />
+                                    <ComboBox fx:id="cbTeam" prefWidth="800.0" />
+                                </VBox>
+                                <VBox spacing="5.0">
+                                    <Label text="JEU" styleClass="form-label" />
+                                    <ComboBox fx:id="cbGame" prefWidth="800.0" />
+                                </VBox>
+                                <VBox spacing="5.0">
+                                    <Label text="PSEUDO" styleClass="form-label" />
+                                    <TextField fx:id="tfPseudo" />
+                                </VBox>
+                                <VBox spacing="5.0">
+                                    <Label text="RANG" styleClass="form-label" />
+                                    <TextField fx:id="tfRank" />
+                                </VBox>
+                                <VBox spacing="5.0">
+                                    <Label text="STATUT" styleClass="form-label" />
+                                    <ComboBox fx:id="cbStatus" prefWidth="800.0" />
+                                </VBox>
+                                <VBox spacing="5.0">
+                                    <Label text="LIENS SOCIAUX" styleClass="form-label" />
+                                    <TextField fx:id="tfSocials" />
+                                </VBox>
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                    <Button fx:id="btnAnnuler" mnemonicParsing="false" styleClass="secondary-button" text="Annuler">
+                        <padding><Insets bottom="10.0" left="20.0" right="20.0" top="10.0" /></padding>
+                    </Button>
+                    <Button fx:id="btnCreer" mnemonicParsing="false" styleClass="action-button" text="Créer le Profil">
+                        <padding><Insets bottom="10.0" left="30.0" right="30.0" top="10.0" /></padding>
+                    </Button>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</HBox>

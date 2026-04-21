@@ -206,9 +206,6 @@ public class ProfileController {
                 ((Controllers.home.HomeController) controller).setCurrentUser(currentUser);
             } else if (controller instanceof Controllers.user.ProfileController) {
                 ((Controllers.user.ProfileController) controller).setCurrentUser(currentUser);
-            } else if (controller instanceof Controllers.tournament.TournamentController) {
-                // If TournamentController has setCurrentUser method
-                // ((Controllers.tournament.TournamentController) controller).setCurrentUser(currentUser);
             }
             // Add more controllers as needed
 

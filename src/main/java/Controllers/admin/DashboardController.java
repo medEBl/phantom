@@ -1,5 +1,6 @@
 package Controllers.admin;
 
+import entities.user.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class DashboardController {
-
+    private User currentUser;
     @FXML
     private Button logoutButton;
     
@@ -47,7 +48,8 @@ public class DashboardController {
 
     @FXML
     private Button navShop;
-
+    @FXML
+    private Button navPayments;
     @FXML
     private Button createTournamentButton;
 
@@ -143,7 +145,8 @@ public class DashboardController {
     
     @FXML
     private TableColumn statusColumn;
-
+    @FXML
+    private Button navAgents;
     @FXML
     public void initialize() {
         // Load dashboard data
@@ -173,7 +176,14 @@ public class DashboardController {
         cpuProgressBar.setProgress(0.45);
         memoryProgressBar.setProgress(0.62);
     }
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+        System.out.println("DashboardController: Current user set to " + (user != null ? user.getFullName() : "null"));
 
+        if (adminNameLabel != null && user != null) {
+            adminNameLabel.setText("ADMIN: " + user.getFullName().toUpperCase());
+        }
+    }
     private void setupActivityTable() {
         // TODO: Set up table columns with data
         timestampColumn.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("timestamp"));
@@ -200,7 +210,26 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void handleAgent() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/fxml/ListAgentsBack.fxml"));
+            Parent root = loader.load();
 
+            Stage stage = (Stage) navAgents.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.show();
+            stage.setTitle("Agents Management - Phantom Admin");
+
+        } catch (IOException e) {
+            System.err.println("Cannot open agents management: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error in handleAgent: " + e.getMessage());
+        }
+    }
     @FXML
     private void handleUsers() {
         try {
@@ -217,7 +246,7 @@ public class DashboardController {
             adminUser.setEmail("admin@phantom.com");
             adminUser.setRole("ADMIN");
             adminUser.setUsername("admin");
-            
+
             controller.setCurrentUser(adminUser);
             
             Stage stage = (Stage) navUsers.getScene().getWindow();
@@ -248,14 +277,44 @@ public class DashboardController {
 
     @FXML
     private void handleTeams() {
-        // TODO: Navigate to teams management
-        System.out.println("Navigate to Teams Management");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/team/fxml/dashboardTeams.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) navTeams.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.show();
+            stage.setTitle("Teams Management - Phantom App");
+
+        } catch (IOException e) {
+            System.err.println("Cannot open teams management: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error in handleTeams: " + e.getMessage());
+        }
     }
 
     @FXML
     private void handleMatches() {
-        // TODO: Navigate to matches management
-        System.out.println("Navigate to Matches Management");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/dashboardMatchy.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) navMatches.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.show();
+            stage.setTitle("Matches Management - Phantom App");
+
+        } catch (IOException e) {
+            System.err.println("Cannot open matches management: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error in handleMatches: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -286,9 +345,9 @@ public class DashboardController {
     @FXML
     private void handleCoaching() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coaching/fxml/list.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coach/fxml/adminlist_coaching_sessions.fxml"));
             Parent root = loader.load();
-            
+
             Stage stage = (Stage) navCoaching.getScene().getWindow();
             Scene scene = new Scene(root, 1920, 1080);
             stage.setScene(scene);
@@ -296,7 +355,7 @@ public class DashboardController {
             stage.setFullScreen(true);
             stage.setTitle("Coaching - Phantom Admin");
             stage.show();
-            
+
         } catch (IOException e) {
             System.err.println("Cannot open coaching: " + e.getMessage());
         }
@@ -305,7 +364,7 @@ public class DashboardController {
     @FXML
     private void handleShop() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shop/fxml/admin.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin/fxml/shop-items.fxml"));
             Parent root = loader.load();
             
             Stage stage = (Stage) navShop.getScene().getWindow();
@@ -320,7 +379,47 @@ public class DashboardController {
             System.err.println("Cannot open shop admin: " + e.getMessage());
         }
     }
+    @FXML
+    private void handlePayments() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin/fxml/payments.fxml"));
+            Parent root = loader.load();
 
+            Stage stage = (Stage) navPayments.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.setTitle("Payment Management - Phantom Admin");
+            stage.show();
+
+        } catch (IOException e) {
+            System.err.println("Cannot open payment management: " + e.getMessage());
+        }
+    }
+    @FXML
+    private void handleTrainingPlan() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coach/fxml/adminlist_training_plans.fxml"));
+            Parent root = loader.load();
+
+            // Pass current user to admin training plans controller
+            Controllers.trainingplan.AdminListTrainingPlanController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+
+            Stage stage = (Stage) navShop.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.setTitle("Training Plans Admin - Phantom Admin");
+            stage.show();
+
+        } catch (IOException e) {
+            System.err.println("Cannot open shop admin: " + e.getMessage());
+        }
+
+    }
     @FXML
     private void handleGenerateReport() {
         try {

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+
+<BorderPane styleClass="shop-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.shop.PaymentController">
+   <stylesheets>
+      <URL value="@/shop/css/style.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="shop-header">
+         <children>
+            <!-- Header with app title and user actions -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="shop-info">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="12">
+                     <children>
+                        <Text styleClass="shop-title" text="PHANTOM" />
+                        <Text styleClass="shop-title" fill="#ff2d2d" text="FORCE" />
+                        <Text styleClass="shop-title" text=" - PAYMENTS" />
+                     </children>
+                  </HBox>
+                  <Region HBox.hgrow="ALWAYS" />
+
+                  <!-- User Profile Section -->
+                  <HBox alignment="CENTER" spacing="15" styleClass="user-container">
+                     <children>
+                        <Button fx:id="backToHomeButton" onAction="#handleBackToHome" styleClass="secondary-button" text="Back to Home" />
+                        <Button fx:id="viewItemsButton" onAction="#handleViewItems" styleClass="secondary-button" text="View Items" />
+                        <Button fx:id="refreshButton" onAction="#handleRefresh" styleClass="primary-button" text="Refresh" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+
+            <!-- Navigation Bar -->
+            <HBox alignment="CENTER_LEFT" spacing="0" styleClass="shop-nav">
+               <children>
+                  <Button fx:id="navHome" onAction="#handleBackToHome" styleClass="nav-button" text="HOME" />
+                  <Button fx:id="navItems" onAction="#handleViewItems" styleClass="nav-button" text="ITEMS" />
+                  <Button fx:id="navPayments" styleClass="nav-button-active" text="PAYMENTS" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+
+   <center>
+      <ScrollPane styleClass="shop-scroll" fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+         <content>
+            <VBox alignment="TOP_CENTER" spacing="30" styleClass="shop-content">
+               <children>
+                  <!-- Message Container -->
+                  <VBox fx:id="messageContainer" spacing="5" alignment="CENTER" styleClass="message-container"/>
+
+                  <!-- Controls Section -->
+                  <VBox spacing="20" styleClass="controls-container">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="15">
+                           <children>
+                              <Text styleClass="form-title" text="PAYMENT MANAGEMENT" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button fx:id="addPaymentButton" onAction="#handleAddPayment" styleClass="primary-button" text="Add Payment" />
+                           </children>
+                        </HBox>
+
+                        <!-- Action Buttons -->
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                           <children>
+                              <Button fx:id="editPaymentButton" onAction="#handleEditPayment" styleClass="action-button" text="Edit" />
+                              <Button fx:id="deletePaymentButton" onAction="#handleDeletePayment" styleClass="delete-button" text="Delete" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button fx:id="filterByStatusButton" onAction="#handleFilterByStatus" styleClass="secondary-button" text="Filter by Status" />
+                              <Button fx:id="searchByRefButton" onAction="#handleSearchByTransactionRef" styleClass="secondary-button" text="Search by Ref" />
+                              <Button fx:id="showAllButton" onAction="#handleShowAll" styleClass="secondary-button" text="Show All" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+                  <!-- Payments Table -->
+                  <TableView fx:id="paymentsTable" styleClass="table-view" prefHeight="600">
+                     <columns>
+                        <TableColumn fx:id="colId" prefWidth="80" text="ID" />
+                        <TableColumn fx:id="colAmount" prefWidth="120" text="Amount" />
+                        <TableColumn fx:id="colMethod" prefWidth="150" text="Payment Method" />
+                        <TableColumn fx:id="colStatus" prefWidth="120" text="Status" />
+                        <TableColumn fx:id="colTransactionRef" prefWidth="200" text="Transaction Ref" />
+                        <TableColumn fx:id="colShopItemId" prefWidth="100" text="Shop Item ID" />
+                     </columns>
+                  </TableView>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

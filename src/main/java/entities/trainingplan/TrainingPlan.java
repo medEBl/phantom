@@ -13,6 +13,7 @@ public class TrainingPlan {
     private LocalDateTime createdAt;
     private int teamId;
     private String teamName;        // Pour affichage
+    private int duration;           // Durée en minutes
 
     public TrainingPlan() {}
 
@@ -57,6 +58,9 @@ public class TrainingPlan {
 
     public String getTeamName() { return teamName; }
     public void setTeamName(String teamName) { this.teamName = teamName; }
+
+    public int getDuration() { return duration; }
+    public void setDuration(int duration) { this.duration = duration; }
 
     @Override
     public String toString() {

@@ -13,6 +13,38 @@ import java.util.Optional;
 public class TeamService implements ITeamService {
     private final Connection cnx = Phantom.getInstance().getCnx();
 
+    private void checkConnection() {
+        if (cnx == null) {
+            throw new RuntimeException("❌ Pas de connexion à la base de données.");
+        }
+    }
+
+    private boolean isValidCoach(int coachId) {
+        String sql = "SELECT COUNT(*) FROM user WHERE id = ? AND role = 'COACH' AND is_active = 1";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, coachId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public List<Integer> getValidCoachIds() {
+        List<Integer> coachIds = new ArrayList<>();
+        String sql = "SELECT id FROM user WHERE role = 'COACH' AND is_active = 1";
+        try (Statement st = cnx.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                coachIds.add(rs.getInt("id"));
+            }
+        } catch (SQLException e) {
+            System.out.println("⚠️ Erreur lors de la récupération des coachs: " + e.getMessage());
+        }
+        return coachIds;
+    }
+
     private Team mapRow(ResultSet rs) throws SQLException {
         Team t = new Team();
         t.setId(rs.getInt("id"));
@@ -24,15 +56,13 @@ public class TeamService implements ITeamService {
 
         t.setCoachId(rs.getInt("coach_id"));
 
-        // Récupérer le nom du coach si disponible
-        try {
-            String coachSql = "SELECT username FROM user WHERE id = ?";
-            try (PreparedStatement ps = cnx.prepareStatement(coachSql)) {
-                ps.setInt(1, t.getCoachId());
-                ResultSet rsCoach = ps.executeQuery();
-                if (rsCoach.next()) {
-                    t.setCoachName(rsCoach.getString("username"));
-                }
+        // Récupérer le nom du coach
+        String coachSql = "SELECT username FROM user WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(coachSql)) {
+            ps.setInt(1, t.getCoachId());
+            ResultSet rsCoach = ps.executeQuery();
+            if (rsCoach.next()) {
+                t.setCoachName(rsCoach.getString("username"));
             }
         } catch (SQLException e) {
             t.setCoachName("Unknown");
@@ -42,8 +72,18 @@ public class TeamService implements ITeamService {
 
     @Override
     public void createTeam(Team team) {
+        checkConnection();
+
         if (teamNameExists(team.getName())) {
-            throw new IllegalArgumentException("Team name already exists: " + team.getName());
+            throw new IllegalArgumentException("❌ Le nom de l'équipe existe déjà: " + team.getName());
+        }
+
+        // Validation du coach
+        if (!isValidCoach(team.getCoachId())) {
+            List<Integer> validCoachIds = getValidCoachIds();
+            throw new IllegalArgumentException("❌ Coach ID " + team.getCoachId() + " invalide. " +
+                    "Le coach doit exister et avoir le rôle 'COACH'. " +
+                    "Coachs valides: " + validCoachIds);
         }
 
         String sql = "INSERT INTO team (name, game, creation_date, coach_id) VALUES (?, ?, ?, ?)";
@@ -59,7 +99,7 @@ public class TeamService implements ITeamService {
             if (keys.next()) {
                 team.setId(keys.getInt(1));
             }
-            System.out.println("✅ Team created with ID: " + team.getId());
+            System.out.println("✅ Équipe créée avec ID: " + team.getId());
         } catch (SQLException e) {
             throw new RuntimeException("createTeam failed: " + e.getMessage(), e);
         }
@@ -67,6 +107,16 @@ public class TeamService implements ITeamService {
 
     @Override
     public void updateTeam(Team team) {
+        checkConnection();
+
+        // Validation du coach si modifié
+        if (!isValidCoach(team.getCoachId())) {
+            List<Integer> validCoachIds = getValidCoachIds();
+            throw new IllegalArgumentException("❌ Coach ID " + team.getCoachId() + " invalide. " +
+                    "Le coach doit exister et avoir le rôle 'COACH'. " +
+                    "Coachs valides: " + validCoachIds);
+        }
+
         String sql = "UPDATE team SET name=?, game=?, coach_id=? WHERE id=?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
             ps.setString(1, team.getName());
@@ -75,8 +125,8 @@ public class TeamService implements ITeamService {
             ps.setInt(4, team.getId());
 
             int rows = ps.executeUpdate();
-            if (rows == 0) throw new RuntimeException("No team found with ID: " + team.getId());
-            System.out.println("✅ Team updated.");
+            if (rows == 0) throw new RuntimeException("❌ Équipe non trouvée avec ID: " + team.getId());
+            System.out.println("✅ Équipe mise à jour.");
         } catch (SQLException e) {
             throw new RuntimeException("updateTeam failed: " + e.getMessage(), e);
         }
@@ -84,6 +134,8 @@ public class TeamService implements ITeamService {
 
     @Override
     public void deleteTeam(int id) {
+        checkConnection();
+
         // Vérifier si l'équipe est utilisée dans des matchs
         String checkSql = "SELECT COUNT(*) FROM matchy WHERE team1_id = ? OR team2_id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(checkSql)) {
@@ -91,7 +143,7 @@ public class TeamService implements ITeamService {
             ps.setInt(2, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
-                throw new RuntimeException("Cannot delete team: it is used in matches");
+                throw new RuntimeException("❌ Impossible de supprimer l'équipe: elle est utilisée dans des matchs.");
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error checking team usage: " + e.getMessage(), e);
@@ -101,8 +153,8 @@ public class TeamService implements ITeamService {
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rows = ps.executeUpdate();
-            if (rows == 0) throw new RuntimeException("No team found with ID: " + id);
-            System.out.println("✅ Team deleted.");
+            if (rows == 0) throw new RuntimeException("❌ Équipe non trouvée avec ID: " + id);
+            System.out.println("✅ Équipe supprimée.");
         } catch (SQLException e) {
             throw new RuntimeException("deleteTeam failed: " + e.getMessage(), e);
         }
@@ -110,6 +162,7 @@ public class TeamService implements ITeamService {
 
     @Override
     public Optional<Team> getTeamById(int id) {
+        checkConnection();
         String sql = "SELECT * FROM team WHERE id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -123,6 +176,7 @@ public class TeamService implements ITeamService {
 
     @Override
     public List<Team> getAllTeams() {
+        checkConnection();
         List<Team> list = new ArrayList<>();
         String sql = "SELECT * FROM team ORDER BY id";
         try (Statement st = cnx.createStatement();
@@ -136,6 +190,7 @@ public class TeamService implements ITeamService {
 
     @Override
     public List<Team> getTeamsByGame(String game) {
+        checkConnection();
         List<Team> list = new ArrayList<>();
         String sql = "SELECT * FROM team WHERE LOWER(game) = LOWER(?)";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
@@ -150,6 +205,7 @@ public class TeamService implements ITeamService {
 
     @Override
     public List<Team> getTeamsByCoach(int coachId) {
+        checkConnection();
         List<Team> list = new ArrayList<>();
         String sql = "SELECT * FROM team WHERE coach_id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
@@ -176,14 +232,17 @@ public class TeamService implements ITeamService {
 
     @Override
     public List<Team> getAvailableTeams() {
-        List<Team> list = new ArrayList<>();
-        String sql = "SELECT * FROM team ORDER BY name";
-        try (Statement st = cnx.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-            while (rs.next()) list.add(mapRow(rs));
-        } catch (SQLException e) {
-            throw new RuntimeException("getAvailableTeams failed: " + e.getMessage(), e);
+        return getAllTeams();
+    }
+
+    // Méthode utilitaire pour afficher les coachs valides
+    public void displayValidCoaches() {
+        List<Integer> coachIds = getValidCoachIds();
+        if (coachIds.isEmpty()) {
+            System.out.println("⚠️ Aucun coach valide trouvé dans la base de données.");
+            System.out.println("   Veuillez d'abord créer un utilisateur avec le rôle 'COACH'.");
+        } else {
+            System.out.println("✅ Coachs valides disponibles: " + coachIds);
         }
-        return list;
     }
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<BorderPane styleClass="delete-match-container" prefWidth="1920" prefHeight="1080" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.matchy.DashboardMatchyDeleteController">
+    <stylesheets>
+      <URL value="@/matchy/css/dashboardMatchy.css" />
+    </stylesheets>
+
+    <top>
+      <VBox styleClass="delete-header" spacing="10">
+         <children>
+            <Text styleClass="delete-title" text="Delete Match" />
+            <Text styleClass="delete-subtitle" text="Are you sure you want to delete this match?" />
+         </children>
+         <padding>
+            <Insets top="20" right="20" bottom="10" left="20" />
+         </padding>
+      </VBox>
+    </top>
+
+    <center>
+      <VBox styleClass="delete-form" spacing="20" alignment="CENTER">
+         <children>
+            <!-- Match Details -->
+            <VBox spacing="15" alignment="CENTER" styleClass="match-details">
+               <children>
+                  <GridPane hgap="15" vgap="10" alignment="CENTER">
+                     <children>
+                        <Label styleClass="info-label" text="Match ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label fx:id="matchIdLabel" styleClass="info-value" text="" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        
+                        <Label styleClass="info-label" text="Game:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label fx:id="matchGameLabel" styleClass="info-value" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        
+                        <Label styleClass="info-label" text="Team 1:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Label fx:id="matchTeam1Label" styleClass="info-value" text="" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        
+                        <Label styleClass="info-label" text="Team 2:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label fx:id="matchTeam2Label" styleClass="info-value" text="" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        
+                        <Label styleClass="info-label" text="Match Date:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <Label fx:id="matchDateLabel" styleClass="info-value" text="" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     </children>
+                  </GridPane>
+               </children>
+            </VBox>
+
+            <!-- Warning Message -->
+            <VBox spacing="10" alignment="CENTER">
+               <children>
+                  <Text styleClass="warning-text" text="This action cannot be undone!" />
+                  <Text styleClass="warning-subtext" text="All match data will be permanently deleted." />
+               </children>
+            </VBox>
+
+            <!-- Buttons -->
+            <HBox spacing="20" alignment="CENTER">
+               <children>
+                  <Button fx:id="confirmButton" text="Delete Match" styleClass="delete-button" prefWidth="150" onAction="#handleConfirmDelete" />
+                  <Button fx:id="cancelButton" text="Cancel" styleClass="cancel-button" prefWidth="150" onAction="#handleBackToMatches" />
+               </children>
+            </HBox>
+
+            <!-- Error Label -->
+            <Label fx:id="errorLabel" styleClass="error-label" text="" visible="false" />
+         </children>
+         <padding>
+            <Insets top="20" right="20" bottom="20" left="20" />
+         </padding>
+      </VBox>
+   </center>
+</BorderPane>

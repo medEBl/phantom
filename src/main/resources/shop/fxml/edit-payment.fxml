@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controllers.shop.EditPaymentController"
+      prefHeight="500.0" prefWidth="600.0"
+      spacing="20" alignment="CENTER"
+      styleClass="form-container">
+
+    <stylesheets>
+        <URL value="@/shop/css/style.css" />
+    </stylesheets>
+
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
+
+    <Label text="Modifier un Paiement" styleClass="form-title"/>
+
+    <VBox fx:id="messageContainer" spacing="5" alignment="CENTER" styleClass="message-container"/>
+
+    <GridPane hgap="15" vgap="15" alignment="CENTER">
+        <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="form-label"/>
+        <TextField fx:id="idField" GridPane.columnIndex="1" GridPane.rowIndex="0" editable="false" promptText="ID du paiement"/>
+
+        <Label text="Montant:" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="form-label"/>
+        <TextField fx:id="amountField" GridPane.columnIndex="1" GridPane.rowIndex="1" editable="false" promptText="Montant en DT"/>
+
+        <Label text="Méthode:" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="form-label"/>
+        <TextField fx:id="methodField" GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="Méthode (ex: card, cash)"/>
+
+        <Label text="Statut:" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="form-label"/>
+        <TextField fx:id="statusField" GridPane.columnIndex="1" GridPane.rowIndex="3" promptText="Statut (ex: pending, completed)"/>
+
+        <Label text="Référence:" GridPane.columnIndex="0" GridPane.rowIndex="4" styleClass="form-label"/>
+        <TextField fx:id="transactionRefField" GridPane.columnIndex="1" GridPane.rowIndex="4" editable="false" promptText="Référence de transaction"/>
+
+        <Label text="ID Jeu:" GridPane.columnIndex="0" GridPane.rowIndex="5" styleClass="form-label"/>
+        <TextField fx:id="shopItemIdField" GridPane.columnIndex="1" GridPane.rowIndex="5" editable="false" promptText="ID du jeu associé"/>
+    </GridPane>
+
+    <HBox spacing="15" alignment="CENTER">
+        <Button fx:id="updateButton" text="Mettre à jour" onAction="#handleUpdatePayment" styleClass="primary-button"/>
+        <Button fx:id="cancelButton" text="Annuler" onAction="#handleCancel" styleClass="secondary-button"/>
+    </HBox>
+
+</VBox>

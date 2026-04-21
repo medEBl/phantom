@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+
+<BorderPane styleClass="coach-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.trainingplan.AdminDeleteTrainingPlanController">
+   <stylesheets>
+      <URL value="@/coach/css/style.css" />
+   </stylesheets>
+   
+   <top>
+      <VBox styleClass="coach-header">
+         <children>
+            <!-- Admin Delete Training Plan Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="coach-info">
+               <children>
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="primary-button" text="← BACK TO TRAINING PLANS" />
+                  <Text styleClass="coach-title" text="ADMIN - DELETE TRAINING PLAN" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="currentUserLabel" styleClass="user-label" text="ADMIN: LOADING..." />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <VBox spacing="30" alignment="CENTER" styleClass="coach-content">
+         <children>
+            <!-- Delete Confirmation Container -->
+            <VBox spacing="25" styleClass="form-container" prefWidth="600">
+               <children>
+                  <!-- Warning Section -->
+                  <VBox spacing="15" alignment="CENTER">
+                     <children>
+                        <Text styleClass="section-title" text="⚠️ CONFIRM DELETION" />
+                        <Text styleClass="section-subtitle" text="You are about to permanently delete this training plan" />
+                     </children>
+                  </VBox>
+                  
+                  <!-- Plan Details Section -->
+                  <VBox spacing="15">
+                     <children>
+                        <Text styleClass="section-title" text="PLAN DETAILS" />
+                        
+                        <GridPane hgap="15" vgap="15">
+                           <children>
+                              <Label text="Title:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                              <Label fx:id="titleLabel" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                              
+                              <Label text="Description:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                              <Label fx:id="descriptionLabel" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                              
+                              <Label text="Focus Area:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                              <Label fx:id="focusAreaLabel" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                              
+                              <Label text="Difficulty:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                              <Label fx:id="difficultyLabel" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </VBox>
+                  
+                  <!-- Action Buttons -->
+                  <HBox spacing="15" alignment="CENTER">
+                     <children>
+                        <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="secondary-button" text="CANCEL" prefWidth="120" />
+                        <Button fx:id="confirmDeleteButton" onAction="#handleConfirmDelete" styleClass="primary-button" text="CONFIRM DELETE" prefWidth="120" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

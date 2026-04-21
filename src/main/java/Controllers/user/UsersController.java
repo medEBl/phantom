@@ -38,8 +38,6 @@ public class UsersController {
     @FXML
     private Label currentUserLabel;
     
-    private Label deleteErrorLabel;
-
     @FXML
     private TextField searchField;
     @FXML
@@ -96,6 +94,16 @@ public class UsersController {
 
     @FXML
     public void initialize() {
+        // Test database connection first
+        try {
+            List<User> testUsers = userService.getAllUsers();
+            System.out.println("Database connection test: Found " + testUsers.size() + " users total");
+        } catch (Exception e) {
+            System.err.println("Database connection failed: " + e.getMessage());
+            showAlert("Database Error", "Cannot connect to database: " + e.getMessage());
+            return;
+        }
+        
         setupTableColumns();
         setupFilters();
         setupSearchListeners();
@@ -104,7 +112,11 @@ public class UsersController {
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
-        currentUserLabel.setText("USER: " + user.getFullName().toUpperCase());
+        if (user != null) {
+            currentUserLabel.setText("USER: " + user.getFullName().toUpperCase());
+        } else {
+            currentUserLabel.setText("USER: NOT LOGGED IN");
+        }
     }
 
     private void setupTableColumns() {
@@ -142,8 +154,8 @@ public class UsersController {
             private final HBox buttons = new HBox(5, editButton, deleteButton);
 
             {
-                editButton.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand;");
-                deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand;");
+                editButton.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand; -fx-font-size: 11px; -fx-padding: 5px 10px;");
+                deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand; -fx-font-size: 11px; -fx-padding: 5px 10px;");
                 
                 editButton.setOnAction(event -> {
                     User user = getTableView().getItems().get(getIndex());
@@ -170,7 +182,7 @@ public class UsersController {
 
     private void setupFilters() {
         // Setup role filter
-        roleFilter.getItems().addAll("All", "admin", "player", "organizer", "coach");
+        roleFilter.getItems().addAll("All", "ADMIN", "PLAYER", "ORGANIZER", "COACH");
         roleFilter.setValue("All");
         
         // Setup status filter
@@ -211,8 +223,16 @@ public class UsersController {
             String role = roleFilter.getValue() != null ? roleFilter.getValue().toString() : "All";
             String status = statusFilter.getValue() != null ? statusFilter.getValue().toString() : "All";
             
+            System.out.println("Loading users with params:");
+            System.out.println("  Search term: '" + searchTerm + "'");
+            System.out.println("  Role: '" + role + "'");
+            System.out.println("  Status: '" + status + "'");
+            System.out.println("  Page: " + currentPage + "/" + totalPages);
+            
             // Get users with search and filters
             List<User> users = userService.searchUsers(searchTerm, role, status, currentPage, pageSize);
+            
+            System.out.println("Found " + users.size() + " users");
             usersTable.getItems().setAll(users);
             
             // Update pagination info
@@ -220,7 +240,11 @@ public class UsersController {
             totalPages = (int) Math.ceil((double) totalCount / pageSize);
             updatePaginationInfo();
             
+            System.out.println("Total count: " + totalCount + ", Total pages: " + totalPages);
+            
         } catch (Exception e) {
+            System.err.println("Error in loadUsers: " + e.getMessage());
+            e.printStackTrace();
             showAlert("Error", "Failed to load users: " + e.getMessage());
         }
     }
@@ -356,10 +380,25 @@ public class UsersController {
     @FXML
     private void handleDeleteUser(User user) {
         try {
+            // Delete user directly without confirmation
             userService.deleteUser(user.getId());
-            currentPage--;
+            System.out.println("User deleted: " + user.getFullName() + " (ID: " + user.getId() + ")");
+            
+            // Adjust current page if necessary
+            List<User> remainingUsers = userService.searchUsers(
+                searchField.getText().trim(),
+                roleFilter.getValue() != null ? roleFilter.getValue().toString() : "All",
+                statusFilter.getValue() != null ? statusFilter.getValue().toString() : "All",
+                currentPage, pageSize);
+            
+            if (remainingUsers.isEmpty() && currentPage > 1) {
+                currentPage--;
+            }
+            
             loadUsers();
+            
         } catch (Exception e) {
+            showAlert("Error", "Failed to delete user: " + e.getMessage());
             System.err.println("Cannot delete user: " + e.getMessage());
         }
     }

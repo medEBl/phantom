@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<BorderPane styleClass="create-team-container" prefWidth="1920" prefHeight="1080" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.team.DashboardTeamCreateController">
+   <stylesheets>
+      <URL value="@/team/css/teams.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="create-header" spacing="10">
+         <children>
+            <Text styleClass="create-title" text="Create New Team" />
+            <Text styleClass="create-subtitle" text="Fill in the details to create a new team" />
+         </children>
+         <padding>
+            <Insets top="20" right="20" bottom="10" left="20" />
+         </padding>
+      </VBox>
+   </top>
+
+   <center>
+      <VBox styleClass="create-form" spacing="20" alignment="CENTER">
+         <children>
+            <!-- Team Name -->
+            <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+               <children>
+                  <Label styleClass="form-label" text="Team Name *" />
+                  <TextField fx:id="nameField" promptText="Enter team name" styleClass="form-input" prefWidth="400" />
+               </children>
+            </VBox>
+
+            <!-- Game Selection -->
+            <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+               <children>
+                  <Label styleClass="form-label" text="Game *" />
+                  <ComboBox fx:id="gameComboBox" promptText="Select game" styleClass="form-combo" prefWidth="400" />
+               </children>
+            </VBox>
+
+            <!-- Coach Selection -->
+            <VBox spacing="8" alignment="CENTER_LEFT" styleClass="form-field">
+               <children>
+                  <Label styleClass="form-label" text="Coach ID *" />
+                  <ComboBox fx:id="coachComboBox" promptText="Select coach" styleClass="form-combo" prefWidth="400" />
+               </children>
+            </VBox>
+
+            <!-- Buttons -->
+            <HBox spacing="20" alignment="CENTER">
+               <children>
+                  <Button fx:id="createButton" text="Create Team" styleClass="create-button" prefWidth="150" onAction="#handleCreateTeam" />
+                  <Button fx:id="cancelButton" text="Cancel" styleClass="cancel-button" prefWidth="150" onAction="#handleBackToTeams" />
+               </children>
+            </HBox>
+
+            <!-- Error Label -->
+            <Label fx:id="errorLabel" styleClass="error-label" text="" visible="false" />
+         </children>
+         <padding>
+            <Insets top="20" right="20" bottom="20" left="20" />
+         </padding>
+      </VBox>
+   </center>
+</BorderPane>

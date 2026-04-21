@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<?import java.net.URL?>
+<BorderPane styleClass="admin-container" prefWidth="1920" prefHeight="1080" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.admin.AdminAddPaymentController">
+   <stylesheets>
+      <URL value="@/admin/css/admin.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="admin-header">
+         <children>
+            <!-- Admin Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="admin-info">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <children>
+                        <Text styleClass="admin-title" text="💳 ADD PAYMENT" />
+                        <Text styleClass="admin-subtitle" text="NEW PAYMENT" />
+                     </children>
+                  </HBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="back-button" text="🔙 BACK TO PAYMENTS" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+
+   <center>
+      <VBox spacing="30" alignment="CENTER" styleClass="form-container">
+         <children>
+            <!-- Form Title -->
+            <Text styleClass="form-title" text="ADD NEW PAYMENT" />
+
+            <!-- Payment Form -->
+            <GridPane hgap="20" vgap="15" alignment="CENTER" maxWidth="600">
+               <children>
+                  <!-- ID Field -->
+                  <Label text="Payment ID:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                  <TextField fx:id="idField" promptText="Enter payment ID" styleClass="form-input" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                  <!-- Amount Field -->
+                  <Label text="Amount (DT):" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                  <TextField fx:id="amountField" promptText="Enter amount" styleClass="form-input" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                  <!-- Method Field -->
+                  <Label text="Payment Method:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                  <TextField fx:id="methodField" promptText="card, cash, paypal, bank_transfer, crypto, check" styleClass="form-input" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                  <!-- Status Field -->
+                  <Label text="Payment Status:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                  <TextField fx:id="statusField" promptText="pending, success, failed, refunded, cancelled" styleClass="form-input" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                  <!-- Transaction Reference Field -->
+                  <Label text="Transaction Reference:" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                  <TextField fx:id="transactionRefField" promptText="Enter transaction reference" styleClass="form-input" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                  <!-- Shop Item ID Field -->
+                  <Label text="Shop Item ID:" styleClass="form-label" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                  <TextField fx:id="shopItemIdField" promptText="Enter shop item ID" styleClass="form-input" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+
+            <!-- Form Buttons -->
+            <HBox spacing="20" alignment="CENTER">
+               <children>
+                  <Button fx:id="saveButton" onAction="#handleSavePayment" styleClass="primary-button" text="💾 SAVE PAYMENT" prefWidth="150" />
+                  <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="secondary-button" text="🚫 CLEAR" prefWidth="150" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

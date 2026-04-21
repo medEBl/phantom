@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<VBox styleClass="matchy-form-container" prefWidth="700" prefHeight="600" spacing="20" alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.matchy.MatchyCreateController">
+   <stylesheets>
+      <URL value="@/matchy/css/style.css" />
+   </stylesheets>
+
+   <padding>
+      <Insets top="30" right="30" bottom="30" left="30" />
+   </padding>
+
+   <children>
+      <!-- Header -->
+      <VBox spacing="10" alignment="CENTER">
+         <children>
+            <Text styleClass="form-title" text="Create New Match" />
+            <Text styleClass="form-subtitle" text="Fill in the match details below" />
+         </children>
+      </VBox>
+
+      <!-- Form Content -->
+      <ScrollPane styleClass="form-scroll" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+         <content>
+            <VBox spacing="20" styleClass="form-content">
+               <children>
+                  <!-- Basic Information -->
+                  <VBox spacing="15" styleClass="form-section">
+                     <children>
+                        <Text styleClass="section-title" text="Basic Information" />
+                        
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Game *" />
+                              <TextField fx:id="gameField" promptText="Enter game name (e.g., League of Legends)" styleClass="form-input" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Match Date *" />
+                              <DatePicker fx:id="matchDatePicker" styleClass="form-input" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Match Time *" />
+                              <TextField fx:id="matchTimeField" promptText="HH:mm (e.g., 14:30)" styleClass="form-input" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Status *" />
+                              <ComboBox fx:id="statusComboBox" styleClass="form-input" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+
+                  <!-- Teams -->
+                  <VBox spacing="15" styleClass="form-section">
+                     <children>
+                        <Text styleClass="section-title" text="Teams" />
+                        
+                        <GridPane hgap="20" vgap="15">
+                           <children>
+                              <!-- Team 1 -->
+                              <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="form-label" text="Team 1 *" />
+                                    <ComboBox fx:id="team1ComboBox" promptText="Select Team 1" styleClass="form-input" />
+                                    <Label fx:id="team1NameLabel" styleClass="team-name-label" text="" />
+                                 </children>
+                              </VBox>
+                              
+                              <!-- Team 2 -->
+                              <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="form-label" text="Team 2 *" />
+                                    <ComboBox fx:id="team2ComboBox" promptText="Select Team 2" styleClass="form-input" />
+                                    <Label fx:id="team2NameLabel" styleClass="team-name-label" text="" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints percentWidth="50" />
+                              <ColumnConstraints percentWidth="50" />
+                           </columnConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
+
+                  <!-- Match Details -->
+                  <VBox spacing="15" styleClass="form-section">
+                     <children>
+                        <Text styleClass="section-title" text="Match Details" />
+                        
+                        <VBox spacing="8">
+                           <children>
+                              <Label styleClass="form-label" text="Location" />
+                              <TextField fx:id="locationField" promptText="Enter match location (optional)" styleClass="form-input" />
+                           </children>
+                        </VBox>
+                        
+                        <GridPane hgap="20" vgap="15">
+                           <children>
+                              <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="form-label" text="Latitude" />
+                                    <TextField fx:id="latitudeField" promptText="Latitude (optional)" styleClass="form-input" />
+                                 </children>
+                              </VBox>
+                              
+                              <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="form-label" text="Longitude" />
+                                    <TextField fx:id="longitudeField" promptText="Longitude (optional)" styleClass="form-input" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints percentWidth="50" />
+                              <ColumnConstraints percentWidth="50" />
+                           </columnConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
+
+                  <!-- Scores (only for finished matches) -->
+                  <VBox spacing="15" styleClass="form-section">
+                     <children>
+                        <Text styleClass="section-title" text="Match Scores" />
+                        <Text styleClass="help-text" text="Scores are only required for finished matches" />
+                        
+                        <GridPane hgap="20" vgap="15">
+                           <children>
+                              <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="form-label" text="Team 1 Score" />
+                                    <TextField fx:id="score1Field" promptText="Score for team 1" styleClass="form-input" />
+                                 </children>
+                              </VBox>
+                              
+                              <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                 <children>
+                                    <Label styleClass="form-label" text="Team 2 Score" />
+                                    <TextField fx:id="score2Field" promptText="Score for team 2" styleClass="form-input" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints percentWidth="50" />
+                              <ColumnConstraints percentWidth="50" />
+                           </columnConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+
+      <!-- Error Label -->
+      <Label fx:id="errorLabel" styleClass="error-label" text="" visible="false" wrapText="true" />
+
+      <!-- Buttons -->
+      <HBox spacing="15" alignment="CENTER">
+         <children>
+            <Button fx:id="saveButton" onAction="#handleSave" styleClass="primary-button" text="Create Match" />
+            <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="secondary-button" text="Cancel" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

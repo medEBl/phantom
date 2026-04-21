@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<BorderPane styleClass="view-team-container" prefWidth="600" prefHeight="500" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.team.TeamViewController">
+   <stylesheets>
+      <URL value="@/team/css/teams.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="view-header" spacing="10">
+         <children>
+            <Text styleClass="view-title" text="Team Details" />
+            <Text styleClass="view-subtitle" text="View team information" />
+         </children>
+         <padding>
+            <Insets top="20" right="20" bottom="10" left="20" />
+         </padding>
+      </VBox>
+   </top>
+
+   <center>
+      <VBox styleClass="view-form" spacing="25" alignment="CENTER">
+         <children>
+            <!-- Team ID -->
+            <VBox spacing="8" alignment="CENTER_LEFT" styleClass="view-field">
+               <children>
+                  <Label styleClass="view-label" text="Team ID" />
+                  <Label fx:id="teamIdLabel" styleClass="view-value" text="-" />
+               </children>
+            </VBox>
+
+            <!-- Team Name -->
+            <VBox spacing="8" alignment="CENTER_LEFT" styleClass="view-field">
+               <children>
+                  <Label styleClass="view-label" text="Team Name" />
+                  <Label fx:id="nameLabel" styleClass="view-value" text="-" />
+               </children>
+            </VBox>
+
+            <!-- Game -->
+            <VBox spacing="8" alignment="CENTER_LEFT" styleClass="view-field">
+               <children>
+                  <Label styleClass="view-label" text="Game" />
+                  <Label fx:id="gameId" styleClass="view-value" text="-" />
+               </children>
+            </VBox>
+
+            <!-- Creation Date -->
+            <VBox spacing="8" alignment="CENTER_LEFT" styleClass="view-field">
+               <children>
+                  <Label styleClass="view-label" text="Creation Date" />
+                  <Label fx:id="creationDateLabel" styleClass="view-value" text="-" />
+               </children>
+            </VBox>
+
+            <!-- Coach ID -->
+            <VBox spacing="8" alignment="CENTER_LEFT" styleClass="view-field">
+               <children>
+                  <Label styleClass="view-label" text="Coach ID" />
+                  <Label fx:id="coachIdLabel" styleClass="view-value" text="-" />
+               </children>
+            </VBox>
+
+            <!-- Coach Name -->
+            <VBox spacing="8" alignment="CENTER_LEFT" styleClass="view-field">
+               <children>
+                  <Label styleClass="view-label" text="Coach Name" />
+                  <Label fx:id="coachNameLabel" styleClass="view-value" text="-" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets top="20" right="40" bottom="20" left="40" />
+         </padding>
+      </VBox>
+   </center>
+
+   <bottom>
+      <HBox alignment="CENTER" styleClass="view-actions">
+         <children>
+            <Button fx:id="closeButton" onAction="#handleClose" styleClass="primary-button" text="Close" prefWidth="120" />
+         </children>
+         <padding>
+            <Insets top="20" right="20" bottom="20" left="20" />
+         </padding>
+      </HBox>
+   </bottom>
+</BorderPane>

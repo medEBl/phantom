@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<BorderPane styleClass="coach-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.coachingsession.AdminAddCoachingSessionController">
+   <stylesheets>
+      <URL value="@/coach/css/style.css" />
+   </stylesheets>
+
+   <top>
+      <VBox styleClass="coach-header">
+         <children>
+            <!-- Admin Add Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="coach-info">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <children>
+                        <Text styleClass="coach-title" text="ADMIN" />
+                        <Text styleClass="coach-title" fill="#ff2d2d" text="ADD COACHING SESSION" />
+                     </children>
+                  </HBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="currentUserLabel" styleClass="user-label" text="ADMIN: LOADING..." />
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="back-button" text="BACK TO BACKOFFICE" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="coach-scroll">
+         <content>
+            <VBox spacing="30" styleClass="coach-content" alignment="TOP_CENTER">
+               <children>
+                  <!-- Form Title -->
+                  <VBox spacing="10" alignment="CENTER">
+                     <children>
+                        <Text styleClass="section-title" text="CREATE NEW COACHING SESSION" />
+                        <Text styleClass="section-subtitle" text="Fill in the details to create a new coaching session" />
+                     </children>
+                  </VBox>
+
+                  <!-- Form Container -->
+                  <VBox spacing="25" styleClass="form-container" maxWidth="800">
+                     <children>
+                        <!-- Coach Selection -->
+                        <VBox spacing="8">
+                           <children>
+                              <Text styleClass="form-label" text="Select Coach *" />
+                              <ComboBox fx:id="coachComboBox" styleClass="text-field" />
+                           </children>
+                        </VBox>
+
+                        <!-- Team Selection -->
+                        <VBox spacing="8">
+                           <children>
+                              <Text styleClass="form-label" text="Select Team *" />
+                              <ComboBox fx:id="teamComboBox" styleClass="text-field" />
+                           </children>
+                        </VBox>
+
+                        <!-- Date and Time Selection -->
+                        <HBox spacing="20">
+                           <children>
+                              <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Text styleClass="form-label" text="Session Date *" />
+                                    <DatePicker fx:id="sessionDatePicker" styleClass="text-field" />
+                                 </children>
+                              </VBox>
+                              
+                              <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Text styleClass="form-label" text="Session Time *" />
+                                    <ComboBox fx:id="timeComboBox" styleClass="text-field" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+
+                        <!-- Duration -->
+                        <VBox spacing="8">
+                           <children>
+                              <Text styleClass="form-label" text="Duration (minutes) *" />
+                              <TextField fx:id="durationField" promptText="Enter duration in minutes" styleClass="text-field" />
+                           </children>
+                        </VBox>
+
+                        <!-- Training Plan Selection -->
+                        <VBox spacing="8">
+                           <children>
+                              <Text styleClass="form-label" text="Training Plan" />
+                              <ComboBox fx:id="trainingPlanComboBox" styleClass="text-field" />
+                           </children>
+                        </VBox>
+
+                        <!-- Notes -->
+                        <VBox spacing="8">
+                           <children>
+                              <Text styleClass="form-label" text="Session Notes" />
+                              <TextArea fx:id="notesArea" promptText="Enter any additional notes about this session..." styleClass="text-field" prefHeight="100" wrapText="true" />
+                           </children>
+                        </VBox>
+
+                        <!-- Action Buttons -->
+                        <HBox spacing="15" alignment="CENTER">
+                           <children>
+                              <Button fx:id="createButton" onAction="#handleCreate" styleClass="action-button" text="CREATE SESSION" />
+                              <Button fx:id="clearButton" onAction="#handleClear" styleClass="secondary-button" text="CLEAR FORM" />
+                              <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="back-button" text="CANCEL" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

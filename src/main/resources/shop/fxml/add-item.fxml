@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controllers.shop.AddItemController"
+      prefHeight="500.0" prefWidth="600.0"
+      spacing="20" alignment="CENTER"
+      styleClass="form-container">
+
+    <stylesheets>
+        <URL value="@/shop/css/style.css" />
+    </stylesheets>
+
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
+
+    <Label text="Ajouter un Nouveau Jeu" styleClass="form-title"/>
+
+    <GridPane hgap="15" vgap="15" alignment="CENTER">
+        <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="form-label"/>
+        <TextField fx:id="idField" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="ID du jeu"/>
+
+        <Label text="Nom:" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="form-label"/>
+        <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="Nom du jeu"/>
+
+        <Label text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="form-label"/>
+        <TextArea fx:id="descField" GridPane.columnIndex="1" GridPane.rowIndex="2" 
+                  promptText="Description du jeu" prefHeight="80.0" prefWidth="300.0"/>
+
+        <Label text="Catégorie:" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="form-label"/>
+        <TextField fx:id="categoryField" GridPane.columnIndex="1" GridPane.rowIndex="3" promptText="Catégorie"/>
+
+        <Label text="Prix:" GridPane.columnIndex="0" GridPane.rowIndex="4" styleClass="form-label"/>
+        <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="4" promptText="Prix en DT"/>
+
+        <Label text="Quantité:" GridPane.columnIndex="0" GridPane.rowIndex="5" styleClass="form-label"/>
+        <TextField fx:id="quantityField" GridPane.columnIndex="1" GridPane.rowIndex="5" promptText="Quantité (optionnel)"/>
+
+        <Label text="ID Acheteur:" GridPane.columnIndex="0" GridPane.rowIndex="6" styleClass="form-label"/>
+        <TextField fx:id="buyerIdField" GridPane.columnIndex="1" GridPane.rowIndex="6" promptText="ID acheteur (optionnel)"/>
+    </GridPane>
+
+    <HBox spacing="15" alignment="CENTER">
+        <Button fx:id="addButton" text="Ajouter" onAction="#handleAddItem" styleClass="primary-button"/>
+        <Button fx:id="cancelButton" text="Annuler" onAction="#handleCancel" styleClass="secondary-button"/>
+    </HBox>
+
+</VBox>

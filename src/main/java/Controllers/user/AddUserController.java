@@ -1,7 +1,7 @@
 package Controllers.user;
 
-import entities.user.User;
 import Iservices.user.IUserService;
+import entities.user.User;
 import services.user.UserService;
 
 import javafx.event.ActionEvent;
@@ -10,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;

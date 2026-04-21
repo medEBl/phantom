@@ -17,4 +17,7 @@ public interface ITeamService {
     List<Team> getTeamsByCoach(int coachId);
     boolean teamNameExists(String name);
     List<Team> getAvailableTeams(); // Équipes qui peuvent jouer un match
+    
+    // Coach management
+    List<Integer> getValidCoachIds();
 }

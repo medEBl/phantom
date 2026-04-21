@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+
+<BorderPane styleClass="coach-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.coachingsession.ListCoachingSessionsController">
+   <stylesheets>
+      <URL value="@/coach/css/style.css" />
+   </stylesheets>
+   
+   <top>
+      <VBox styleClass="coach-header">
+         <children>
+            <!-- Coaching Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="coach-info">
+               <children>
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="primary-button" text="← BACK TO HOME" />
+                  <Text styleClass="coach-title" text="COACHING SESSIONS" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="currentUserLabel" styleClass="user-label" text="USER: LOADING..." />
+               </children>
+            </HBox>
+            
+            <!-- Search and Filter Bar -->
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="coach-nav">
+               <children>
+                  <TextField fx:id="searchField" promptText="Search sessions..." styleClass="text-field" prefWidth="300" />
+                  <ComboBox fx:id="coachFilter" promptText="Filter by coach" styleClass="text-field" prefWidth="150" />
+                  <ComboBox fx:id="teamFilter" promptText="Filter by team" styleClass="text-field" prefWidth="150" />
+                  <ComboBox fx:id="statusFilter" promptText="Filter by status" styleClass="text-field" prefWidth="150" />
+                  <Button fx:id="searchButton" onAction="#handleSearch" styleClass="secondary-button" text="SEARCH" />
+                  <Button fx:id="clearButton" onAction="#handleClear" styleClass="secondary-button" text="CLEAR" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="addSessionButton" onAction="#handleAddSession" styleClass="primary-button" text="+ NEW SESSION" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="coach-scroll">
+         <content>
+            <VBox spacing="20" styleClass="coach-content">
+               <children>
+                  <!-- Sessions Table -->
+                  <TableView fx:id="sessionsTable" styleClass="sessions-table" prefHeight="600">
+                     <columns>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="60" />
+                        <TableColumn fx:id="coachColumn" text="Coach" prefWidth="150" />
+                        <TableColumn fx:id="teamColumn" text="Team" prefWidth="150" />
+                        <TableColumn fx:id="dateColumn" text="Date And Time" prefWidth="180" />
+                        <TableColumn fx:id="durationColumn" text="Duration" prefWidth="100" />
+                        <TableColumn fx:id="trainingPlanColumn" text="Training Plan" prefWidth="200" />
+                        <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="150" />
+                     </columns>
+                  </TableView>
+                  
+                  <!-- Pagination -->
+                  <HBox alignment="CENTER" spacing="15" styleClass="pagination-container">
+                     <children>
+                        <Button fx:id="prevPageButton" onAction="#handlePrevPage" styleClass="secondary-button" text="← PREVIOUS" />
+                        <Label fx:id="pageInfoLabel" styleClass="page-info" text="Page 1 of 1" />
+                        <Button fx:id="nextPageButton" onAction="#handleNextPage" styleClass="secondary-button" text="NEXT →" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

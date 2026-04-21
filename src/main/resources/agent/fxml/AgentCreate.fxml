@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane stylesheets="@/agent/css/agent.css" styleClass="home-container" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.agent.AgentCreateController">
+    <children>
+        <VBox layoutX="300.0" layoutY="30.0" prefWidth="600.0" spacing="20.0" styleClass="activity-section" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="30.0">
+            <padding>
+                <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+            </padding>
+            <children>
+
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Créer un Profil Agent" styleClass="section-title" />
+                                <Label text="Choisissez un jeu et configurez votre profil." styleClass="form-label" />
+                            </children>
+                        </VBox>
+                        <Button fx:id="btnRetour" mnemonicParsing="false" styleClass="secondary-button" text="← Retour">
+                            <padding>
+                                <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <HBox style="-fx-background-color: #2a2118; -fx-background-radius: 6; -fx-border-color: #4a3820; -fx-border-radius: 6;">
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                    </padding>
+                    <children>
+                        <Label text="⚠ Après la création, vous ne pourrez modifier que : pseudo, rang, statut et lien social." textFill="#d99846">
+                            <font><Font size="13.0" /></font>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <ScrollPane fitToWidth="true" styleClass="home-scroll" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox spacing="15.0" style="-fx-background-color: transparent;">
+                            <children>
+
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label text="Player" styleClass="form-label" />
+                                        <ComboBox fx:id="cbPlayer" prefWidth="520.0" promptText="Select a player" style="-fx-background-color: #1e1e28; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-text-fill: white;" />
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label text="Team" styleClass="form-label" />
+                                        <ComboBox fx:id="cbTeam" prefWidth="520.0" promptText="No Team (Free Agent)" style="-fx-background-color: #1e1e28; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-text-fill: white;" />
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label text="Pseudo" styleClass="form-label" />
+                                        <TextField fx:id="tfPseudo" styleClass="text-field" />
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label text="Game" styleClass="form-label" />
+                                        <ComboBox fx:id="cbGame" prefWidth="520.0" promptText="Choose a game" style="-fx-background-color: #1e1e28; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-text-fill: white;" />
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label text="Rank" styleClass="form-label" />
+                                        <TextField fx:id="tfRank" styleClass="text-field" />
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label text="Status" styleClass="form-label" />
+                                        <ComboBox fx:id="cbStatus" prefWidth="520.0" promptText="Select status" style="-fx-background-color: #1e1e28; -fx-border-color: #2a2a35; -fx-border-radius: 6; -fx-text-fill: white;" />
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label text="Socials link" styleClass="form-label" />
+                                        <TextField fx:id="tfSocials" styleClass="text-field" />
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                    <children>
+                        <Button fx:id="btnAnnuler" mnemonicParsing="false" styleClass="secondary-button" text="Annuler">
+                            <padding>
+                                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                            </padding>
+                        </Button>
+                        <Button fx:id="btnCreer" mnemonicParsing="false" styleClass="primary-button" text="+ Créer">
+                            <padding>
+                                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

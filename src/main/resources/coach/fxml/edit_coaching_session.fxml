@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+
+<BorderPane styleClass="coach-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.coachingsession.EditCoachingSessionController">
+   <stylesheets>
+      <URL value="@/coach/css/style.css" />
+   </stylesheets>
+   
+   <top>
+      <VBox styleClass="coach-header">
+         <children>
+            <!-- Edit Session Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="coach-info">
+               <children>
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="primary-button" text="← BACK TO SESSIONS" />
+                  <Text styleClass="coach-title" text="EDIT COACHING SESSION" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="currentUserLabel" styleClass="user-label" text="USER: LOADING..." />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="coach-scroll">
+         <content>
+            <VBox spacing="30" styleClass="coach-content" alignment="CENTER">
+               <children>
+                  <!-- Form Container -->
+                  <VBox spacing="25" styleClass="form-container" prefWidth="600">
+                     <children>
+                        <!-- Session Info Section -->
+                        <VBox spacing="15">
+                           <children>
+                              <Text styleClass="section-title" text="SESSION INFORMATION" />
+                              
+                              <GridPane hgap="15" vgap="15">
+                                 <children>
+                                    <Label text="Session ID:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="sessionIdField" styleClass="text-field" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                    
+                                    <Label text="Coach ID:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <TextField fx:id="coachIdField" promptText="Enter coach ID" styleClass="text-field" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                                    
+                                    <Label text="Team ID:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <TextField fx:id="teamIdField" promptText="Enter team ID" styleClass="text-field" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                                    
+                                    <Label text="Training Plan ID:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                    <TextField fx:id="trainingPlanIdField" promptText="Enter training plan ID" styleClass="text-field" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                        
+                        <!-- Date & Time Section -->
+                        <VBox spacing="15">
+                           <children>
+                              <Text styleClass="section-title" text="DATE And TIME" />
+                              
+                              <GridPane hgap="15" vgap="15">
+                                 <children>
+                                    <Label text="Session Date:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <DatePicker fx:id="sessionDatePicker" promptText="Select date" styleClass="text-field" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                    
+                                    <Label text="Session Time:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <HBox spacing="10" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                                       <children>
+                                          <ComboBox fx:id="sessionHourCombo" promptText="Hour" styleClass="text-field" prefWidth="100" />
+                                          <Label text=":" styleClass="time-separator" />
+                                          <ComboBox fx:id="sessionMinuteCombo" promptText="Min" styleClass="text-field" prefWidth="100" />
+                                       </children>
+                                    </HBox>
+                                    
+                                    <Label text="Duration (minutes):" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <TextField fx:id="durationField" promptText="e.g., 60" styleClass="text-field" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                        
+                        <!-- Notes Section -->
+                        <VBox spacing="15">
+                           <children>
+                              <Text styleClass="section-title" text="ADDITIONAL NOTES" />
+                              <TextArea fx:id="notesArea" promptText="Enter any additional notes about this session..." 
+                                       styleClass="text-area" prefHeight="100" wrapText="true" />
+                           </children>
+                        </VBox>
+                        
+                        <!-- Action Buttons -->
+                        <HBox spacing="15" alignment="CENTER">
+                           <children>
+                              <Button fx:id="clearButton" onAction="#handleClear" styleClass="secondary-button" text="RESET FORM" prefWidth="120" />
+                              <Button fx:id="saveButton" onAction="#handleSave" styleClass="primary-button" text="UPDATE SESSION" prefWidth="150" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

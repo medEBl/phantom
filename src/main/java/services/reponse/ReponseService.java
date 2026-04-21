@@ -80,4 +80,53 @@ public class ReponseService implements IReponseService {
             throw new RuntimeException("deleteReponse failed: " + e.getMessage(), e);
         }
     }
+    @Override
+    public void updateReponse(Reponse r) {
+        String sql = "UPDATE reponse_questionnaire SET rep1=?, rep2=?, rep3=?, rep4=? WHERE id_agent=?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, r.getRep1());
+            ps.setString(2, r.getRep2());
+            ps.setString(3, r.getRep3());
+            ps.setString(4, r.getRep4());
+            ps.setInt(5, r.getIdAgent());
+
+            ps.executeUpdate();
+            System.out.println("✅ Answers updated successfully!");
+        } catch (SQLException e) {
+            throw new RuntimeException("updateReponse failed: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Optional<Reponse> getReponseByAgentId(int idAgent) {
+        String sql = "SELECT * FROM reponse_questionnaire WHERE id_agent = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, idAgent);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return Optional.of(mapRow(rs));
+        } catch (SQLException e) {
+            throw new RuntimeException("getReponseByAgentId failed: " + e.getMessage(), e);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public java.util.Map<String, Object> getQuestionnaireByGame(String game) {
+        java.util.Map<String, Object> questions = new java.util.HashMap<>();
+        String sql = "SELECT id, ques1, ques2, ques3, ques4 FROM questionnaire_agent WHERE game = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, game);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                questions.put("id", rs.getInt("id"));
+                questions.put("ques1", rs.getString("ques1"));
+                questions.put("ques2", rs.getString("ques2"));
+                questions.put("ques3", rs.getString("ques3"));
+                questions.put("ques4", rs.getString("ques4"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("getQuestionnaireByGame failed: " + e.getMessage(), e);
+        }
+        return questions.isEmpty() ? null : questions;
+    }
 }

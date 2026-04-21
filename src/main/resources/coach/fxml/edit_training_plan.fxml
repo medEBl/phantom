@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+
+<BorderPane styleClass="coach-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.trainingplan.EditTrainingPlanController">
+   <stylesheets>
+      <URL value="@/coach/css/style.css" />
+   </stylesheets>
+   
+   <top>
+      <VBox styleClass="coach-header">
+         <children>
+            <!-- Edit Training Plan Header -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="coach-info">
+               <children>
+                  <Button fx:id="backButton" onAction="#handleBack" styleClass="primary-button" text="← BACK TO TRAINING PLANS" />
+                  <Text styleClass="coach-title" text="EDIT TRAINING PLAN" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="currentUserLabel" styleClass="user-label" text="USER: LOADING..." />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="coach-scroll">
+         <content>
+            <VBox spacing="30" styleClass="coach-content" alignment="CENTER">
+               <children>
+                  <!-- Form Container -->
+                  <VBox spacing="25" styleClass="form-container" prefWidth="600">
+                     <children>
+                        <!-- Plan Information Section -->
+                        <VBox spacing="15">
+                           <children>
+                              <Text styleClass="section-title" text="PLAN INFORMATION" />
+                              
+                              <GridPane hgap="15" vgap="15">
+                                 <children>
+                                    <Label text="Plan ID:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="planIdField" styleClass="text-field" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                    
+                                    <Label text="Title:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <TextField fx:id="titleField" promptText="Enter training plan title" styleClass="text-field" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                                    
+                                    <Label text="Description:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <TextArea fx:id="descriptionArea" promptText="Enter detailed description of the training plan..." 
+                                             styleClass="text-area" prefHeight="100" wrapText="true" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                        
+                        <!-- Training Details Section -->
+                        <VBox spacing="15">
+                           <children>
+                              <Text styleClass="section-title" text="TRAINING DETAILS" />
+                              
+                              <GridPane hgap="15" vgap="15">
+                                 <children>
+                                    <Label text="Focus Area:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <ComboBox fx:id="focusAreaComboBox" promptText="Select focus area" styleClass="text-field" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                    
+                                    <Label text="Difficulty Level:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <ComboBox fx:id="difficultyComboBox" promptText="Select difficulty level" styleClass="text-field" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                                    
+                                    <Label text="Coach:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <ComboBox fx:id="coachComboBox" promptText="Select coach" styleClass="text-field" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                                    
+                                    <Label text="Team:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                    <ComboBox fx:id="teamComboBox" promptText="Select team" styleClass="text-field" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                        
+                        <!-- Action Buttons -->
+                        <HBox spacing="15" alignment="CENTER">
+                           <children>
+                              <Button fx:id="clearButton" onAction="#handleClear" styleClass="secondary-button" text="RESET FORM" prefWidth="120" />
+                              <Button fx:id="saveButton" onAction="#handleSave" styleClass="primary-button" text="UPDATE PLAN" prefWidth="120" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

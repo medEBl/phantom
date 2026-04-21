@@ -27,7 +27,7 @@ public class ShopService {
         );
     }
 
-    // CREATE
+
     public void createShopItem(ShopItem item) {
         String sql = "INSERT INTO shop_item (id, buyer_id, item_name, item_description, item_category, " +
                 "price, quantity, total_price, purchase_date, status) " +
@@ -50,7 +50,6 @@ public class ShopService {
         }
     }
 
-    // UPDATE
     public void updateShopItem(ShopItem item) {
         String sql = "UPDATE shop_item SET item_name=?, item_description=?, item_category=?, " +
                 "price=?, quantity=?, total_price=?, status=? WHERE id=?";
@@ -70,7 +69,7 @@ public class ShopService {
         }
     }
 
-    // UPDATE QUANTITY
+
     public void updateQuantity(int id, int newQuantity) {
         String sql = "UPDATE shop_item SET quantity = ?, total_price = price * ? WHERE id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
@@ -84,7 +83,7 @@ public class ShopService {
         }
     }
 
-    // UPDATE PRICE
+
     public void updatePrice(int id, double newPrice) {
         String sql = "UPDATE shop_item SET price = ?, total_price = ? * quantity WHERE id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {

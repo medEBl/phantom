@@ -10,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class HomeController {
 
     private User currentUser;
@@ -36,23 +38,7 @@ public class HomeController {
     private Button logoutButton;
 
     @FXML
-    private Button profileButton;
-
-    @FXML
-    private Button tournamentButton;
-
-    @FXML
-    private Button teamButton;
-
-    @FXML
-    private Button trainingButton;
-
-    @FXML
-    private Button shopButton;
-
-    @FXML
-    private Button matchyButton;
-
+    private Button navCoaching;
     @FXML
     private Button editProfileButton;
 
@@ -77,9 +63,7 @@ public class HomeController {
     @FXML
     private Button navAgent;
 
-    @FXML
-    private Button agentButton;
-
+    
     @FXML
     private Button navLeaderboard;
 
@@ -90,10 +74,32 @@ public class HomeController {
     private Label userRoleLabel;
 
     public void setCurrentUser(User user) {
+        System.out.println("HomeController.setCurrentUser called with user: " + (user != null ? user.getFullName() : "null"));
         this.currentUser = user;
         updateUserInfo();
+        System.out.println("HomeController.setCurrentUser: User set successfully, updateUserInfo called");
     }
+@FXML
+    private void handleCoaching() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coach/fxml/list_coaching_sessions.fxml"));
+            Parent root = loader.load();
 
+            Controllers.coachingsession.ListCoachingSessionsController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+
+            Stage stage = (Stage) navCoaching.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.show();
+            stage.setTitle("Coaching Sessions - Phantom App");
+
+        } catch (IOException e) {
+            System.err.println("Cannot open coaching sessions: " + e.getMessage());
+        }
+    }
     private void updateUserInfo() {
         if (currentUser != null) {
             userLabel.setText("Welcome, " + currentUser.getFullName());
@@ -117,7 +123,15 @@ public class HomeController {
             
             // Pass current user to profile controller
             Controllers.user.ProfileController controller = loader.getController();
-            controller.setCurrentUser(currentUser);
+            if (controller != null) {
+                User currentUser = this.currentUser; // Get current user from this controller
+                if (currentUser != null) {
+                    controller.setCurrentUser(currentUser);
+                    System.out.println("Passed current user to profile: " + currentUser.getFullName());
+                } else {
+                    System.out.println("No current user available for profile");
+                }
+            }
             
             Stage stage = (Stage) editProfileButton.getScene().getWindow();
             stage.setScene(new Scene(root, 1920, 1080));
@@ -126,9 +140,8 @@ public class HomeController {
             stage.setTitle("My Profile - Phantom App");
             stage.show();
             
-        } catch (Exception e) {
-            System.err.println("Error loading profile screen: " + e.getMessage());
-            showError("Cannot open profile: " + e.getMessage());
+        } catch (IOException e) {
+            showError("Cannot open profile screen: " + e.getMessage());
         }
     }
 
@@ -136,6 +149,39 @@ public class HomeController {
     private void handleNavHome() {
         // Already on home page - just refresh
         updateUserInfo();
+    }
+
+    @FXML
+    private void handleAgent() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/fxml/ListAgents.fxml"));
+            Parent root = loader.load();
+            
+            // Get the agent controller and pass current user context
+            Controllers.agent.AgentListController agentController = loader.getController();
+            if (agentController != null) {
+                User currentUser = this.currentUser; // Get current user from this controller
+                System.out.println("HomeController.handleAgent: currentUser = " + (currentUser != null ? currentUser.getFullName() : "null"));
+                if (currentUser != null) {
+                    agentController.setCurrentUser(currentUser);
+                    System.out.println("Passed current user to agent list: " + currentUser.getFullName());
+                } else {
+                    System.out.println("No current user available to pass to agent list");
+                }
+            } else {
+                System.out.println("ERROR: AgentListController is null!");
+            }
+            
+            Stage stage = (Stage) navAgent.getScene().getWindow();
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
+            stage.setTitle("Agent List - Phantom App");
+            stage.show();
+            
+        } catch (IOException e) {
+            System.err.println("Error loading agent screen: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -167,8 +213,8 @@ public class HomeController {
     private void handleNavAgent() {
         handleAgent();
     }
-
     @FXML
+
     private void handleLogout() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/fxml/login.fxml"));
@@ -185,7 +231,41 @@ public class HomeController {
             System.err.println("Error loading login screen: " + e.getMessage());
         }
     }
+    @FXML
 
+    private void handleMatchyNavigation() {
+
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/list.fxml"));
+
+            Parent root = loader.load();
+
+
+
+            Stage stage = (Stage) navMatchy.getScene().getWindow();
+
+            stage.setScene(new Scene(root, 1920, 1080));
+
+            stage.setMaximized(true);
+
+            stage.setFullScreen(true);
+
+            stage.setTitle("Matchy - Phantom App");
+
+            stage.show();
+
+
+
+        } catch (Exception e) {
+
+            System.err.println("Error loading matchy: " + e.getMessage());
+
+            showError("Error loading matchy: " + e.getMessage());
+
+        }
+
+    }
     @FXML
     private void handleProfile() {
         try {
@@ -196,7 +276,7 @@ public class HomeController {
             Controllers.user.ProfileController controller = loader.getController();
             controller.setCurrentUser(currentUser);
             
-            Stage stage = (Stage) profileButton.getScene().getWindow();
+            Stage stage = (Stage) editProfileButton.getScene().getWindow();
             stage.setScene(new Scene(root, 1920, 1080));
             stage.setMaximized(true);
             stage.setFullScreen(true);
@@ -215,7 +295,7 @@ public class HomeController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tournament/fxml/list.fxml"));
             Parent root = loader.load();
             
-            Stage stage = (Stage) tournamentButton.getScene().getWindow();
+            Stage stage = (Stage) navTournaments.getScene().getWindow();
             stage.setScene(new Scene(root, 1920, 1080));
             stage.setMaximized(true);
             stage.setFullScreen(true);
@@ -230,31 +310,51 @@ public class HomeController {
 
     @FXML
     private void handleTeams() {
+
         try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/team/fxml/list.fxml"));
+
             Parent root = loader.load();
-            
-            Stage stage = (Stage) teamButton.getScene().getWindow();
+
+            Controllers.team.TeamController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+
+            Stage stage = (Stage) navTeams.getScene().getWindow();
+
             stage.setScene(new Scene(root, 1920, 1080));
+
             stage.setMaximized(true);
+
             stage.setFullScreen(true);
+
             stage.setTitle("Teams - Phantom App");
+
             stage.show();
-            
+
+
+
         } catch (Exception e) {
+
             System.err.println("Error loading teams screen: " + e.getMessage());
+
             showError("Cannot open teams: " + e.getMessage());
+
         }
     }
 
     @FXML
     private void handleTraining() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/trainingplan/fxml/list.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/coach/fxml/list_training_plans.fxml"));
             Parent root = loader.load();
             
-            Stage stage = (Stage) trainingButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 1920, 1080));
+            Controllers.trainingplan.ListTrainingPlansController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+            
+            Stage stage = (Stage) navTraining.getScene().getWindow();
+            Scene scene = new Scene(root, 1920, 1080);
+            stage.setScene(scene);
             stage.setMaximized(true);
             stage.setFullScreen(true);
             stage.setTitle("Training Plans - Phantom App");
@@ -268,11 +368,14 @@ public class HomeController {
 
     @FXML
     private void handleShop() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shop/fxml/list.fxml"));
+  try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shop/fxml/items.fxml"));
             Parent root = loader.load();
             
-            Stage stage = (Stage) shopButton.getScene().getWindow();
+            Controllers.shop.ItemsController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+            
+            Stage stage = (Stage) navShop.getScene().getWindow();
             stage.setScene(new Scene(root, 1920, 1080));
             stage.setMaximized(true);
             stage.setFullScreen(true);
@@ -288,40 +391,39 @@ public class HomeController {
     @FXML
     private void handleMatchy() {
         try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/matchy/fxml/list.fxml"));
+
             Parent root = loader.load();
-            
-            Stage stage = (Stage) matchyButton.getScene().getWindow();
+
+            Controllers.matchy.MatchyController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+
+            Stage stage = (Stage) navMatchy.getScene().getWindow();
+
             stage.setScene(new Scene(root, 1920, 1080));
+
             stage.setMaximized(true);
+
             stage.setFullScreen(true);
+
             stage.setTitle("Matchy - Phantom App");
+
             stage.show();
-            
+
+
+
         } catch (Exception e) {
-            System.err.println("Error loading matchy screen: " + e.getMessage());
-            showError("Cannot open matchy: " + e.getMessage());
+
+            System.err.println("Error loading matchy: " + e.getMessage());
+
+            showError("Error loading matchy: " + e.getMessage());
+
         }
+
     }
 
-    @FXML
-    private void handleAgent() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/fxml/list.fxml"));
-            Parent root = loader.load();
-            
-            Stage stage = (Stage) agentButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 1920, 1080));
-            stage.setMaximized(true);
-            stage.setFullScreen(true);
-            stage.setTitle("Agent - Phantom App");
-            stage.show();
-            
-        } catch (Exception e) {
-            System.err.println("Error loading agent screen: " + e.getMessage());
-            showError("Cannot open agent: " + e.getMessage());
-        }
-    }
+
 
     @FXML
     private void handleLeaderboard() {
@@ -402,6 +504,14 @@ public class HomeController {
     private void showError(String message) {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
         alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showAlert(String title, String message) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

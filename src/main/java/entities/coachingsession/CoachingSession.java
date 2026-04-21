@@ -61,4 +61,15 @@ public class CoachingSession {
     public String toString() {
         return "CoachingSession{id=" + id + ", date=" + sessionDate + ", duration=" + duration + "min}";
     }
+
+    public String getFormattedDate() {
+        if (sessionDate != null) {
+            return sessionDate.toString().substring(0, 16).replace("T", " ");
+        }
+        return "N/A";
+    }
+
+    public String getFormattedDuration() {
+        return duration + " minutes";
+    }
 }

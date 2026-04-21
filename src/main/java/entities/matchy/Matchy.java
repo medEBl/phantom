@@ -6,25 +6,26 @@ public class Matchy {
     private int id;
     private String game;
     private LocalDateTime matchDate;
+    private String matchDateFormatted; // Pour l'affichage
     private Integer scoreTeam1;
     private Integer scoreTeam2;
-    private String status; // planned, ongoing, finished
-    private Integer team1Id;
-    private Integer team2Id;
+    private String status;
+    private int team1Id;
+    private int team2Id;
     private Integer winnerTeamId;
     private String location;
     private Double latitude;
     private Double longitude;
 
-    // Champs pour affichage (noms des équipes)
+    // Champs pour affichage
     private String team1Name;
     private String team2Name;
     private String winnerTeamName;
 
     public Matchy() {}
 
-    public Matchy(String game, LocalDateTime matchDate, String status, Integer team1Id,
-                  Integer team2Id, String location, Double latitude, Double longitude) {
+    public Matchy(String game, LocalDateTime matchDate, String status, int team1Id,
+                  int team2Id, String location, Double latitude, Double longitude) {
         this.game = game;
         this.matchDate = matchDate;
         this.status = status;
@@ -44,6 +45,9 @@ public class Matchy {
 
     public LocalDateTime getMatchDate() { return matchDate; }
     public void setMatchDate(LocalDateTime matchDate) { this.matchDate = matchDate; }
+    
+    public String getMatchDateFormatted() { return matchDateFormatted; }
+    public void setMatchDateFormatted(String matchDateFormatted) { this.matchDateFormatted = matchDateFormatted; }
 
     public Integer getScoreTeam1() { return scoreTeam1; }
     public void setScoreTeam1(Integer scoreTeam1) { this.scoreTeam1 = scoreTeam1; }
@@ -54,11 +58,11 @@ public class Matchy {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public Integer getTeam1Id() { return team1Id; }
-    public void setTeam1Id(Integer team1Id) { this.team1Id = team1Id; }
+    public int getTeam1Id() { return team1Id; }
+    public void setTeam1Id(int team1Id) { this.team1Id = team1Id; }
 
-    public Integer getTeam2Id() { return team2Id; }
-    public void setTeam2Id(Integer team2Id) { this.team2Id = team2Id; }
+    public int getTeam2Id() { return team2Id; }
+    public void setTeam2Id(int team2Id) { this.team2Id = team2Id; }
 
     public Integer getWinnerTeamId() { return winnerTeamId; }
     public void setWinnerTeamId(Integer winnerTeamId) { this.winnerTeamId = winnerTeamId; }

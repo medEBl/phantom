@@ -45,8 +45,10 @@
                   <Button fx:id="navTournaments" onAction="#handleTournaments" styleClass="nav-button" text="🏆 TOURNAMENTS" />
                   <Button fx:id="navTeams" onAction="#handleTeams" styleClass="nav-button" text="👥 TEAMS" />
                   <Button fx:id="navMatches" onAction="#handleMatches" styleClass="nav-button" text="🎮 MATCHES" />
+                  <Button fx:id="navTrainingPlan" onAction="#handleTrainingPlan" styleClass="nav-button" text="📋 TRAINING PLANS" />
                   <Button fx:id="navCoaching" onAction="#handleCoaching" styleClass="nav-button" text="📚 COACHING" />
                   <Button fx:id="navShop" onAction="#handleShop" styleClass="nav-button" text="🛒 SHOP" />
+                  <Button fx:id="navAgents" onAction="#handleAgent" styleClass="nav-button" text="🤖 AGENTS" />
                   <Button fx:id="navReports" onAction="#handleReports" styleClass="nav-button" text="📋 REPORTS" />
                   <Button fx:id="navSettings" onAction="#handleSettings" styleClass="nav-button" text="⚙️ SETTINGS" />
                </children>

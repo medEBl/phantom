@@ -13,6 +13,23 @@ import java.util.Optional;
 public class MatchyService implements IMatchyService {
     private final Connection cnx = Phantom.getInstance().getCnx();
 
+    private void checkConnection() {
+        if (cnx == null) {
+            throw new RuntimeException("❌ Pas de connexion à la base de données.");
+        }
+    }
+
+    private boolean isValidTeam(int teamId) {
+        String sql = "SELECT COUNT(*) FROM team WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, teamId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     private Matchy mapRow(ResultSet rs) throws SQLException {
         Matchy m = new Matchy();
         m.setId(rs.getInt("id"));
@@ -29,10 +46,7 @@ public class MatchyService implements IMatchyService {
 
         m.setStatus(rs.getString("status"));
         m.setTeam1Id(rs.getInt("team1_id"));
-        if (rs.wasNull()) m.setTeam1Id(null);
-
         m.setTeam2Id(rs.getInt("team2_id"));
-        if (rs.wasNull()) m.setTeam2Id(null);
 
         m.setWinnerTeamId(rs.getInt("winner_team_id"));
         if (rs.wasNull()) m.setWinnerTeamId(null);
@@ -45,26 +59,20 @@ public class MatchyService implements IMatchyService {
         if (rs.wasNull()) m.setLongitude(null);
 
         // Récupérer les noms des équipes
-        if (m.getTeam1Id() != null) {
-            String teamSql = "SELECT name FROM team WHERE id = ?";
-            try (PreparedStatement ps = cnx.prepareStatement(teamSql)) {
-                ps.setInt(1, m.getTeam1Id());
-                ResultSet rsTeam = ps.executeQuery();
-                if (rsTeam.next()) m.setTeam1Name(rsTeam.getString("name"));
-            }
+        String teamSql = "SELECT name FROM team WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(teamSql)) {
+            ps.setInt(1, m.getTeam1Id());
+            ResultSet rsTeam = ps.executeQuery();
+            if (rsTeam.next()) m.setTeam1Name(rsTeam.getString("name"));
         }
 
-        if (m.getTeam2Id() != null) {
-            String teamSql = "SELECT name FROM team WHERE id = ?";
-            try (PreparedStatement ps = cnx.prepareStatement(teamSql)) {
-                ps.setInt(1, m.getTeam2Id());
-                ResultSet rsTeam = ps.executeQuery();
-                if (rsTeam.next()) m.setTeam2Name(rsTeam.getString("name"));
-            }
+        try (PreparedStatement ps = cnx.prepareStatement(teamSql)) {
+            ps.setInt(1, m.getTeam2Id());
+            ResultSet rsTeam = ps.executeQuery();
+            if (rsTeam.next()) m.setTeam2Name(rsTeam.getString("name"));
         }
 
         if (m.getWinnerTeamId() != null && m.getWinnerTeamId() > 0) {
-            String teamSql = "SELECT name FROM team WHERE id = ?";
             try (PreparedStatement ps = cnx.prepareStatement(teamSql)) {
                 ps.setInt(1, m.getWinnerTeamId());
                 ResultSet rsTeam = ps.executeQuery();
@@ -77,16 +85,54 @@ public class MatchyService implements IMatchyService {
 
     @Override
     public void createMatch(Matchy match) {
-        // Validation: les deux équipes doivent être différentes si les deux sont spécifiées
-        if (match.getTeam1Id() != null && match.getTeam2Id() != null &&
-                match.getTeam1Id().equals(match.getTeam2Id())) {
-            throw new IllegalArgumentException("Team1 and Team2 cannot be the same team");
+        checkConnection();
+
+        // Validation: Les deux équipes sont obligatoires
+        if (match.getTeam1Id() <= 0 || match.getTeam2Id() <= 0) {
+            throw new IllegalArgumentException("❌ Les deux équipes sont obligatoires.");
         }
 
-        // Validation: si status est finished, les scores doivent être présents
-        if ("finished".equals(match.getStatus()) &&
-                (match.getScoreTeam1() == null || match.getScoreTeam2() == null)) {
-            throw new IllegalArgumentException("Finished matches must have scores");
+        // Validation: Les deux équipes doivent être différentes
+        if (match.getTeam1Id() == match.getTeam2Id()) {
+            throw new IllegalArgumentException("❌ Team1 et Team2 ne peuvent pas être la même équipe.");
+        }
+
+        // Validation: Les équipes doivent exister dans la base
+        if (!isValidTeam(match.getTeam1Id())) {
+            throw new IllegalArgumentException("❌ Team ID " + match.getTeam1Id() + " n'existe pas.");
+        }
+        if (!isValidTeam(match.getTeam2Id())) {
+            throw new IllegalArgumentException("❌ Team ID " + match.getTeam2Id() + " n'existe pas.");
+        }
+
+        // Validation: Date du match doit être dans le futur pour les matchs planifiés
+        if (("planned".equals(match.getStatus()) || "ongoing".equals(match.getStatus())) &&
+                match.getMatchDate().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("❌ La date du match doit être dans le futur pour les matchs planifiés ou en cours.");
+        }
+
+        // Validation: Si status est finished, les scores doivent être présents
+        if ("finished".equals(match.getStatus())) {
+            if (match.getScoreTeam1() == null || match.getScoreTeam2() == null) {
+                throw new IllegalArgumentException("❌ Les scores sont obligatoires pour un match terminé.");
+            }
+            if (match.getScoreTeam1() < 0 || match.getScoreTeam2() < 0) {
+                throw new IllegalArgumentException("❌ Les scores ne peuvent pas être négatifs.");
+            }
+
+            // Détermination automatique du gagnant
+            if (match.getScoreTeam1() > match.getScoreTeam2()) {
+                match.setWinnerTeamId(match.getTeam1Id());
+            } else if (match.getScoreTeam2() > match.getScoreTeam1()) {
+                match.setWinnerTeamId(match.getTeam2Id());
+            } else {
+                match.setWinnerTeamId(null); // Égalité, pas de gagnant
+            }
+        } else {
+            // Pour les matchs non terminés, les scores doivent être null
+            match.setScoreTeam1(null);
+            match.setScoreTeam2(null);
+            match.setWinnerTeamId(null);
         }
 
         String sql = "INSERT INTO matchy (game, match_date, score_team1, score_team2, status, " +
@@ -94,13 +140,13 @@ public class MatchyService implements IMatchyService {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, match.getGame());
+            ps.setString(1, match.getGame().toUpperCase());
             ps.setTimestamp(2, Timestamp.valueOf(match.getMatchDate()));
             ps.setObject(3, match.getScoreTeam1(), Types.INTEGER);
             ps.setObject(4, match.getScoreTeam2(), Types.INTEGER);
             ps.setString(5, match.getStatus());
-            ps.setObject(6, match.getTeam1Id(), Types.INTEGER);
-            ps.setObject(7, match.getTeam2Id(), Types.INTEGER);
+            ps.setInt(6, match.getTeam1Id());
+            ps.setInt(7, match.getTeam2Id());
             ps.setObject(8, match.getWinnerTeamId(), Types.INTEGER);
             ps.setString(9, match.getLocation());
             ps.setObject(10, match.getLatitude(), Types.DOUBLE);
@@ -111,7 +157,7 @@ public class MatchyService implements IMatchyService {
             if (keys.next()) {
                 match.setId(keys.getInt(1));
             }
-            System.out.println("✅ Match created with ID: " + match.getId());
+            System.out.println("✅ Match créé avec ID: " + match.getId());
         } catch (SQLException e) {
             throw new RuntimeException("createMatch failed: " + e.getMessage(), e);
         }
@@ -119,22 +165,43 @@ public class MatchyService implements IMatchyService {
 
     @Override
     public void updateMatch(Matchy match) {
-        // Validation: si status devient finished, ajouter les scores
+        checkConnection();
+
+        // Validation: Les deux équipes sont obligatoires
+        if (match.getTeam1Id() <= 0 || match.getTeam2Id() <= 0) {
+            throw new IllegalArgumentException("❌ Les deux équipes sont obligatoires.");
+        }
+
+        // Validation: Les deux équipes doivent être différentes
+        if (match.getTeam1Id() == match.getTeam2Id()) {
+            throw new IllegalArgumentException("❌ Team1 et Team2 ne peuvent pas être la même équipe.");
+        }
+
+        // Si le match devient terminé
         if ("finished".equals(match.getStatus())) {
             Optional<Matchy> existing = getMatchById(match.getId());
             if (existing.isPresent() && !"finished".equals(existing.get().getStatus())) {
                 if (match.getScoreTeam1() == null || match.getScoreTeam2() == null) {
-                    throw new IllegalArgumentException("Scores required when finishing a match");
+                    throw new IllegalArgumentException("❌ Les scores sont obligatoires pour terminer un match.");
                 }
-                // Déterminer automatiquement le gagnant si non spécifié
-                if (match.getWinnerTeamId() == null) {
-                    if (match.getScoreTeam1() > match.getScoreTeam2()) {
-                        match.setWinnerTeamId(match.getTeam1Id());
-                    } else if (match.getScoreTeam2() > match.getScoreTeam1()) {
-                        match.setWinnerTeamId(match.getTeam2Id());
-                    }
+                if (match.getScoreTeam1() < 0 || match.getScoreTeam2() < 0) {
+                    throw new IllegalArgumentException("❌ Les scores ne peuvent pas être négatifs.");
+                }
+
+                // Détermination automatique du gagnant
+                if (match.getScoreTeam1() > match.getScoreTeam2()) {
+                    match.setWinnerTeamId(match.getTeam1Id());
+                } else if (match.getScoreTeam2() > match.getScoreTeam1()) {
+                    match.setWinnerTeamId(match.getTeam2Id());
+                } else {
+                    match.setWinnerTeamId(null); // Égalité
                 }
             }
+        } else {
+            // Si le match n'est pas terminé, les scores doivent être null
+            match.setScoreTeam1(null);
+            match.setScoreTeam2(null);
+            match.setWinnerTeamId(null);
         }
 
         String sql = "UPDATE matchy SET game=?, match_date=?, score_team1=?, score_team2=?, " +
@@ -142,13 +209,13 @@ public class MatchyService implements IMatchyService {
                 "WHERE id=?";
 
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            ps.setString(1, match.getGame());
+            ps.setString(1, match.getGame().toUpperCase());
             ps.setTimestamp(2, Timestamp.valueOf(match.getMatchDate()));
             ps.setObject(3, match.getScoreTeam1(), Types.INTEGER);
             ps.setObject(4, match.getScoreTeam2(), Types.INTEGER);
             ps.setString(5, match.getStatus());
-            ps.setObject(6, match.getTeam1Id(), Types.INTEGER);
-            ps.setObject(7, match.getTeam2Id(), Types.INTEGER);
+            ps.setInt(6, match.getTeam1Id());
+            ps.setInt(7, match.getTeam2Id());
             ps.setObject(8, match.getWinnerTeamId(), Types.INTEGER);
             ps.setString(9, match.getLocation());
             ps.setObject(10, match.getLatitude(), Types.DOUBLE);
@@ -156,21 +223,64 @@ public class MatchyService implements IMatchyService {
             ps.setInt(12, match.getId());
 
             int rows = ps.executeUpdate();
-            if (rows == 0) throw new RuntimeException("No match found with ID: " + match.getId());
-            System.out.println("✅ Match updated.");
+            if (rows == 0) throw new RuntimeException("❌ Match non trouvé avec ID: " + match.getId());
+            System.out.println("✅ Match mis à jour.");
         } catch (SQLException e) {
             throw new RuntimeException("updateMatch failed: " + e.getMessage(), e);
         }
     }
 
     @Override
+    public void updateMatchResult(int matchId, int scoreTeam1, int scoreTeam2) {
+        checkConnection();
+
+        Optional<Matchy> opt = getMatchById(matchId);
+        if (opt.isEmpty()) {
+            throw new RuntimeException("❌ Match non trouvé.");
+        }
+
+        Matchy match = opt.get();
+
+        if (scoreTeam1 < 0 || scoreTeam2 < 0) {
+            throw new IllegalArgumentException("❌ Les scores ne peuvent pas être négatifs.");
+        }
+
+        Integer winnerId = null;
+        if (scoreTeam1 > scoreTeam2) {
+            winnerId = match.getTeam1Id();
+        } else if (scoreTeam2 > scoreTeam1) {
+            winnerId = match.getTeam2Id();
+        } // Si égalité, winnerId reste null
+
+        String sql = "UPDATE matchy SET score_team1=?, score_team2=?, winner_team_id=?, status='finished' WHERE id=?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, scoreTeam1);
+            ps.setInt(2, scoreTeam2);
+            ps.setObject(3, winnerId, Types.INTEGER);
+            ps.setInt(4, matchId);
+            ps.executeUpdate();
+            System.out.println("✅ Résultat du match mis à jour.");
+            if (winnerId == null) {
+                System.out.println("   Match nul ! Pas de gagnant.");
+            } else {
+                System.out.println("   Gagnant: Équipe ID " + winnerId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("updateMatchResult failed: " + e.getMessage(), e);
+        }
+    }
+
+    // ... (les autres méthodes restent identiques)
+
+    @Override
     public void deleteMatch(int id) {
+        checkConnection();
         String sql = "DELETE FROM matchy WHERE id=?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rows = ps.executeUpdate();
-            if (rows == 0) throw new RuntimeException("No match found with ID: " + id);
-            System.out.println("✅ Match deleted.");
+            if (rows == 0) throw new RuntimeException("❌ Match non trouvé avec ID: " + id);
+            System.out.println("✅ Match supprimé.");
         } catch (SQLException e) {
             throw new RuntimeException("deleteMatch failed: " + e.getMessage(), e);
         }
@@ -178,6 +288,7 @@ public class MatchyService implements IMatchyService {
 
     @Override
     public Optional<Matchy> getMatchById(int id) {
+        checkConnection();
         String sql = "SELECT * FROM matchy WHERE id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -191,6 +302,7 @@ public class MatchyService implements IMatchyService {
 
     @Override
     public List<Matchy> getAllMatches() {
+        checkConnection();
         List<Matchy> list = new ArrayList<>();
         String sql = "SELECT * FROM matchy ORDER BY match_date DESC";
         try (Statement st = cnx.createStatement();
@@ -202,8 +314,29 @@ public class MatchyService implements IMatchyService {
         return list;
     }
 
+    // ... (autres méthodes de filtrage similaires)
+
+    @Override
+    public void cancelMatch(int matchId) {
+        checkConnection();
+        String sql = "DELETE FROM matchy WHERE id=? AND status != 'finished'";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, matchId);
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                System.out.println("✅ Match annulé.");
+            } else {
+                System.out.println("❌ Impossible d'annuler: Match non trouvé ou déjà terminé.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("cancelMatch failed: " + e.getMessage(), e);
+        }
+    }
+
+    // Méthodes de filtrage (à compléter)
     @Override
     public List<Matchy> getMatchesByGame(String game) {
+        checkConnection();
         List<Matchy> list = new ArrayList<>();
         String sql = "SELECT * FROM matchy WHERE LOWER(game) = LOWER(?) ORDER BY match_date DESC";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
@@ -218,6 +351,7 @@ public class MatchyService implements IMatchyService {
 
     @Override
     public List<Matchy> getMatchesByStatus(String status) {
+        checkConnection();
         List<Matchy> list = new ArrayList<>();
         String sql = "SELECT * FROM matchy WHERE status = ? ORDER BY match_date DESC";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
@@ -232,6 +366,7 @@ public class MatchyService implements IMatchyService {
 
     @Override
     public List<Matchy> getMatchesByTeam(int teamId) {
+        checkConnection();
         List<Matchy> list = new ArrayList<>();
         String sql = "SELECT * FROM matchy WHERE team1_id = ? OR team2_id = ? ORDER BY match_date DESC";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
@@ -247,6 +382,7 @@ public class MatchyService implements IMatchyService {
 
     @Override
     public List<Matchy> getMatchesByDateRange(LocalDateTime start, LocalDateTime end) {
+        checkConnection();
         List<Matchy> list = new ArrayList<>();
         String sql = "SELECT * FROM matchy WHERE match_date BETWEEN ? AND ? ORDER BY match_date";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
@@ -262,6 +398,7 @@ public class MatchyService implements IMatchyService {
 
     @Override
     public List<Matchy> getUpcomingMatches() {
+        checkConnection();
         List<Matchy> list = new ArrayList<>();
         String sql = "SELECT * FROM matchy WHERE status IN ('planned', 'ongoing') AND match_date >= NOW() ORDER BY match_date";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
@@ -275,6 +412,7 @@ public class MatchyService implements IMatchyService {
 
     @Override
     public List<Matchy> getFinishedMatches() {
+        checkConnection();
         List<Matchy> list = new ArrayList<>();
         String sql = "SELECT * FROM matchy WHERE status = 'finished' ORDER BY match_date DESC";
         try (Statement st = cnx.createStatement();
@@ -284,36 +422,5 @@ public class MatchyService implements IMatchyService {
             throw new RuntimeException("getFinishedMatches failed: " + e.getMessage(), e);
         }
         return list;
-    }
-
-    @Override
-    public void updateMatchResult(int matchId, int scoreTeam1, int scoreTeam2, int winnerTeamId) {
-        String sql = "UPDATE matchy SET score_team1=?, score_team2=?, winner_team_id=?, status='finished' WHERE id=?";
-        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            ps.setInt(1, scoreTeam1);
-            ps.setInt(2, scoreTeam2);
-            ps.setInt(3, winnerTeamId);
-            ps.setInt(4, matchId);
-            ps.executeUpdate();
-            System.out.println("✅ Match result updated.");
-        } catch (SQLException e) {
-            throw new RuntimeException("updateMatchResult failed: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void cancelMatch(int matchId) {
-        String sql = "DELETE FROM matchy WHERE id=? AND status != 'finished'";
-        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            ps.setInt(1, matchId);
-            int rows = ps.executeUpdate();
-            if (rows > 0) {
-                System.out.println("✅ Match cancelled.");
-            } else {
-                System.out.println("❌ Cannot cancel: Match not found or already finished.");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("cancelMatch failed: " + e.getMessage(), e);
-        }
     }
 }
