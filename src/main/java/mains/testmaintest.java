@@ -22,7 +22,7 @@ public class testmaintest {
                     running = false;
                     System.out.println("👋 Goodbye!");
                 }
-                default -> System.out.println("❌ Invalid option. Please choose 1-9 or 0.");
+                default -> System.out.println("❌ Invalid option. Please choose 1-3 or 0.");
             }
         }
         scanner.close();

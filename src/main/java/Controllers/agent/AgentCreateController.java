@@ -165,7 +165,6 @@ public class AgentCreateController {
             return;
         }
 
-        // 4. Validation Rank
         // 4. Validation Rank (Obligatoire et doit être un nombre positif)
         if (rank.isEmpty() || !rank.matches("^\\d+$")) {
             if (tfRank != null) applyValidationStyle(tfRank, false);

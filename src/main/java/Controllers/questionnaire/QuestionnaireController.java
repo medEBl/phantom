@@ -26,21 +26,57 @@ public class QuestionnaireController {
 
     private void create() {
         try {
-            System.out.print("Agent ID (or empty): ");
-            String idStr = scanner.nextLine().trim();
-            Integer idAgent = idStr.isEmpty() ? null : Integer.parseInt(idStr);
-            System.out.print("Game: ");
-            String game = scanner.nextLine().trim();
-            System.out.print("Question 1: ");
-            String q1 = scanner.nextLine().trim();
-            System.out.print("Question 2: ");
-            String q2 = scanner.nextLine().trim();
-            System.out.print("Question 3: ");
+            Integer idAgent = null;
+            while (true) {
+                System.out.print("Agent ID (Optional, press Enter to skip): ");
+                String idStr = scanner.nextLine().trim();
+                if (idStr.isEmpty()) break;
+                try {
+                    idAgent = Integer.parseInt(idStr);
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("❌ Error: Agent ID must be a valid number or left blank.");
+                }
+            }
+
+            String game = "";
+            while (true) {
+                System.out.print("Game (Mandatory): ");
+                game = scanner.nextLine().trim();
+                if (game.isBlank()) {
+                    System.out.println("❌ Error: Game cannot be empty.");
+                } else break;
+            }
+
+            String q1 = "";
+            while (true) {
+                System.out.print("Question 1 (Mandatory): ");
+                q1 = scanner.nextLine().trim();
+                if (q1.isBlank()) {
+                    System.out.println("❌ Error: Question 1 cannot be empty.");
+                } else break;
+            }
+
+            String q2 = "";
+            while (true) {
+                System.out.print("Question 2 (Mandatory): ");
+                q2 = scanner.nextLine().trim();
+                if (q2.isBlank()) {
+                    System.out.println("❌ Error: Question 2 cannot be empty.");
+                } else break;
+            }
+
+            System.out.print("Question 3 (Optional, press Enter to skip): ");
             String q3 = scanner.nextLine().trim();
-            System.out.print("Question 4: ");
+            if (q3.isEmpty()) q3 = null;
+
+            System.out.print("Question 4 (Optional, press Enter to skip): ");
             String q4 = scanner.nextLine().trim();
+            if (q4.isEmpty()) q4 = null;
 
             qs.createQuestionnaire(new Questionnaire(idAgent, game, q1, q2, q3, q4));
+            System.out.println("✅ Success: Questionnaire created!");
+
         } catch (Exception e) {
             System.out.println("❌ Error: " + e.getMessage());
         }
@@ -48,8 +84,18 @@ public class QuestionnaireController {
 
     private void delete() {
         try {
-            System.out.print("Questionnaire ID to delete: ");
-            qs.deleteQuestionnaire(Integer.parseInt(scanner.nextLine().trim()));
+            int id = 0;
+            while (true) {
+                System.out.print("Enter Questionnaire ID to delete: ");
+                try {
+                    id = Integer.parseInt(scanner.nextLine().trim());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("❌ Error: Questionnaire ID must be a valid number.");
+                }
+            }
+            qs.deleteQuestionnaire(id);
+            System.out.println("✅ Success: Questionnaire deleted (if it existed).");
         } catch (Exception e) {
             System.out.println("❌ Error: " + e.getMessage());
         }

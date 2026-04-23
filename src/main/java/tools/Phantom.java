@@ -5,26 +5,28 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Phantom {
-    String url ="jdbc:mysql://localhost:3306/phantom";
-    String user="root";
-    String mdp="";
-    private Connection cnx;
-    static Phantom phantom;
-    private Phantom(){
+
+    private final String url = "jdbc:mysql://localhost:3306/phantom";
+    private final String user = "root";
+    private final String password = "";
+
+    private static Phantom instance;
+
+    private Phantom() {}
+
+    public static Phantom getInstance() {
+        if (instance == null) {
+            instance = new Phantom();
+        }
+        return instance;
+    }
+
+    // NEW CONNECTION EACH TIME (IMPORTANT FIX)
+    public Connection getCnx() {
         try {
-            cnx = DriverManager.getConnection(url, user, mdp);
-            System.out.println("cnx etablie");
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
+            return DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            throw new RuntimeException("Database connection failed", e);
         }
-    }
-    public static Phantom getInstance(){
-        if(phantom==null){
-            phantom=new Phantom();
-        }
-        return phantom;
-    }
-    public Connection getCnx(){
-        return cnx;
     }
 }

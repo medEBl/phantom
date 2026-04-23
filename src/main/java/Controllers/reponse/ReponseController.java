@@ -10,7 +10,6 @@ public class ReponseController {
     private final ReponseService rs = new ReponseService();
     private final Scanner scanner = new Scanner(System.in);
 
-    // Contrôle de saisie: Profanity filter
     private final Pattern BAD_WORDS_PATTERN = Pattern.compile(".*\\b(badword|insult|stupid)\\b.*", Pattern.CASE_INSENSITIVE);
 
     public void run() {
@@ -36,7 +35,6 @@ public class ReponseController {
         }
     }
 
-    // Contrôle de saisie: Minimum 5 chars
     private boolean isValidResponse(String text) {
         if (text == null) return false;
         String t = text.trim();
@@ -47,12 +45,28 @@ public class ReponseController {
 
     private void submit() {
         try {
-            System.out.print("Agent ID: ");
-            int idAgent = Integer.parseInt(scanner.nextLine().trim());
-            System.out.print("Questionnaire ID: ");
-            int qId = Integer.parseInt(scanner.nextLine().trim());
+            int idAgent = 0;
+            while (true) {
+                System.out.print("Agent ID: ");
+                try {
+                    idAgent = Integer.parseInt(scanner.nextLine().trim());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("❌ Error: Agent ID must be a valid number.");
+                }
+            }
 
-            // --- QUESTION 1 (Mandatory + Length + Profanity) ---
+            int qId = 0;
+            while (true) {
+                System.out.print("Questionnaire ID: ");
+                try {
+                    qId = Integer.parseInt(scanner.nextLine().trim());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("❌ Error: Questionnaire ID must be a valid number.");
+                }
+            }
+
             String r1 = "";
             while (true) {
                 System.out.print("Answer 1 (Mandatory, min 5 chars): ");
@@ -61,61 +75,51 @@ public class ReponseController {
                     System.out.println("❌ Error: Answer 1 is too short. Please write at least 5 characters.");
                 } else if (BAD_WORDS_PATTERN.matcher(r1).matches()) {
                     System.out.println("❌ Error: Please be professional. Inappropriate language detected.");
-                } else {
-                    break; // Valid input
-                }
+                } else break;
             }
 
-            // --- QUESTION 2 (Mandatory + Length) ---
             String r2 = "";
             while (true) {
                 System.out.print("Answer 2 (Mandatory, min 5 chars): ");
                 r2 = scanner.nextLine().trim();
                 if (!isValidResponse(r2)) {
                     System.out.println("❌ Error: Answer 2 is too short. Please write at least 5 characters.");
-                } else {
-                    break; // Valid input
-                }
+                } else break;
             }
 
-            // --- QUESTION 3 (Optional + Length) ---
             String r3 = "";
             while (true) {
                 System.out.print("Answer 3 (Optional, press Enter to skip, or min 5 chars): ");
                 String input = scanner.nextLine().trim();
                 if (input.isEmpty()) {
-                    r3 = null; // Store as null if skipped
+                    r3 = null;
                     break;
                 } else if (!isValidResponse(input)) {
                     System.out.println("❌ Error: Answer 3 is too short. Please write at least 5 characters if answering.");
                 } else {
                     r3 = input;
-                    break; // Valid input
+                    break;
                 }
             }
 
-            // --- QUESTION 4 (Optional + Length) ---
             String r4 = "";
             while (true) {
                 System.out.print("Answer 4 (Optional, press Enter to skip, or min 5 chars): ");
                 String input = scanner.nextLine().trim();
                 if (input.isEmpty()) {
-                    r4 = null; // Store as null if skipped
+                    r4 = null;
                     break;
                 } else if (!isValidResponse(input)) {
                     System.out.println("❌ Error: Answer 4 is too short. Please write at least 5 characters if answering.");
                 } else {
                     r4 = input;
-                    break; // Valid input
+                    break;
                 }
             }
 
-            // Create and Save
             rs.createReponse(new Reponse(idAgent, qId, r1, r2, r3, r4));
             System.out.println("✅ Success: Answers submitted successfully!");
 
-        } catch (NumberFormatException e) {
-            System.out.println("❌ Error: IDs must be valid numbers.");
         } catch (Exception e) {
             System.out.println("❌ Error: " + e.getMessage());
         }
@@ -123,11 +127,18 @@ public class ReponseController {
 
     private void delete() {
         try {
-            System.out.print("Reponse ID to delete: ");
-            rs.deleteReponse(Integer.parseInt(scanner.nextLine().trim()));
+            int id = 0;
+            while (true) {
+                System.out.print("Enter Reponse ID to delete: ");
+                try {
+                    id = Integer.parseInt(scanner.nextLine().trim());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("❌ Error: ID must be a valid number.");
+                }
+            }
+            rs.deleteReponse(id);
             System.out.println("✅ Success: Response deleted (if it existed).");
-        } catch (NumberFormatException e) {
-            System.out.println("❌ Error: ID must be a valid number.");
         } catch (Exception e) {
             System.out.println("❌ Error: " + e.getMessage());
         }

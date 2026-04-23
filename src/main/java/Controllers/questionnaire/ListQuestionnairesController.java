@@ -28,7 +28,6 @@ public class ListQuestionnairesController {
     @FXML private TextField tfSearch;
     @FXML private TableView<Questionnaire> questionnaireTable;
 
-    @FXML private TableColumn<Questionnaire, Integer> colId;
     @FXML private TableColumn<Questionnaire, String> colGame;
     @FXML private TableColumn<Questionnaire, String> colQ1;
     @FXML private TableColumn<Questionnaire, String> colActions;
@@ -58,7 +57,6 @@ public class ListQuestionnairesController {
         setupSearchFilter();
 
         // 6. Map Columns to Entity Properties
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colGame.setCellValueFactory(new PropertyValueFactory<>("game"));
         colQ1.setCellValueFactory(new PropertyValueFactory<>("ques1"));
 
