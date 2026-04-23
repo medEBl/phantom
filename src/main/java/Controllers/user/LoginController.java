@@ -30,6 +30,9 @@ public class LoginController {
     private Hyperlink registerLink;
 
     @FXML
+    private Hyperlink forgotPasswordLink;
+
+    @FXML
     private Label errorLabel;
 
     @FXML
@@ -90,6 +93,23 @@ public class LoginController {
             
         } catch (IOException e) {
             showError("Cannot open registration screen: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleForgotPassword() {
+        try {
+            // Load forgot password screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user/fxml/ForgotPassword.fxml"));
+            Parent root = loader.load();
+            
+            Stage stage = (Stage) forgotPasswordLink.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Forgot Password");
+            stage.show();
+            
+        } catch (IOException e) {
+            showError("Cannot open forgot password screen: " + e.getMessage());
         }
     }
 

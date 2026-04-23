@@ -31,6 +31,8 @@
             <Button fx:id="loginButton" onAction="#handleLogin" prefWidth="250" styleClass="login-button" text="Login" />
             
             <Hyperlink fx:id="registerLink" onAction="#handleRegister" styleClass="register-link" text="Don't have an account? Register here" />
+            
+            <Hyperlink fx:id="forgotPasswordLink" onAction="#handleForgotPassword" styleClass="register-link" text="Forgot your password?" />
          </children>
       </VBox>
       
