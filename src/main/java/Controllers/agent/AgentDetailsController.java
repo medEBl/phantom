@@ -22,6 +22,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import services.ai.GeminiService;
+import tools.AiEvaluationResult;
+import entities.questionnaire.Questionnaire;
+import entities.reponse.Reponse;
+import javafx.application.Platform;
+import javafx.scene.control.TextArea;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
 public class AgentDetailsController {
 
     // --- Sidebar Elements (Pour la détection Front/Back) ---
@@ -32,6 +41,12 @@ public class AgentDetailsController {
     @FXML private Label lblPseudo, lblJeu, lblRang, lblStatut, lblDate, lblLien;
     @FXML private VBox aiBanner;
     @FXML private VBox qaContainer;
+    // --- AI Elements ---
+    @FXML private Button btnRunAi; // N'oubliez pas de mettre cet ID sur votre bouton rouge dans SceneBuilder !
+
+    private GeminiService aiService = new GeminiService();
+    private Questionnaire currentQuestionnaire;
+    private Reponse currentReponse;
 
     private Agent currentAgent;
 
@@ -95,23 +110,42 @@ public class AgentDetailsController {
                 boolean hasAnswers = rs.getString("rep1") != null;
 
                 if (hasAnswers) {
+                    // 1. Afficher la bannière IA
                     if (aiBanner != null) {
                         aiBanner.setVisible(true);
                         aiBanner.setManaged(true);
                     }
 
-                    // Affichage des questions/réponses
+                    // 2. Préparation des objets pour Gemini
+                    currentQuestionnaire = new Questionnaire();
+                    currentQuestionnaire.setGame(currentAgent.getGame());
+                    currentQuestionnaire.setQues1(rs.getString("ques1"));
+                    currentQuestionnaire.setQues2(rs.getString("ques2"));
+                    currentQuestionnaire.setQues3(rs.getString("ques3"));
+                    currentQuestionnaire.setQues4(rs.getString("ques4"));
+
+                    currentReponse = new Reponse();
+                    currentReponse.setRep1(rs.getString("rep1"));
+                    currentReponse.setRep2(rs.getString("rep2"));
+                    currentReponse.setRep3(rs.getString("rep3"));
+                    currentReponse.setRep4(rs.getString("rep4"));
+
+                    // 3. Connecter le bouton IA
+                    if (btnRunAi != null) {
+                        btnRunAi.setOnAction(e -> runAiAnalysis());
+                    }
+
+                    // 4. Affichage des questions/réponses sur l'interface
                     if (rs.getString("ques1") != null) qaContainer.getChildren().add(createQABox(rs.getString("ques1"), rs.getString("rep1")));
                     if (rs.getString("ques2") != null) qaContainer.getChildren().add(createQABox(rs.getString("ques2"), rs.getString("rep2")));
                     if (rs.getString("ques3") != null && !rs.getString("ques3").trim().isEmpty()) qaContainer.getChildren().add(createQABox(rs.getString("ques3"), rs.getString("rep3")));
                     if (rs.getString("ques4") != null && !rs.getString("ques4").trim().isEmpty()) qaContainer.getChildren().add(createQABox(rs.getString("ques4"), rs.getString("rep4")));
 
-                    // --- BOUTONS D'ACTION DES RÉPONSES ---
+                    // 5. Boutons d'Action (Modifier / Supprimer)
                     HBox actionBox = new HBox(15);
                     actionBox.setAlignment(Pos.CENTER_RIGHT);
                     actionBox.setPadding(new Insets(15, 0, 0, 0));
 
-                    // Le bouton Modifier n'apparaît QUE pour le joueur (Front-Office)
                     if (!isAdmin) {
                         Button btnEditRes = new Button("✎ Modifier");
                         btnEditRes.setStyle("-fx-background-color: transparent; -fx-border-color: #444455; -fx-text-fill: white; -fx-border-radius: 6; -fx-cursor: hand; -fx-padding: 8 20;");
@@ -119,7 +153,6 @@ public class AgentDetailsController {
                         actionBox.getChildren().add(btnEditRes);
                     }
 
-                    // Le bouton Supprimer est dispo pour l'Admin (et le joueur s'il le souhaite)
                     Button btnDeleteRes = new Button("🗑 Supprimer");
                     btnDeleteRes.setStyle("-fx-background-color: transparent; -fx-border-color: #ff3b3f; -fx-text-fill: #ff3b3f; -fx-border-radius: 6; -fx-cursor: hand; -fx-padding: 8 20;");
                     btnDeleteRes.setOnAction(e -> deleteResponses());
@@ -275,4 +308,73 @@ public class AgentDetailsController {
             ex.printStackTrace();
         }
     }
+    // --- AI ANALYSIS METHODS ---
+
+    private void runAiAnalysis() {
+        if (currentQuestionnaire == null || currentReponse == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Les données du questionnaire sont introuvables.");
+            alert.show();
+            return;
+        }
+
+        // 1. État de chargement (Feedback visuel)
+        btnRunAi.setText("⏳ Analyse en cours...");
+        btnRunAi.setDisable(true);
+        btnRunAi.setStyle("-fx-background-color: #555555; -fx-text-fill: white; -fx-background-radius: 6;");
+
+        // 2. Lancer l'appel API dans un Thread séparé pour ne pas bloquer l'interface
+        CompletableFuture.supplyAsync(() -> {
+            return aiService.evaluate(currentQuestionnaire, currentReponse);
+        }).thenAccept(result -> {
+            // 3. Réponse reçue ! On revient sur le Thread de l'interface graphique
+            Platform.runLater(() -> {
+                // Rétablir le bouton à son état d'origine
+                btnRunAi.setText("✨ Run AI Analysis");
+                btnRunAi.setStyle("-fx-background-color: #ff3b3f; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand;");
+                btnRunAi.setDisable(false);
+
+                showAiResultDialog(result);
+            });
+        }).exceptionally(ex -> {
+            // 4. En cas d'erreur réseau
+            Platform.runLater(() -> {
+                btnRunAi.setText("❌ Erreur de connexion");
+                btnRunAi.setStyle("-fx-background-color: #ff3b3f; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand;");
+                btnRunAi.setDisable(false);
+                ex.printStackTrace();
+            });
+            return null;
+        });
+    }
+
+    private void showAiResultDialog(AiEvaluationResult result) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Coach IA - Rapport d'Analyse");
+
+        // Un titre dynamique selon le score
+        String appreciation = result.getScore() >= 80 ? "Excellent" : (result.getScore() >= 50 ? "Moyen" : "À améliorer");
+        alert.setHeaderText("Score global : " + result.getScore() + " / 100 (" + appreciation + ")");
+
+        StringBuilder content = new StringBuilder();
+        content.append("📝 AVIS GLOBAL :\n");
+        content.append(result.getGlobalFeedback()).append("\n\n");
+
+        content.append("💡 CONSEILS SPÉCIFIQUES :\n");
+        for (Map.Entry<String, String> suggestion : result.getSuggestions().entrySet()) {
+            content.append("• ").append(suggestion.getValue()).append("\n\n");
+        }
+
+        TextArea textArea = new TextArea(content.toString());
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+
+        // Taille de la fenêtre popup
+        alert.getDialogPane().setContent(textArea);
+        alert.getDialogPane().setPrefSize(600, 450);
+
+        alert.showAndWait();
+    }
+
 }

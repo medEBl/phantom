@@ -82,6 +82,31 @@
                     <children>
                         <Label text="Questionnaire" styleClass="section-title" />
 
+                        <VBox fx:id="aiBanner" alignment="CENTER" managed="false" spacing="12.0" style="-fx-background-color: #121218; -fx-border-color: #1e1e28; -fx-border-radius: 8; -fx-background-radius: 8;" visible="false">
+                            <padding>
+                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                            </padding>
+                            <children>
+                                <Label text="🤖" textFill="#4f545c">
+                                    <font>
+                                        <Font size="28.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Get professional feedback on all 4 questions." textFill="#8a8a98">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Label>
+                                <Button fx:id="btnRunAi" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #ff3b3f; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" text="✨ Run AI Analysis">
+                                    <padding>
+                                        <Insets bottom="10.0" top="10.0" />
+                                    </padding>
+                                </Button>
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </VBox>
                         <ScrollPane fitToWidth="true" styleClass="home-scroll" VBox.vgrow="ALWAYS">
                             <content>
                                 <VBox fx:id="qaContainer" spacing="15.0" style="-fx-background-color: transparent;" />
