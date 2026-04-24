@@ -285,7 +285,9 @@ public class DashboardTeamsController implements IDashboardTeamController {
             controller.setTeam(team);
             
             Stage stage = new Stage();
-            stage.setScene(new Scene(root, 600, 400));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Team Details - Phantom App");

@@ -2,6 +2,9 @@ package Controllers.user;
 
 import entities.user.User;
 import services.user.UserService;
+import services.auth.GoogleOAuth2Service;
+import services.auth.OAuth2CallbackServer;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,9 +12,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import javafx.application.Platform;
 
 public class LoginController {
 
@@ -36,8 +43,72 @@ public class LoginController {
     private Label errorLabel;
 
     @FXML
+    private Button googleLoginButton;
+
+    @FXML
     public void initialize() {
         errorLabel.setText("");
+    }
+
+    @FXML
+    private void handleGoogleLogin() {
+        try {
+            GoogleOAuth2Service oauth2Service = new GoogleOAuth2Service();
+            OAuth2CallbackServer callbackServer = new OAuth2CallbackServer(
+                    oauth2Service, oauth2Service.getStateToken());
+            
+            // Start callback server
+            callbackServer.start();
+            
+            // Get authorization URL and open browser
+            String authUrl = oauth2Service.getAuthorizationUrl();
+            Desktop.getDesktop().browse(URI.create(authUrl));
+            
+            // Handle the callback asynchronously
+            callbackServer.getTokenFuture().thenAccept(idToken -> {
+                try {
+                    Platform.runLater(() -> processGoogleLogin(idToken));
+                } catch (Exception e) {
+                    Platform.runLater(() -> showError("Google login processing failed: " + e.getMessage()));
+                }
+            }).exceptionally(throwable -> {
+                Platform.runLater(() -> showError("Google authentication failed: " + throwable.getMessage()));
+                return null;
+            });
+            
+        } catch (Exception e) {
+            if (e.getMessage().contains("Port 8888 is already in use")) {
+                showError("Port 8888 is busy. Please try again.");
+            } else {
+                showError("Failed to start Google authentication: " + e.getMessage());
+            }
+        }
+    }
+
+    private void processGoogleLogin(GoogleIdToken idToken) {
+        try {
+            GoogleIdToken.Payload payload = idToken.getPayload();
+            
+            String googleId = payload.getSubject();
+            String email = payload.getEmail();
+            String fullName = (String) payload.get("name");
+            
+            // Login or create user with Google data
+            Optional<User> userOpt = userService.loginWithGoogle(
+                    googleId, email, fullName, null, null);
+            
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                showSuccess("Login successful! Welcome, " + user.getFullName() + "!");
+                clearFields();
+                navigateToHome(user);
+            } else {
+                showError("Failed to authenticate with Google.");
+            }
+            
+        } catch (Exception e) {
+            showError("Google login processing failed: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -133,6 +204,14 @@ public class LoginController {
     private void showSuccess(String message) {
         errorLabel.setText(message);
         errorLabel.setStyle("-fx-text-fill: #27ae60; -fx-font-size: 12px;");
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void clearFields() {

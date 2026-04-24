@@ -24,4 +24,8 @@ public interface IUserService {
     // Search and Filter
     List<User> searchUsers(String searchTerm, String role, String status, int page, int pageSize);
     int countUsers(String searchTerm, String role, String status);
+    
+    // Export
+    void exportUsersToPDF(List<User> users, String filePath) throws Exception;
+    void exportUsersToExcel(List<User> users, String filePath) throws Exception;
 }

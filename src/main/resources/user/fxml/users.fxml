@@ -32,6 +32,8 @@
                   <Button fx:id="searchButton" onAction="#handleSearch" styleClass="dashboard-button" text="SEARCH" />
                   <Button fx:id="clearButton" onAction="#handleClear" styleClass="dashboard-button" text="CLEAR" />
                   <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="exportPDFButton" onAction="#handleExportPDF" styleClass="dashboard-button" text="EXPORT PDF" />
+                  <Button fx:id="exportExcelButton" onAction="#handleExportExcel" styleClass="dashboard-button" text="EXPORT EXCEL" />
                   <Button fx:id="addUserButton" onAction="#handleAddUser" styleClass="save-button" text="ADD USER" />
                </children>
             </HBox>

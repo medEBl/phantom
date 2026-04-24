@@ -186,7 +186,10 @@ public class PaymentController implements Initializable {
             Parent root = loader.load();
             Stage stage = (Stage) paymentsTable.getScene().getWindow();
             stage.setTitle("PHANTOM FORCE - HOME");
-            stage.setScene(new Scene(root));
+
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -201,7 +204,9 @@ public class PaymentController implements Initializable {
             Parent root = loader.load();
             Stage stage = (Stage) paymentsTable.getScene().getWindow();
             stage.setTitle("PHANTOM FORCE - SHOP ITEMS");
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

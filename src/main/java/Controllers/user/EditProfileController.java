@@ -66,7 +66,12 @@ public class EditProfileController {
         if (currentUser != null) {
             fullNameField.setText(currentUser.getFullName());
             countryField.setText(currentUser.getCountry());
-            birthDateField.setText(currentUser.getBirthDate().toString());
+            // Handle null birthDate for Google users
+            if (currentUser.getBirthDate() != null) {
+                birthDateField.setText(currentUser.getBirthDate().toString());
+            } else {
+                birthDateField.setText(""); // Empty for Google users with default birth date
+            }
         }
     }
 

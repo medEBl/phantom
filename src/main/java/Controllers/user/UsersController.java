@@ -7,11 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
@@ -23,6 +19,11 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.io.File;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class UsersController {
 
@@ -52,6 +53,12 @@ public class UsersController {
     
     @FXML
     private Button addUserButton;
+    
+    @FXML
+    private Button exportPDFButton;
+    
+    @FXML
+    private Button exportExcelButton;
     
     @FXML
     private TableView<User> usersTable;
@@ -416,6 +423,90 @@ public class UsersController {
         if (currentPage < totalPages) {
             currentPage++;
             loadUsers();
+        }
+    }
+
+    @FXML
+    private void handleExportPDF() {
+        try {
+            // Get all users for export (not just current page)
+            String searchTerm = searchField.getText().trim();
+            String role = roleFilter.getValue() != null ? roleFilter.getValue().toString() : "All";
+            String status = statusFilter.getValue() != null ? statusFilter.getValue().toString() : "All";
+            
+            List<User> allUsers = userService.searchUsers(searchTerm, role, status, 1, Integer.MAX_VALUE);
+            
+            if (allUsers.isEmpty()) {
+                showAlert("Export", "No users found to export.");
+                return;
+            }
+            
+            // Create file chooser
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Export Users to PDF");
+            
+            // Set initial file name
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            fileChooser.setInitialFileName("users_report_" + timestamp + ".pdf");
+            
+            // Set extension filter
+            fileChooser.getExtensionFilters().add(new ExtensionFilter("PDF Files", "*.pdf"));
+            
+            // Show save dialog
+            File selectedFile = fileChooser.showSaveDialog(exportPDFButton.getScene().getWindow());
+            
+            if (selectedFile != null) {
+                userService.exportUsersToPDF(allUsers, selectedFile.getAbsolutePath());
+                showAlert("Export Successful", "PDF exported successfully to:\n" + selectedFile.getAbsolutePath());
+                System.out.println("PDF exported to: " + selectedFile.getAbsolutePath());
+            }
+            
+        } catch (Exception e) {
+            showAlert("Export Error", "Failed to export PDF: " + e.getMessage());
+            System.err.println("PDF export error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleExportExcel() {
+        try {
+            // Get all users for export (not just current page)
+            String searchTerm = searchField.getText().trim();
+            String role = roleFilter.getValue() != null ? roleFilter.getValue().toString() : "All";
+            String status = statusFilter.getValue() != null ? statusFilter.getValue().toString() : "All";
+            
+            List<User> allUsers = userService.searchUsers(searchTerm, role, status, 1, Integer.MAX_VALUE);
+            
+            if (allUsers.isEmpty()) {
+                showAlert("Export", "No users found to export.");
+                return;
+            }
+            
+            // Create file chooser
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Export Users to Excel");
+            
+            // Set initial file name
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            fileChooser.setInitialFileName("users_report_" + timestamp + ".xlsx");
+            
+            // Set extension filter
+            fileChooser.getExtensionFilters().add(new ExtensionFilter("Excel Files", "*.xlsx"));
+            
+            // Show save dialog
+            File selectedFile = fileChooser.showSaveDialog(exportExcelButton.getScene().getWindow());
+            
+            if (selectedFile != null) {
+                userService.exportUsersToExcel(allUsers, selectedFile.getAbsolutePath());
+                showAlert("Export Successful", "Excel exported successfully to:\n" + selectedFile.getAbsolutePath());
+                System.out.println("Excel exported to: " + selectedFile.getAbsolutePath());
+            }
+            
+        } catch (Exception e) {
+            showAlert("Export Error", "Failed to export Excel: " + e.getMessage());
+            System.err.println("Excel export error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

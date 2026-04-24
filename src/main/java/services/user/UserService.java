@@ -3,6 +3,8 @@ import Iservices.user.IUserService;
 import entities.user.User;
 import org.mindrot.jbcrypt.BCrypt;
 import tools.Phantom;
+import services.export.PDFExportService;
+import services.export.ExcelExportService;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -15,6 +17,10 @@ public class UserService implements IUserService {
 
     // ── Helper: map a ResultSet row → User ───────────────────────────────────
     private User mapRow(ResultSet rs) throws SQLException {
+        return mapRowWithGoogleFields(rs);
+    }
+
+    private User mapRowWithGoogleFields(ResultSet rs) throws SQLException {
         User u = new User();
         u.setId(rs.getInt("id"));
         u.setEmail(rs.getString("email"));
@@ -25,7 +31,11 @@ public class UserService implements IUserService {
         u.setCountry(rs.getString("country"));
 
         Date bd = rs.getDate("birth_date");
-        if (bd != null) u.setBirthDate(bd.toLocalDate());
+        if (bd != null) {
+            u.setBirthDate(bd.toLocalDate());
+        } else {
+            u.setBirthDate(null); // Explicitly set null for missing birth dates
+        }
 
         u.setRole(rs.getString("role"));
         u.setAchievementPoints(rs.getInt("achievement_points"));
@@ -36,12 +46,12 @@ public class UserService implements IUserService {
 
         Timestamp lastLogin = rs.getTimestamp("last_login_at");
         if (lastLogin != null) u.setLastLoginAt(lastLogin.toLocalDateTime());
-
+        
+        // Map Google OAuth2-specific fields only
         u.setGoogleId(rs.getString("google_id"));
         u.setGoogleAccessToken(rs.getString("google_access_token"));
         u.setGoogleRefreshToken(rs.getString("google_refresh_token"));
-        u.setProfilePhotoUrl(rs.getString("profile_photo_url"));
-        u.setProfilePhotoPublicId(rs.getString("profile_photo_public_id"));
+        
         return u;
     }
 
@@ -155,8 +165,7 @@ public class UserService implements IUserService {
     @Override
     public void updateUser(User user) {
         String sql = "UPDATE user SET full_name=?, username=?, email=?, country=?, " +
-                "birth_date=?, role=?, roles=?, is_active=?, achievement_points=?, " +
-                "profile_photo_url=?, profile_photo_public_id=? " +
+                "birth_date=?, role=?, roles=?, is_active=?, achievement_points=? " +
                 "WHERE id=?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
             ps.setString(1, user.getFullName());
@@ -168,9 +177,7 @@ public class UserService implements IUserService {
             ps.setString(7, user.getRoles());
             ps.setBoolean(8, user.isActive());
             ps.setInt(9, user.getAchievementPoints());     // ← was missing
-            ps.setString(10, user.getProfilePhotoUrl());
-            ps.setString(11, user.getProfilePhotoPublicId());
-            ps.setInt(12, user.getId());
+            ps.setInt(10, user.getId());
 
             int rows = ps.executeUpdate();
             if (rows == 0) throw new RuntimeException("No user found with ID: " + user.getId());
@@ -362,4 +369,140 @@ public class UserService implements IUserService {
         return 0;
     }
 
+    // ── EXPORT METHODS ───────────────────────────────────────────────────────
+    @Override
+    public void exportUsersToPDF(List<User> users, String filePath) throws Exception {
+        PDFExportService pdfExportService = new PDFExportService();
+        pdfExportService.exportUsersToPDF(users, filePath);
+    }
+
+    @Override
+    public void exportUsersToExcel(List<User> users, String filePath) throws Exception {
+        ExcelExportService excelExportService = new ExcelExportService();
+        excelExportService.exportUsersToExcel(users, filePath);
+    }
+
+    // ── GOOGLE OAUTH2 METHODS ─────────────────────────────────────────────────────
+    public Optional<User> getUserByGoogleId(String googleId) {
+        String sql = "SELECT * FROM user WHERE google_id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, googleId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = mapRowWithGoogleFields(rs);
+                return Optional.of(user);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("getUserByGoogleId failed: " + e.getMessage(), e);
+        }
+        return Optional.empty();
+    }
+
+    public User createUserFromGoogle(User googleUser) {
+        String sql = "INSERT INTO user (email, username, full_name, country, birth_date, role, " +
+                "achievement_points, google_id, password, is_active, created_at, roles) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        try (PreparedStatement ps = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, googleUser.getEmail());
+            ps.setString(2, googleUser.getUsername());
+            ps.setString(3, googleUser.getFullName());
+            ps.setString(4, "N/A"); // Default country for Google users
+            ps.setDate(5, Date.valueOf("1990-01-01")); // Default birth date for Google users
+            ps.setString(6, googleUser.getRole()); // Use role from User object
+            ps.setInt(7, 0); // Default achievement points
+            ps.setString(8, googleUser.getGoogleId());
+            ps.setString(9, "GOOGLE_USER_NO_PASSWORD"); // Placeholder password for Google users
+            ps.setBoolean(10, true);
+            ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setString(12, googleUser.getRoles()); // Use roles from User object
+            
+            ps.executeUpdate();
+            
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                googleUser.setId(keys.getInt(1));
+            }
+            
+            System.out.println("✅ Google user created with ID: " + googleUser.getId());
+            return googleUser;
+        } catch (SQLException e) {
+            throw new RuntimeException("createUserFromGoogle failed: " + e.getMessage(), e);
+        }
+    }
+
+    public void updateGoogleTokens(int userId, String accessToken, String refreshToken) {
+        String sql = "UPDATE user SET google_access_token = ?, google_refresh_token = ?, " +
+                "last_login_at = ? WHERE id = ?";
+        
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, accessToken);
+            ps.setString(2, refreshToken);
+            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setInt(4, userId);
+            
+            int rows = ps.executeUpdate();
+            if (rows == 0) {
+                throw new RuntimeException("No user found with ID: " + userId);
+            }
+            System.out.println("✅ Google tokens updated for user ID: " + userId);
+        } catch (SQLException e) {
+            throw new RuntimeException("updateGoogleTokens failed: " + e.getMessage(), e);
+        }
+    }
+
+    public Optional<User> loginWithGoogle(String googleId, String email, String fullName, 
+                                         String accessToken, String refreshToken) {
+        try {
+            // Check if user exists by Google ID
+            Optional<User> existingUserByGoogleId = getUserByGoogleId(googleId);
+            if (existingUserByGoogleId.isPresent()) {
+                User user = existingUserByGoogleId.get();
+                updateGoogleTokens(user.getId(), accessToken, refreshToken);
+                user.setLastLoginAt(LocalDateTime.now());
+                return Optional.of(user);
+            }
+
+            // Check if user exists by email (to link Google account)
+            Optional<User> existingUserByEmail = getUserByEmail(email);
+            if (existingUserByEmail.isPresent()) {
+                User user = existingUserByEmail.get();
+                // Link Google account to existing user
+                String linkSql = "UPDATE user SET google_id = ?, " +
+                        "google_access_token = ?, google_refresh_token = ?, last_login_at = ? WHERE id = ?";
+                
+                try (PreparedStatement ps = cnx.prepareStatement(linkSql)) {
+                    ps.setString(1, googleId);
+                    ps.setString(2, accessToken);
+                    ps.setString(3, refreshToken);
+                    ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+                    ps.setInt(5, user.getId());
+                    
+                    ps.executeUpdate();
+                }
+                
+                user.setGoogleId(googleId);
+                user.setLastLoginAt(LocalDateTime.now());
+                return Optional.of(user);
+            }
+
+            // Create new user from Google data
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setFullName(fullName);
+            newUser.setUsername(email.split("@")[0]); // Use email prefix as username
+            newUser.setGoogleId(googleId);
+            newUser.setRole("PLAYER"); // Default role for Google users
+            newUser.setRoles("[\"ROLE_USER\",\"ROLE_PLAYER\"]"); // Set roles field in proper array format
+            newUser.setActive(true);
+            
+            User createdUser = createUserFromGoogle(newUser);
+            updateGoogleTokens(createdUser.getId(), accessToken, refreshToken);
+            createdUser.setLastLoginAt(LocalDateTime.now());
+            
+            return Optional.of(createdUser);
+        } catch (Exception e) {
+            throw new RuntimeException("loginWithGoogle failed: " + e.getMessage(), e);
+        }
+    }
 }

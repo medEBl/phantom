@@ -227,6 +227,7 @@ public class AgentListController {
                     }
 
                     btnBackToHome.getScene().setRoot(root);
+
                 } catch (IOException e) {
                     System.err.println("ERROR loading home screen: " + e.getMessage());
                     e.printStackTrace();

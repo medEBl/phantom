@@ -65,7 +65,9 @@ public class ItemsController implements Initializable {
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("➕ Ajouter un jeu");
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.showAndWait();
             loadItems(); // Rafraîchir après ajout
         } catch (IOException e) {
@@ -91,7 +93,9 @@ public class ItemsController implements Initializable {
 
             Stage stage = new Stage();
             stage.setTitle("✏️ Modifier un jeu");
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.showAndWait();
             loadItems(); // Rafraîchir après modification
         } catch (IOException e) {
@@ -178,7 +182,10 @@ public class ItemsController implements Initializable {
             
             Stage stage = (Stage) itemsTable.getScene().getWindow();
             stage.setTitle("PHANTOM FORCE - HOME");
-            stage.setScene(new Scene(root));
+
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -193,7 +200,10 @@ public class ItemsController implements Initializable {
             Parent root = loader.load();
             Stage stage = (Stage) itemsTable.getScene().getWindow();
             stage.setTitle("PHANTOM FORCE - PAYMENTS");
-            stage.setScene(new Scene(root));
+
+            stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

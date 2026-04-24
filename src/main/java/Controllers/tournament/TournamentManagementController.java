@@ -199,6 +199,8 @@ public class TournamentManagementController {
             Parent root = loader.load();
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -224,6 +226,8 @@ public class TournamentManagementController {
             
             Stage stage = (Stage) tournamentTable.getScene().getWindow();
             stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -254,6 +258,8 @@ public class TournamentManagementController {
             
             Stage stage = (Stage) tournamentTable.getScene().getWindow();
             stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

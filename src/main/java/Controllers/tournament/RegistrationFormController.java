@@ -112,6 +112,8 @@ public class RegistrationFormController {
             
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(root, 1920, 1080));
+            stage.setMaximized(true);
+            stage.setFullScreen(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

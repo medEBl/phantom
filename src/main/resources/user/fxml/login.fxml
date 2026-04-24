@@ -30,11 +30,15 @@
             
             <Button fx:id="loginButton" onAction="#handleLogin" prefWidth="250" styleClass="login-button" text="Login" />
             
-            <Hyperlink fx:id="registerLink" onAction="#handleRegister" styleClass="register-link" text="Don't have an account? Register here" />
+            <Separator prefWidth="250" />
             
-            <Hyperlink fx:id="forgotPasswordLink" onAction="#handleForgotPassword" styleClass="register-link" text="Forgot your password?" />
+            <Button fx:id="googleLoginButton" onAction="#handleGoogleLogin" prefWidth="250" styleClass="google-login-button" text="Sign in with Google" />
          </children>
       </VBox>
+      
+      <Hyperlink fx:id="registerLink" onAction="#handleRegister" styleClass="register-link" text="Don't have an account? Register here" />
+      
+      <Hyperlink fx:id="forgotPasswordLink" onAction="#handleForgotPassword" styleClass="register-link" text="Forgot your password?" />
       
       <Label fx:id="errorLabel" styleClass="error-label" text="" />
    </children>
