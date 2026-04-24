@@ -7,21 +7,32 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import services.questionnaire.QuestionnaireService;
+import tools.Phantom;
 
-import javafx.geometry.Pos;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 
 public class ListQuestionnairesController {
 
-    // --- Sidebar Buttons (Admin Panel) ---
+    // --- Sidebar Buttons ---
     @FXML private Button btnNavAgents;
     @FXML private Button btnDisconnect;
+
+    // --- Dashboard Elements ---
+    @FXML private Label lblTotalAgents;
+    @FXML private Label lblCompleted;
+    @FXML private WebView chartWebView;
 
     // --- Main Content ---
     @FXML private Button btnNouveau;
@@ -34,57 +45,42 @@ public class ListQuestionnairesController {
 
     private QuestionnaireService service;
     private ObservableList<Questionnaire> observableList;
-    private FilteredList<Questionnaire> filteredData; // Used for search
+    private FilteredList<Questionnaire> filteredData;
 
     @FXML
     public void initialize() {
         service = new QuestionnaireService();
 
-        // 1. Initialize the lists for Search and Sort
+        // 1. Initialize lists for Search and Sort
         observableList = FXCollections.observableArrayList();
         filteredData = new FilteredList<>(observableList, b -> true);
-
-        // 2. Wrap the FilteredList in a SortedList
         SortedList<Questionnaire> sortedData = new SortedList<>(filteredData);
-
-        // 3. Bind the SortedList comparator to the TableView comparator
         sortedData.comparatorProperty().bind(questionnaireTable.comparatorProperty());
-
-        // 4. Add sorted (and filtered) data to the table
         questionnaireTable.setItems(sortedData);
 
-        // 5. Setup Search Bar Listener
         setupSearchFilter();
 
-        // 6. Map Columns to Entity Properties
+        // 2. Map Columns
         colGame.setCellValueFactory(new PropertyValueFactory<>("game"));
         colQ1.setCellValueFactory(new PropertyValueFactory<>("ques1"));
 
-        // 7. Setup Actions Column (View, Edit, Delete buttons)
+        // 3. Setup Actions Column
         colActions.setCellFactory(column -> new TableCell<Questionnaire, String>() {
-
-            // 1. ICÔNES SEULEMENT (Pour gagner de l'espace)
             final Button btnDetails = new Button("👁");
             final Button btnModifier = new Button("✎");
             final Button btnSupprimer = new Button("🗑");
-
-            // Espacement réduit à 8px pour bien rentrer dans la colonne
             final HBox actionBox = new HBox(8, btnDetails, btnModifier, btnSupprimer);
 
             {
                 actionBox.setAlignment(Pos.CENTER);
-
-                // 2. AJOUT DES TOOLTIPS (Pour la compréhension de l'utilisateur)
                 btnDetails.setTooltip(new Tooltip("Voir les détails"));
                 btnModifier.setTooltip(new Tooltip("Modifier le questionnaire"));
                 btnSupprimer.setTooltip(new Tooltip("Supprimer le questionnaire"));
 
-                // 3. STYLES (Utilisation de votre dark-theme.css)
                 btnDetails.getStyleClass().addAll("btn-action-small", "btn-profil");
                 btnModifier.getStyleClass().addAll("btn-action-small", "btn-edit");
                 btnSupprimer.getStyleClass().addAll("btn-action-small", "btn-delete");
 
-                // 4. ACTIONS DES BOUTONS
                 btnDetails.setOnAction(e -> openDetails(getTableView().getItems().get(getIndex())));
                 btnModifier.setOnAction(e -> openEdit(getTableView().getItems().get(getIndex())));
                 btnSupprimer.setOnAction(e -> {
@@ -104,17 +100,16 @@ public class ListQuestionnairesController {
             }
         });
 
-        // 8. Load Data
+        // 4. Load Table Data & Real-Time Dashboard
         loadQuestionnaires();
+        loadDashboardStats();
 
-        // 9. Main Button Actions
+        // 5. Navigation Actions
         btnNouveau.setOnAction(e -> openCreate());
 
-        // 10. Sidebar Navigation Actions
         if (btnNavAgents != null) {
             btnNavAgents.setOnAction(e -> {
                 try {
-                    // Navigate to the Admin version of the Agents list
                     Parent root = FXMLLoader.load(getClass().getResource("/fxml/ListAgentsBack.fxml"));
                     btnNavAgents.getScene().setRoot(root);
                 } catch (IOException ex) {
@@ -128,35 +123,111 @@ public class ListQuestionnairesController {
         }
     }
 
+    // --- DASHBOARD LOGIC ---
+    private void loadDashboardStats() {
+        int totalAgents = 0;
+        int completed = 0;
+
+        // Fetch Total Agents
+        String sqlTotal = "SELECT COUNT(*) FROM agent";
+        try {
+            Connection cnx = Phantom.getInstance().getCnx();
+            PreparedStatement ps = cnx.prepareStatement(sqlTotal);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) totalAgents = rs.getInt(1);
+            rs.close(); ps.close();
+        } catch (Exception e) { e.printStackTrace(); }
+
+        // Fetch Completed Questionnaires
+        String sqlCompleted = "SELECT COUNT(DISTINCT id_agent) FROM reponse_questionnaire";
+        try {
+            Connection cnx = Phantom.getInstance().getCnx();
+            PreparedStatement ps = cnx.prepareStatement(sqlCompleted);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) completed = rs.getInt(1);
+            rs.close(); ps.close();
+        } catch (Exception e) { e.printStackTrace(); }
+
+        if (lblTotalAgents != null) lblTotalAgents.setText(String.valueOf(totalAgents));
+        if (lblCompleted != null) lblCompleted.setText(String.valueOf(completed));
+
+        if (chartWebView != null) {
+            int notCompleted = totalAgents - completed;
+            if (notCompleted < 0) notCompleted = 0;
+
+            // Calcul automatique du pourcentage
+            int percentage = 0;
+            if (totalAgents > 0) {
+                percentage = (int) Math.round((double) completed / totalAgents * 100);
+            }
+
+            // On passe le pourcentage à la méthode
+            generateGoogleChart(completed, notCompleted, percentage);
+        }
+    }
+
+    private void generateGoogleChart(int completed, int notCompleted, int percentage) {
+        WebEngine webEngine = chartWebView.getEngine();
+
+        String htmlContent = String.format("""
+            <html>
+              <head>
+                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                <script type="text/javascript">
+                  google.charts.load('current', {'packages':['corechart']});
+                  google.charts.setOnLoadCallback(drawChart);
+
+                  function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                      ['Status', 'Count'],
+                      ['Complété', %d],
+                      ['En attente', %d]
+                    ]);
+
+                    var options = {
+                      backgroundColor: '#16161e',
+                      legend: 'none',
+                      pieHole: 0.65,
+                      pieSliceText: 'none',
+                      pieSliceBorderColor: '#16161e',
+                      colors: ['#00ffff', '#2a2a35'],
+                      chartArea: {left:10, top:10, width:'90%%', height:'90%%'}
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+                    chart.draw(data, options);
+                  }
+                </script>
+              </head>
+              <body style="margin: 0; padding: 0; background-color: #16161e; overflow: hidden; position: relative;">
+                <div id="donutchart" style="width: 100%%; height: 100%%;"></div>
+                
+                <div style="position: absolute; top: 50%%; left: 50%%; transform: translate(-50%%, -50%%); color: white; font-family: 'Segoe UI', Helvetica, sans-serif; font-size: 22px; font-weight: bold; pointer-events: none;">
+                  %d%%
+                </div>
+              </body>
+            </html>
+            """, completed, notCompleted, percentage);
+
+        webEngine.loadContent(htmlContent);
+    }
+
     // --- RECHERCHE EN TEMPS RÉEL (JEU SEULEMENT) ---
     private void setupSearchFilter() {
         if (tfSearch != null) {
             tfSearch.textProperty().addListener((observable, oldValue, newValue) -> {
                 filteredData.setPredicate(q -> {
-                    // Si le champ est vide, on affiche tout
-                    if (newValue == null || newValue.isEmpty() || newValue.isBlank()) {
-                        return true;
-                    }
-
-                    // On met tout en minuscules pour comparer facilement
+                    if (newValue == null || newValue.isEmpty() || newValue.isBlank()) return true;
                     String lowerCaseFilter = newValue.toLowerCase();
-
-                    // Recherche UNIQUEMENT par le nom du Jeu
-                    if (q.getGame() != null && q.getGame().toLowerCase().contains(lowerCaseFilter)) {
-                        return true;
-                    }
-
-                    // Si le jeu ne correspond pas, on cache la ligne
+                    if (q.getGame() != null && q.getGame().toLowerCase().contains(lowerCaseFilter)) return true;
                     return false;
                 });
             });
         }
-
     }
 
     private void loadQuestionnaires() {
         List<Questionnaire> list = service.getAllQuestionnaires();
-        // Utiliser setAll met à jour la liste source sans casser les liens Filtered/Sorted
         observableList.setAll(list);
     }
 
@@ -165,7 +236,7 @@ public class ListQuestionnairesController {
         confirm.showAndWait();
         if (confirm.getResult() == ButtonType.YES) {
             service.deleteQuestionnaire(id);
-            loadQuestionnaires(); // Refresh the table
+            loadQuestionnaires();
         }
     }
 

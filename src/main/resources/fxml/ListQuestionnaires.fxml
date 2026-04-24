@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
 
 <HBox stylesheets="@../css/dark-theme.css" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #0f0f13;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.questionnaire.ListQuestionnairesController">
     <children>
@@ -30,7 +31,7 @@
                             <padding><Insets bottom="12.0" left="15.0" top="12.0" /></padding>
                         </Button>
 
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #2a2a35; -fx-border-color: #00ffff; -fx-border-width: 0 0 0 4; -fx-text-fill: #00ffff; -fx-alignment: CENTER_LEFT; -fx-cursor: default;" text="📋 Questionnaires">
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #2a2a35; -fx-border-color: #00ffff; -fx-border-width: 0 0 0 4; -fx-text-fill: #00ffff; -fx-alignment: CENTER_LEFT; -fx-cursor: default;" text="📝 Questionnaires">
                             <font><Font name="System Bold" size="16.0" /></font>
                             <padding><Insets bottom="12.0" left="11.0" top="12.0" /></padding>
                         </Button>
@@ -49,13 +50,31 @@
                     <children>
                         <VBox HBox.hgrow="ALWAYS">
                             <children>
-                                <Label text="Gestion des Questionnaires" textFill="WHITE"><font><Font name="System Bold" size="24.0" /></font></Label>
-                                <Label text="Liste des templates par jeu" textFill="#8a8a98" />
+                                <Label text="Dashboard &amp; Questionnaires" textFill="WHITE"><font><Font name="System Bold" size="24.0" /></font></Label>
+                                <Label text="Statistiques en temps réel et gestion des modèles" textFill="#8a8a98" />
                             </children>
                         </VBox>
                         <Button fx:id="btnNouveau" mnemonicParsing="false" style="-fx-background-color: #00ffff; -fx-text-fill: black; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" text="+ Nouveau">
                             <padding><Insets bottom="10.0" left="20.0" right="20.0" top="10.0" /></padding>
                         </Button>
+                    </children>
+                </HBox>
+
+                <HBox spacing="20.0" prefHeight="180.0">
+                    <children>
+                        <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #16161e; -fx-background-radius: 8; -fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-padding: 20;" HBox.hgrow="ALWAYS">
+                            <Label text="TOTAL AGENTS" textFill="#8a8a98"><font><Font name="System Bold" size="12.0" /></font></Label>
+                            <Label fx:id="lblTotalAgents" text="0" textFill="WHITE"><font><Font name="System Bold" size="36.0" /></font></Label>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #16161e; -fx-background-radius: 8; -fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-padding: 20;" HBox.hgrow="ALWAYS">
+                            <Label text="RÉPONSES REÇUES" textFill="#8a8a98"><font><Font name="System Bold" size="12.0" /></font></Label>
+                            <Label fx:id="lblCompleted" text="0" textFill="#00ffff"><font><Font name="System Bold" size="36.0" /></font></Label>
+                        </VBox>
+
+                        <VBox alignment="CENTER" style="-fx-background-color: #16161e; -fx-background-radius: 8; -fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-padding: 5;" HBox.hgrow="ALWAYS" prefWidth="300.0">
+                            <WebView fx:id="chartWebView" prefHeight="160.0" prefWidth="280.0" />
+                        </VBox>
                     </children>
                 </HBox>
 
