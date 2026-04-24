@@ -17,8 +17,8 @@ import java.util.Base64;
 import java.util.Collections;
 
 public class GoogleOAuth2Service {
-    private static final String CLIENT_ID = "498284845483-mbtcqf7qps260ej9fuiem4ccpj1c91ea.apps.googleusercontent.com";
-    private static final String CLIENT_SECRET = "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";
+    private static final String CLIENT_ID = "git";
+    private static final String CLIENT_SECRET = "git";
     private static final String REDIRECT_URI = "http://127.0.0.1:8888/callback";
     private static final String APPLICATION_NAME = "Phantom App";
     
