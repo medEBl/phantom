@@ -21,12 +21,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
+
 
 public class AgentListController {
 
     @FXML private Button btnNavQuestionnaires;
     @FXML private Button btnDisconnect;
     @FXML private Button btnCreateAgent;
+    @FXML private Button btnExportCSV;
     @FXML private TextField tfSearch;
     @FXML private TableView<Agent> agentTable;
 
@@ -83,6 +91,9 @@ public class AgentListController {
                     } else {
                         setStyle("-fx-text-fill: #8a8a98; -fx-alignment: CENTER-LEFT;");
                     }
+                }
+                if (btnExportCSV != null) {
+                    btnExportCSV.setOnAction(e -> exportToCSV());
                 }
             }
         });
@@ -272,5 +283,57 @@ public class AgentListController {
             detailsController.initData(agent);
             agentTable.getScene().setRoot(root);
         } catch (IOException e) { e.printStackTrace(); }
+    }
+    // --- EXPORT CSV (API Apache Commons CSV) ---
+    // --- EXPORT CSV (API Apache Commons CSV) ---
+    private void exportToCSV() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Sauvegarder l'export des Agents");
+        fileChooser.setInitialFileName("export_agents.csv");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier CSV", "*.csv"));
+
+        File file = fileChooser.showSaveDialog(agentTable.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                // 1. On force le format EXCEL classique (qui utilise la virgule par défaut)
+                // MAIS on le modifie pour imposer le point-virgule (spécifique à l'Europe)
+                CSVFormat format = CSVFormat.EXCEL.builder()
+                        .setDelimiter(';') // TRÈS IMPORTANT : Le point-virgule sépare les colonnes sur Excel FR
+                        .setHeader("ID", "Pseudo", "Jeu", "Rang", "Statut")
+                        .build();
+
+                // 2. On écrit le fichier.
+                // Pour qu'Excel lise bien l'UTF-8 sans afficher de symboles étranges,
+                // on doit ajouter le BOM au tout début du flux, avant même d'utiliser CSVPrinter.
+                try (FileWriter out = new FileWriter(file, StandardCharsets.UTF_8)) {
+
+                    // Écriture manuelle du BOM (Byte Order Mark) UTF-8
+                    out.write('\ufeff');
+
+                    // 3. On passe le flux (out) à l'imprimante CSV
+                    try (CSVPrinter printer = new CSVPrinter(out, format)) {
+                        for (Agent agent : agentTable.getItems()) {
+                            printer.printRecord(
+                                    agent.getId(),
+                                    agent.getPseudo() != null ? agent.getPseudo() : "",
+                                    agent.getGame() != null ? agent.getGame() : "",
+                                    agent.getRank() != null ? agent.getRank() : "",
+                                    agent.getStatus() != null ? agent.getStatus() : ""
+                            );
+                        }
+                    }
+                }
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Le fichier CSV a été généré avec succès !");
+                alert.setHeaderText("Export réussi");
+                alert.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Une erreur est survenue lors de l'export.");
+                alert.show();
+            }
+        }
     }
 }

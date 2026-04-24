@@ -23,11 +23,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
+
 public class ListQuestionnairesController {
 
     // --- Sidebar Buttons ---
     @FXML private Button btnNavAgents;
     @FXML private Button btnDisconnect;
+    @FXML private Button btnExportCSV;
 
     // --- Dashboard Elements ---
     @FXML private Label lblTotalAgents;
@@ -87,6 +95,10 @@ public class ListQuestionnairesController {
                     Questionnaire q = getTableView().getItems().get(getIndex());
                     deleteQuestionnaire(q.getId());
                 });
+                // (À placer à la fin de la méthode initialize, par exemple sous btnNouveau.setOnAction)
+                if (btnExportCSV != null) {
+                    btnExportCSV.setOnAction(e -> exportToCSV());
+                }
             }
 
             @Override
@@ -267,5 +279,53 @@ public class ListQuestionnairesController {
             controller.initData(q);
             btnNouveau.getScene().setRoot(root);
         } catch (IOException e) { e.printStackTrace(); }
+    }
+    // --- EXPORT CSV (API Apache Commons CSV) ---
+    private void exportToCSV() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Sauvegarder l'export des Questionnaires");
+        fileChooser.setInitialFileName("export_questionnaires.csv");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier CSV", "*.csv"));
+
+        // On s'attache à la fenêtre actuelle
+        File file = fileChooser.showSaveDialog(questionnaireTable.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                // Format Excel avec point-virgule pour séparer les colonnes en Europe
+                CSVFormat format = CSVFormat.EXCEL.builder()
+                        .setDelimiter(';')
+                        .setHeader("ID", "Jeu", "Question 1", "Question 2", "Question 3", "Question 4")
+                        .build();
+
+                try (FileWriter out = new FileWriter(file, StandardCharsets.UTF_8)) {
+
+                    // Indispensable pour qu'Excel comprenne les accents (BOM)
+                    out.write('\ufeff');
+
+                    try (CSVPrinter printer = new CSVPrinter(out, format)) {
+                        for (Questionnaire q : questionnaireTable.getItems()) {
+                            printer.printRecord(
+                                    q.getId(),
+                                    q.getGame() != null ? q.getGame() : "",
+                                    q.getQues1() != null ? q.getQues1() : "",
+                                    q.getQues2() != null ? q.getQues2() : "",
+                                    q.getQues3() != null ? q.getQues3() : "",
+                                    q.getQues4() != null ? q.getQues4() : ""
+                            );
+                        }
+                    }
+                }
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Le fichier CSV a été généré avec succès !");
+                alert.setHeaderText("Export réussi");
+                alert.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Une erreur est survenue lors de l'export.");
+                alert.show();
+            }
+        }
     }
 }
