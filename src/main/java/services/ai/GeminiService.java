@@ -14,12 +14,13 @@ import java.time.Duration;
 public class GeminiService {
 
     // 1. Utilisez la clé que vous avez générée (pensez à la supprimer/régénérer si elle est publique !)
-    private static final String API_KEY = "AIzaSyBxbLEoHdtobBm54HjwL3ccieH3_WEfP84";
+    private static final String API_KEY = "askforkey";
 
     // 2. CORRECTION : gemini-1.5-flash au lieu de 2.5
     // Remplacez l'ancienne URL par celle-ci (v1 stable)
+    // L'URL exacte tirée de votre code PHP fonctionnel
     private static final String API_URL =
-            "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + API_KEY;
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=" + API_KEY;
 
     private final HttpClient client;
 
@@ -36,7 +37,7 @@ public class GeminiService {
         // Construction du Prompt
         StringBuilder promptBuilder = new StringBuilder();
         promptBuilder.append("Act as a professional Esports Coach for '").append(game).append("'.\n");
-        promptBuilder.append("Evaluate these interview answers:\n");
+        promptBuilder.append("Evaluate these interview answers (answer in only frensh):\n");
         promptBuilder.append("Q1: ").append(questions.getQues1()).append(" -> A1: ").append(answers.getRep1()).append("\n");
         promptBuilder.append("Q2: ").append(questions.getQues2()).append(" -> A2: ").append(answers.getRep2()).append("\n");
 
