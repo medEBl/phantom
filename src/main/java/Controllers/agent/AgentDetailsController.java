@@ -31,6 +31,8 @@ import javafx.scene.control.TextArea;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import services.discordscout.DiscordScoutService;
+
 public class AgentDetailsController {
 
     // --- Sidebar Elements (Pour la détection Front/Back) ---
@@ -333,6 +335,25 @@ public class AgentDetailsController {
                 btnRunAi.setStyle("-fx-background-color: #ff3b3f; -fx-text-fill: white; -fx-background-radius: 6; -fx-cursor: hand;");
                 btnRunAi.setDisable(false);
 
+                // --- 🚨 DÉCLENCHEUR WEBHOOK DISCORD 🚨 ---
+                if (result.getScore() >= 80) {
+                    // Sécurité : on vérifie que le lien social n'est pas null
+                    String lienSocial = "https://phantom-esport.com"; // Lien par défaut
+                    if (currentAgent.getSocialsLink() != null && !currentAgent.getSocialsLink().trim().isEmpty()) {
+                        lienSocial = currentAgent.getSocialsLink();
+                    }
+
+                    // Appel du service (Assurez-vous que le package est le bon, ici "services")
+                    services.discordscout.DiscordScoutService.sendHighScorerAlert(
+                            currentAgent.getPseudo(),
+                            currentQuestionnaire.getGame(),
+                            result.getScore(),
+                            lienSocial
+                    );
+                }
+                // -----------------------------------------
+
+                // Afficher la popup avec les résultats
                 showAiResultDialog(result);
             });
         }).exceptionally(ex -> {

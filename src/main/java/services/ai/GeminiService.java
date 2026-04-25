@@ -14,7 +14,7 @@ import java.time.Duration;
 public class GeminiService {
 
     // 1. Utilisez la clé que vous avez générée (pensez à la supprimer/régénérer si elle est publique !)
-    private static final String API_KEY = "askforkey";
+    private static final String API_KEY = "AIzaSyCDtEqMq1PmgUuI";
 
     // 2. CORRECTION : gemini-1.5-flash au lieu de 2.5
     // Remplacez l'ancienne URL par celle-ci (v1 stable)
