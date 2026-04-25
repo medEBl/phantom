@@ -65,6 +65,14 @@ public class AgentListController {
 
         // 4. Add sorted (and filtered) data to the table
         agentTable.setItems(sortedData);
+        // 4. Add sorted (and filtered) data to the table
+        agentTable.setItems(sortedData);
+
+        // --- NOUVEAU : Forcer le tri par défaut sur le Pseudo (A à Z) ---
+        agentTable.getSortOrder().add(colPseudo);
+        colPseudo.setSortType(TableColumn.SortType.ASCENDING);
+        agentTable.sort();
+        // ----------------------------------------------------------------
 
         // 5. Setup Search Bar Listener
         setupSearchFilter();

@@ -66,6 +66,15 @@ public class ListQuestionnairesController {
         sortedData.comparatorProperty().bind(questionnaireTable.comparatorProperty());
         questionnaireTable.setItems(sortedData);
 
+        sortedData.comparatorProperty().bind(questionnaireTable.comparatorProperty());
+        questionnaireTable.setItems(sortedData);
+
+        // --- NOUVEAU : Forcer le tri par défaut sur le Jeu (A à Z) ---
+        questionnaireTable.getSortOrder().add(colGame);
+        colGame.setSortType(TableColumn.SortType.ASCENDING);
+        questionnaireTable.sort();
+        // -------------------------------------------------------------
+
         setupSearchFilter();
 
         // 2. Map Columns

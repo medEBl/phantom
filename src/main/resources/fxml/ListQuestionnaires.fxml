@@ -94,10 +94,13 @@
 
                 <TableView fx:id="questionnaireTable" style="-fx-background-color: #16161e; -fx-border-color: #2a2a35; -fx-border-radius: 8; -fx-background-radius: 8;" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colGame" prefWidth="250.0" text="Jeu" />
+                        <TableColumn fx:id="colGame" prefWidth="250.0" text="Jeu" sortType="ASCENDING" />
                         <TableColumn fx:id="colQ1" prefWidth="350.0" text="Question Principale (Q1)" />
                         <TableColumn fx:id="colActions" prefWidth="300.0" style="-fx-alignment: center;" text="Actions" />
                     </columns>
+                    <sortOrder>
+                        <fx:reference source="colGame" />
+                    </sortOrder>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
