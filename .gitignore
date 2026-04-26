@@ -39,3 +39,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### OpenCV ###
+opencv.jar
+opencv_extracted/
+**/opencv.jar
+**/opencv_extracted/
