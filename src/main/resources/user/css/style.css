@@ -1025,3 +1025,35 @@
 .google-login-button .text {
     -fx-font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
 }
+
+/* ================= FACE AUTHENTICATION BUTTON ================= */
+.face-login-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #4d7cff, #6b9fff);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-border: none;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 12 24;
+    -fx-effect: dropshadow(gaussian, rgba(77,124,255,0.3), 5, 0, 0, 2);
+}
+
+.face-login-button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #6b9fff, #8bb8ff);
+    -fx-effect: dropshadow(gaussian, rgba(77,124,255,0.5), 10, 0, 0, 4);
+    -fx-translate-y: -2;
+}
+
+.face-login-button:pressed {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #3d6acc, #4d7cff);
+    -fx-translate-y: 0;
+}
+
+.face-login-button:disabled {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 0%, #666666, #888888);
+    -fx-text-fill: #cccccc;
+    -fx-cursor: default;
+    -fx-effect: none;
+}

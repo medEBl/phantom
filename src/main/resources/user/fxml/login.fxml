@@ -33,6 +33,8 @@
             <Separator prefWidth="250" />
             
             <Button fx:id="googleLoginButton" onAction="#handleGoogleLogin" prefWidth="250" styleClass="google-login-button" text="Sign in with Google" />
+            
+            <Button fx:id="faceLoginButton" onAction="#handleFaceLogin" prefWidth="250" styleClass="face-login-button" text="Face Login" />
          </children>
       </VBox>
       

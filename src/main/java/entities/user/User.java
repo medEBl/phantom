@@ -21,6 +21,8 @@ public class User {
     private String googleRefreshToken;
     private String profilePhotoUrl;
     private String profilePhotoPublicId;
+    private String faceEncoding;
+    private boolean faceAuthenticationEnabled;
     public User() {}
 
     public User(String email, String roles, String password, String username,
@@ -90,6 +92,12 @@ public class User {
 
     public String getProfilePhotoPublicId() { return profilePhotoPublicId; }
     public void setProfilePhotoPublicId(String id) { this.profilePhotoPublicId = id; }
+
+    public String getFaceEncoding() { return faceEncoding; }
+    public void setFaceEncoding(String faceEncoding) { this.faceEncoding = faceEncoding; }
+
+    public boolean isFaceAuthenticationEnabled() { return faceAuthenticationEnabled; }
+    public void setFaceAuthenticationEnabled(boolean faceAuthenticationEnabled) { this.faceAuthenticationEnabled = faceAuthenticationEnabled; }
 
     @Override
     public String toString() {

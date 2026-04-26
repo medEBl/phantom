@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="20" styleClass="profile-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.FaceAuthSetupController">
+   <stylesheets>
+      <URL value="@/user/css/style.css" />
+   </stylesheets>
+   
+   <children>
+      <Text styleClass="profile-title" text="Face Authentication" />
+      
+      <VBox spacing="30" styleClass="profile-card" prefWidth="600">
+         <children>
+            <VBox spacing="15" alignment="CENTER">
+               <children>
+                  <Label styleClass="section-title" text="Face Recognition Status" />
+                  
+                  <Label fx:id="statusLabel" styleClass="info-label" text="Checking face authentication status..." />
+                  
+                  <ProgressIndicator fx:id="progressIndicator" styleClass="loading-indicator" prefWidth="30" prefHeight="30" />
+                  
+                  <HBox spacing="20" alignment="CENTER">
+                     <children>
+                        <Button fx:id="captureButton" onAction="#handleCaptureFace" prefWidth="150" styleClass="action-button" text="Register Face" />
+                        <Button fx:id="enableButton" onAction="#handleEnableFaceAuth" prefWidth="150" styleClass="action-button" text="Enable Face Auth" />
+                        <Button fx:id="disableButton" onAction="#handleDisableFaceAuth" prefWidth="150" styleClass="secondary-button" text="Disable Face Auth" />
+                     </children>
+                  </HBox>
+                  
+                  <Separator prefWidth="400" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="10" alignment="CENTER">
+               <children>
+                  <Label styleClass="form-label" text="Instructions:" />
+                  <TextFlow styleClass="info-label">
+                     <children>
+                        <Text text="1. Click 'Register Face' to capture or update your face" />
+                     </children>
+                  </TextFlow>
+                  <TextFlow styleClass="info-label">
+                     <children>
+                        <Text text="2. Position your face clearly in front of the camera" />
+                     </children>
+                  </TextFlow>
+                  <TextFlow styleClass="info-label">
+                     <children>
+                        <Text text="3. Enable face authentication to use face login" />
+                     </children>
+                  </TextFlow>
+                  <TextFlow styleClass="info-label">
+                     <children>
+                        <Text text="4. You can then login using your face on the login screen" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      
+      <HBox spacing="20" alignment="CENTER">
+         <children>
+            <Button fx:id="backButton" onAction="#handleBack" prefWidth="120" styleClass="secondary-button" text="Back" />
+         </children>
+      </HBox>
+      
+      <Label fx:id="messageLabel" styleClass="error-label" text="" />
+   </children>
+</VBox>
