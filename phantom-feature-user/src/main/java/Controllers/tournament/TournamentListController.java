@@ -11,7 +11,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
 import services.tournament.TournamentService;
 
 import java.io.IOException;
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 
 public class TournamentListController {
 
+    @FXML private BorderPane mainContainer;
     @FXML private FlowPane cardsPane;
     @FXML private TextField searchField;
     @FXML private ComboBox<String> gameFilter;
@@ -74,9 +79,28 @@ public class TournamentListController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         allTournaments = tournamentService.getAllTournaments();
         setupFilters();
+        setupSearchListeners();
         displayTournaments(allTournaments);
+    }
+
+    private void setupSearchListeners() {
+        Timeline searchDelay = new Timeline(
+            new KeyFrame(Duration.millis(300), event -> {
+                handleSearch();
+            })
+        );
+
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> {
+            searchDelay.stop();
+            searchDelay.playFromStart();
+        });
+
+        gameFilter.valueProperty().addListener((obs, oldVal, newVal) -> {
+            handleSearch();
+        });
     }
 
     private void setupFilters() {
@@ -107,14 +131,10 @@ public class TournamentListController {
 
     @FXML
     private void handleSearch() {
-        String query = searchField.getText().toLowerCase();
+        String query = searchField.getText();
         String selectedGame = gameFilter.getValue();
 
-        List<Tournament> filtered = allTournaments.stream()
-                .filter(t -> t.getName().toLowerCase().contains(query) || t.getGame().toLowerCase().contains(query))
-                .filter(t -> selectedGame == null || t.getGame().equals(selectedGame))
-                .collect(Collectors.toList());
-        
+        List<Tournament> filtered = tournamentService.searchTournaments(query, selectedGame, null);
         displayTournaments(filtered);
     }
 

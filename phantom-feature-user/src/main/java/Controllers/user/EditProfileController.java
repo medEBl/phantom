@@ -14,9 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditProfileController {
-
+    @FXML private ScrollPane mainContainer;
     private final UserService userService = new UserService();
     private User currentUser;
+
+    @FXML
+    public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
+    }
 
     @FXML
     private TextField fullNameField;

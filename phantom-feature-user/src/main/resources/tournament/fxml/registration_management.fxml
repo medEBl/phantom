@@ -6,7 +6,7 @@
 <?import java.net.*?>
 <?import javafx.scene.layout.Region?>
 
-<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.RegistrationManagementController">
+<BorderPane fx:id="mainContainer" styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.RegistrationManagementController">
    <stylesheets>
       <URL value="@/dashboard/css/dashboard.css" />
    </stylesheets>
@@ -29,6 +29,7 @@
                <children>
                   <Label fx:id="tournamentNameLabel" styleClass="dashboard-title" style="-fx-font-size: 18;" text="Tournament: Loading..." />
                   <Region HBox.hgrow="ALWAYS" />
+                  <Button onAction="#handleExportPDF" styleClass="secondary-button" text="📄 EXPORT PDF" />
                   <Button fx:id="registerButton" onAction="#handleAddRegistration" styleClass="action-button" text="➕ REGISTER TEAM" />
                </children>
             </HBox>

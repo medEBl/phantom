@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 <?import java.net.*?>
 
-<ScrollPane fitToWidth="true" styleClass="add-user-container" prefWidth="1200" prefHeight="800" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.AddUserController">
+<ScrollPane fx:id="mainContainer" fitToWidth="true" styleClass="add-user-container" prefWidth="1200" prefHeight="800" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.AddUserController">
    <stylesheets>
       <URL value="@/user/css/add-user.css" />
    </stylesheets>

@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import services.tournament.TournamentRewardService;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class TournamentRewardManagementController {
 
+    @FXML private BorderPane mainContainer;
     @FXML private TableView<TournamentReward> rewardTable;
     @FXML private TableColumn<TournamentReward, Integer> rankColumn;
     @FXML private TableColumn<TournamentReward, String> typeColumn;
@@ -46,6 +48,7 @@ public class TournamentRewardManagementController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         rankColumn.setCellValueFactory(new PropertyValueFactory<>("rank"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("rewardType"));
         valueColumn.setCellValueFactory(new PropertyValueFactory<>("rewardValue"));

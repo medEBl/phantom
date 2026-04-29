@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RegisterController {
+    @FXML private VBox mainContainer;
 
     private final UserService userService = new UserService();
 
@@ -67,6 +69,7 @@ public class RegisterController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         clearAllErrors();
         clearSuccessLabel();
         

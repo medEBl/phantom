@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import services.tournament.TournamentRewardService;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 public class TournamentRewardFormController {
 
+    @FXML private BorderPane mainContainer;
     @FXML private Text sectionTitle;
     @FXML private Label tournamentLabel;
     @FXML private TextField rankField;
@@ -37,6 +39,7 @@ public class TournamentRewardFormController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         typeCombo.setItems(FXCollections.observableArrayList("Cash", "Skin", "Trophy", "Points", "Other"));
     }
 

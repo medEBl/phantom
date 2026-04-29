@@ -10,15 +10,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import services.tournament.RegistrationService;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import javafx.stage.FileChooser;
+import java.io.File;
+import services.tournament.PdfExportService;
 
 public class RegistrationManagementController {
 
+    @FXML private BorderPane mainContainer;
     @FXML private TableView<Registration> registrationTable;
     @FXML private TableColumn<Registration, Integer> idColumn;
     @FXML private TableColumn<Registration, String> teamNameColumn;
@@ -31,6 +36,7 @@ public class RegistrationManagementController {
     @FXML private Button registerButton;
 
     private final RegistrationService registrationService = new RegistrationService();
+    private final PdfExportService pdfExportService = new PdfExportService();
     private Tournament tournament;
     private entities.user.User currentUser;
     private boolean isUserMode = false;
@@ -43,6 +49,7 @@ public class RegistrationManagementController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         setupTable();
     }
 
@@ -126,6 +133,44 @@ public class RegistrationManagementController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleExportPDF() {
+        if (tournament == null || registrationList.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("No Data");
+            alert.setContentText("There are no registrations to export.");
+            alert.showAndWait();
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Registrations PDF");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+        fileChooser.setInitialFileName("registrations_" + tournament.getName().replaceAll("\\s+", "_") + ".pdf");
+        
+        File file = fileChooser.showSaveDialog(mainContainer.getScene().getWindow());
+        
+        if (file != null) {
+            try {
+                pdfExportService.exportRegistrationsList(tournament, registrationList, file);
+                
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText("PDF Exported Successfully");
+                alert.setContentText("The registrations list has been exported to:\n" + file.getAbsolutePath());
+                alert.showAndWait();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Export Failed");
+                alert.setContentText("An error occurred while exporting the PDF:\n" + e.getMessage());
+                alert.showAndWait();
+            }
         }
     }
 

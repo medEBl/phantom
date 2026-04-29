@@ -10,6 +10,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.util.ResourceBundle;
 
 public class DashboardController {
 
+    @FXML private BorderPane mainContainer;
     @FXML
     private Button logoutButton;
     
@@ -146,6 +148,7 @@ public class DashboardController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         // Load dashboard data
         loadDashboardData();
         

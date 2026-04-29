@@ -2,6 +2,7 @@ package services.tournament;
 
 import Iservices.tournament.ITournamentService;
 import entities.tournament.Tournament;
+import services.user.UserService;
 import tools.Phantom;
 
 import java.sql.*;
@@ -12,6 +13,8 @@ import java.util.Optional;
 
 public class TournamentService implements ITournamentService {
     private final Connection cnx = Phantom.getInstance().getCnx();
+    private final UserService userService = new UserService();
+    private final EmailService emailService = new EmailService();
 
     private Tournament mapRow(ResultSet rs) throws SQLException {
         Tournament t = new Tournament();
@@ -62,6 +65,14 @@ public class TournamentService implements ITournamentService {
                 tournament.setId(keys.getInt(1));
             }
             System.out.println("✅ Tournament created with ID: " + tournament.getId());
+
+            // Notify all players about the new tournament
+            try {
+                emailService.sendTournamentNotification(tournament, userService.getUsersByRole("PLAYER"));
+            } catch (Exception e) {
+                System.err.println("⚠️ Could not initiate email notification: " + e.getMessage());
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException("createTournament failed: " + e.getMessage(), e);
         }
@@ -170,6 +181,43 @@ public class TournamentService implements ITournamentService {
             while (rs.next()) list.add(mapRow(rs));
         } catch (SQLException e) {
             throw new RuntimeException("getActiveTournaments failed: " + e.getMessage(), e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Tournament> searchTournaments(String query, String game, String phase) {
+        List<Tournament> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM tournament WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (query != null && !query.trim().isEmpty()) {
+            sql.append(" AND (LOWER(name) LIKE ? OR LOWER(game) LIKE ?)");
+            String pattern = "%" + query.trim().toLowerCase() + "%";
+            params.add(pattern);
+            params.add(pattern);
+        }
+
+        if (game != null && !game.trim().isEmpty() && !"All".equalsIgnoreCase(game)) {
+            sql.append(" AND game = ?");
+            params.add(game);
+        }
+
+        if (phase != null && !phase.trim().isEmpty() && !"All".equalsIgnoreCase(phase)) {
+            sql.append(" AND phase = ?");
+            params.add(phase);
+        }
+
+        sql.append(" ORDER BY start_date DESC");
+
+        try (PreparedStatement ps = cnx.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(mapRow(rs));
+        } catch (SQLException e) {
+            throw new RuntimeException("searchTournaments failed: " + e.getMessage(), e);
         }
         return list;
     }

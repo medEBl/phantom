@@ -12,8 +12,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import javafx.scene.layout.VBox;
 
 public class LoginController {
+
+    @FXML private VBox mainContainer;
 
     private final UserService userService = new UserService();
 
@@ -34,6 +37,7 @@ public class LoginController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         errorLabel.setText("");
     }
 

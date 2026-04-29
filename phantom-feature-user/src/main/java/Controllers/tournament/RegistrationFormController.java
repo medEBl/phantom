@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import services.tournament.RegistrationService;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 
 public class RegistrationFormController {
 
+    @FXML private BorderPane mainContainer;
     @FXML private Label tournamentLabel;
     @FXML private TextField teamNameField;
     @FXML private TextField emailField;
@@ -25,6 +27,11 @@ public class RegistrationFormController {
     private Tournament tournament;
     private entities.user.User currentUser;
     private boolean isUserMode = false;
+
+    @FXML
+    public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
+    }
 
     public void initData(Tournament tournament) {
         initData(tournament, false);

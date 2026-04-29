@@ -7,7 +7,7 @@
 <?import java.net.*?>
 <?import javafx.scene.layout.Region?>
 
-<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.TournamentListController">
+<BorderPane fx:id="mainContainer" styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.TournamentListController">
    <stylesheets>
       <URL value="@/dashboard/css/dashboard.css" />
    </stylesheets>
@@ -31,7 +31,6 @@
                <children>
                   <TextField fx:id="searchField" promptText="Search tournaments..." styleClass="text-field" prefWidth="350" />
                   <ComboBox fx:id="gameFilter" promptText="Filter by Game" styleClass="text-field" prefWidth="200" />
-                  <Button onAction="#handleSearch" styleClass="secondary-button" text="🔍 SEARCH" />
                   <Button onAction="#handleReset" styleClass="secondary-button" text="♻️ RESET" />
                </children>
             </HBox>

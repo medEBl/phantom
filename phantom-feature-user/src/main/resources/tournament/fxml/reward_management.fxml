@@ -6,7 +6,7 @@
 <?import java.net.*?>
 <?import javafx.scene.layout.Region?>
 
-<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.TournamentRewardManagementController">
+<BorderPane fx:id="mainContainer" styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.TournamentRewardManagementController">
    <stylesheets>
       <URL value="@/dashboard/css/dashboard.css" />
    </stylesheets>

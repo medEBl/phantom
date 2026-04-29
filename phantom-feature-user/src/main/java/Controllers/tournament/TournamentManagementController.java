@@ -8,18 +8,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
 import services.tournament.TournamentService;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.stage.FileChooser;
+import java.io.File;
+import services.tournament.PdfExportService;
 
 public class TournamentManagementController {
 
+    @FXML private BorderPane mainContainer;
     @FXML private TableView<Tournament> tournamentTable;
     @FXML private TableColumn<Tournament, Integer> idColumn;
     @FXML private TableColumn<Tournament, String> nameColumn;
@@ -37,13 +45,37 @@ public class TournamentManagementController {
     @FXML private Button backButton;
 
     private final TournamentService tournamentService = new TournamentService();
+    private final PdfExportService pdfExportService = new PdfExportService();
     private ObservableList<Tournament> tournamentList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         setupTable();
         loadData();
         setupFilters();
+        setupSearchListeners();
+    }
+
+    private void setupSearchListeners() {
+        Timeline searchDelay = new Timeline(
+            new KeyFrame(Duration.millis(300), event -> {
+                handleSearch();
+            })
+        );
+
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> {
+            searchDelay.stop();
+            searchDelay.playFromStart();
+        });
+
+        gameFilter.valueProperty().addListener((obs, oldVal, newVal) -> {
+            handleSearch();
+        });
+
+        phaseFilter.valueProperty().addListener((obs, oldVal, newVal) -> {
+            handleSearch();
+        });
     }
 
     private void setupTable() {
@@ -171,16 +203,11 @@ public class TournamentManagementController {
 
     @FXML
     private void handleSearch() {
-        String query = searchField.getText().toLowerCase();
+        String query = searchField.getText();
         String game = gameFilter.getValue();
         String phase = phaseFilter.getValue();
 
-        List<Tournament> filtered = tournamentService.getAllTournaments().stream()
-                .filter(t -> t.getName().toLowerCase().contains(query) || t.getGame().toLowerCase().contains(query))
-                .filter(t -> game == null || t.getGame().equals(game))
-                .filter(t -> phase == null || t.getPhase().equals(phase))
-                .collect(Collectors.toList());
-        
+        List<Tournament> filtered = tournamentService.searchTournaments(query, game, phase);
         tournamentTable.setItems(FXCollections.observableArrayList(filtered));
     }
 
@@ -190,6 +217,35 @@ public class TournamentManagementController {
         gameFilter.setValue(null);
         phaseFilter.setValue(null);
         loadData();
+    }
+
+    @FXML
+    private void handleExportPDF() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Tournaments PDF");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+        fileChooser.setInitialFileName("tournaments_list.pdf");
+        
+        File file = fileChooser.showSaveDialog(mainContainer.getScene().getWindow());
+        
+        if (file != null) {
+            try {
+                pdfExportService.exportTournamentsList(tournamentList, file);
+                
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText("PDF Exported Successfully");
+                alert.setContentText("The tournaments list has been exported to:\n" + file.getAbsolutePath());
+                alert.showAndWait();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Export Failed");
+                alert.setContentText("An error occurred while exporting the PDF:\n" + e.getMessage());
+                alert.showAndWait();
+            }
+        }
     }
 
     @FXML

@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 <?import java.net.*?>
 
-<VBox alignment="CENTER" spacing="20" styleClass="login-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.LoginController">
+<VBox fx:id="mainContainer" alignment="CENTER" spacing="20" styleClass="login-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.LoginController">
    <stylesheets>
       <URL value="@/user/css/style.css" />
    </stylesheets>

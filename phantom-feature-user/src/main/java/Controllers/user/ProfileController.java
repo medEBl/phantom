@@ -6,12 +6,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class ProfileController {
-
+    @FXML private BorderPane mainContainer;
     private User currentUser;
 
     @FXML
@@ -71,6 +72,7 @@ public class ProfileController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         System.out.println("ProfileController initialized");
         // Les doublons ont été supprimés
     }

@@ -7,7 +7,7 @@
 <?import javafx.scene.chart.*?>
 <?import java.net.*?>
 
-<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.admin.DashboardController">
+<BorderPane fx:id="mainContainer" styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.admin.DashboardController">
    <stylesheets>
       <URL value="@/dashboard/css/dashboard.css" />
    </stylesheets>

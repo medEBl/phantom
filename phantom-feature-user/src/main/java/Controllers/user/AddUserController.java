@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 public class AddUserController {
 
+    @FXML private ScrollPane mainContainer;
     private User currentUser;
 
     @FXML private TextField emailField;
@@ -51,6 +52,7 @@ public class AddUserController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         // Initialize role ComboBox
         roleComboBox.getItems().addAll("PLAYER", "COACH", "ORGANIZER", "ADMIN");
         roleComboBox.getSelectionModel().selectFirst();

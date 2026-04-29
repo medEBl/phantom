@@ -12,9 +12,10 @@ public interface ITournamentService {
     Optional<Tournament> getTournamentById(int id);
     List<Tournament> getAllTournaments();
 
-    // Filters
+    // Search and Filters
     List<Tournament> getTournamentsByGame(String game);
     List<Tournament> getTournamentsByPhase(String phase);
     List<Tournament> getActiveTournaments();
+    List<Tournament> searchTournaments(String query, String game, String phase);
     boolean tournamentNameExists(String name);
 }

@@ -6,7 +6,7 @@
 <?import java.net.*?>
 <?import javafx.scene.layout.Region?>
 
-<BorderPane styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.TournamentManagementController">
+<BorderPane fx:id="mainContainer" styleClass="dashboard-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.tournament.TournamentManagementController">
    <stylesheets>
       <URL value="@/dashboard/css/dashboard.css" />
    </stylesheets>
@@ -32,9 +32,9 @@
                   <TextField fx:id="searchField" promptText="Search tournaments..." styleClass="text-field" prefWidth="300" />
                   <ComboBox fx:id="gameFilter" promptText="Filter by Game" styleClass="text-field" prefWidth="180" />
                   <ComboBox fx:id="phaseFilter" promptText="Filter by Phase" styleClass="text-field" prefWidth="180" />
-                  <Button onAction="#handleSearch" styleClass="secondary-button" text="🔍 SEARCH" />
                   <Button onAction="#handleReset" styleClass="secondary-button" text="♻️ RESET" />
                   <Region HBox.hgrow="ALWAYS" />
+                  <Button onAction="#handleExportPDF" styleClass="secondary-button" text="📄 EXPORT PDF" />
                   <Button fx:id="addTournamentButton" onAction="#handleAddTournament" styleClass="action-button" text="➕ ADD TOURNAMENT" />
                </children>
             </HBox>

@@ -16,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
@@ -27,7 +28,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class EditUserController {
-
+    @FXML private BorderPane mainContainer;
     private final UserService userService = new UserService();
     private User currentUser;
 
@@ -87,6 +88,7 @@ public class EditUserController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         System.out.println("EditUserController initialized");
         setupComboBoxes();
         setupValidationListeners();

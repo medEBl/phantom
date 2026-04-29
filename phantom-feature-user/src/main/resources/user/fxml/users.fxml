@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 <?import java.net.*?>
 
-<BorderPane styleClass="users-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.UsersController">
+<BorderPane fx:id="mainContainer" styleClass="users-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.user.UsersController">
    <stylesheets>
       <URL value="@/user/css/style.css" />
    </stylesheets>
@@ -29,7 +29,6 @@
                   <TextField fx:id="searchField" promptText="Search users..." styleClass="text-field" prefWidth="300" />
                   <ComboBox fx:id="roleFilter" promptText="Filter by role" styleClass="text-field" prefWidth="150" />
                   <ComboBox fx:id="statusFilter" promptText="Filter by status" styleClass="text-field" prefWidth="150" />
-                  <Button fx:id="searchButton" onAction="#handleSearch" styleClass="login-button" text="SEARCH" />
                   <Button fx:id="clearButton" onAction="#handleClear" styleClass="login-button" text="CLEAR" />
                   <Region HBox.hgrow="ALWAYS" />
                   <Button fx:id="addUserButton" onAction="#handleAddUser" styleClass="save-button" text="ADD USER" />

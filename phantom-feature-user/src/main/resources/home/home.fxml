@@ -6,7 +6,7 @@
 <?import javafx.geometry.Insets?>
 <?import java.net.*?>
 
-<BorderPane styleClass="home-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.home.HomeController">
+<BorderPane fx:id="mainContainer" styleClass="home-container" prefWidth="1920" prefHeight="1080" maxWidth="Infinity" maxHeight="Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.home.HomeController">
    <stylesheets>
       <URL value="@/home/home.css" />
    </stylesheets>

@@ -3,6 +3,7 @@ package Controllers.home;
 import Controllers.tournament.TournamentListController;
 import entities.user.User;
 import javafx.fxml.FXML;
+import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -87,8 +88,13 @@ public class HomeController {
     @FXML
     private Text winRateText;
 
+    @FXML private BorderPane mainContainer;
+    @FXML private Label userRoleLabel;
+
     @FXML
-    private Label userRoleLabel;
+    public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
+    }
 
     public void setCurrentUser(User user) {
         this.currentUser = user;

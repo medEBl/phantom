@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import services.tournament.TournamentService;
 
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 
 public class TournamentFormController {
 
+    @FXML private BorderPane mainContainer;
     @FXML private Text formTitle;
     @FXML private Text sectionTitle;
     @FXML private TextField nameField;
@@ -46,6 +48,7 @@ public class TournamentFormController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         phaseCombo.setItems(FXCollections.observableArrayList("registrations_open", "ongoing", "finished"));
         phaseCombo.setValue("registrations_open");
     }

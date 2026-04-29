@@ -14,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.animation.Timeline;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UsersController {
-
+    @FXML private BorderPane mainContainer;
     private final UserService userService = new UserService();
     private User currentUser;
     private int currentPage = 1;
@@ -47,8 +48,6 @@ public class UsersController {
     @FXML
     private ComboBox statusFilter;
     
-    @FXML
-    private Button searchButton;
     @FXML
     private Button clearButton;
     
@@ -96,6 +95,7 @@ public class UsersController {
 
     @FXML
     public void initialize() {
+        tools.AnimatedBackground.addAnimatedBackground(mainContainer);
         setupTableColumns();
         setupFilters();
         setupSearchListeners();
