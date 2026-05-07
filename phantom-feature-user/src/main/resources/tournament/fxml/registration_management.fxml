@@ -46,7 +46,7 @@
                   
                   <TableView fx:id="registrationTable" styleClass="activity-table" prefHeight="700">
                      <columns>
-                        <TableColumn fx:id="idColumn" text="ID" prefWidth="60" />
+
                         <TableColumn fx:id="teamNameColumn" text="Team Name" prefWidth="300" />
                         <TableColumn fx:id="emailColumn" text="Contact Email" prefWidth="300" />
                         <TableColumn fx:id="dateColumn" text="Registration Date" prefWidth="250" />

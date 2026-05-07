@@ -51,7 +51,7 @@
                   
                   <TableView fx:id="tournamentTable" styleClass="activity-table" prefHeight="700">
                      <columns>
-                        <TableColumn fx:id="idColumn" text="ID" prefWidth="60" />
+
                         <TableColumn fx:id="nameColumn" text="Tournament Name" prefWidth="250" />
                         <TableColumn fx:id="gameColumn" text="Game" prefWidth="150" />
                         <TableColumn fx:id="startDateColumn" text="Start Date" prefWidth="130" />

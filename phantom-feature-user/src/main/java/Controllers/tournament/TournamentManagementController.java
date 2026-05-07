@@ -29,7 +29,7 @@ public class TournamentManagementController {
 
     @FXML private BorderPane mainContainer;
     @FXML private TableView<Tournament> tournamentTable;
-    @FXML private TableColumn<Tournament, Integer> idColumn;
+
     @FXML private TableColumn<Tournament, String> nameColumn;
     @FXML private TableColumn<Tournament, String> gameColumn;
     @FXML private TableColumn<Tournament, LocalDate> startDateColumn;
@@ -79,7 +79,7 @@ public class TournamentManagementController {
     }
 
     private void setupTable() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         gameColumn.setCellValueFactory(new PropertyValueFactory<>("game"));
         startDateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));

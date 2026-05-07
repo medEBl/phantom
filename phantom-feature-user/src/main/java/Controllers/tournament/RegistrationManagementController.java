@@ -25,7 +25,7 @@ public class RegistrationManagementController {
 
     @FXML private BorderPane mainContainer;
     @FXML private TableView<Registration> registrationTable;
-    @FXML private TableColumn<Registration, Integer> idColumn;
+
     @FXML private TableColumn<Registration, String> teamNameColumn;
     @FXML private TableColumn<Registration, String> emailColumn;
     @FXML private TableColumn<Registration, LocalDateTime> dateColumn;
@@ -60,7 +60,7 @@ public class RegistrationManagementController {
     }
 
     private void setupTable() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+
         teamNameColumn.setCellValueFactory(new PropertyValueFactory<>("teamName"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("contactEmail"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));

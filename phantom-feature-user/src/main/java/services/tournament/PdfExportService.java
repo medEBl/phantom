@@ -33,16 +33,15 @@ public class PdfExportService {
         title.setSpacingAfter(20);
         document.add(title);
 
-        PdfPTable table = new PdfPTable(6);
+        PdfPTable table = new PdfPTable(5);
         table.setWidthPercentage(100);
-        table.setWidths(new float[]{1f, 3f, 2f, 2f, 2f, 2f});
+        table.setWidths(new float[]{3f, 2f, 2f, 2f, 2f});
 
-        addTableHeader(table, "ID", "Name", "Game", "Start Date", "Phase", "Status");
+        addTableHeader(table, "Name", "Game", "Start Date", "Phase", "Status");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         for (Tournament t : tournaments) {
-            table.addCell(new Phrase(String.valueOf(t.getId()), NORMAL_FONT));
             table.addCell(new Phrase(t.getName(), NORMAL_FONT));
             table.addCell(new Phrase(t.getGame(), NORMAL_FONT));
             table.addCell(new Phrase(t.getStartDate() != null ? t.getStartDate().format(formatter) : "N/A", NORMAL_FONT));
@@ -69,16 +68,15 @@ public class PdfExportService {
         subTitle.setSpacingAfter(20);
         document.add(subTitle);
 
-        PdfPTable table = new PdfPTable(4);
+        PdfPTable table = new PdfPTable(3);
         table.setWidthPercentage(100);
-        table.setWidths(new float[]{1f, 3f, 3f, 3f});
+        table.setWidths(new float[]{3f, 3f, 3f});
 
-        addTableHeader(table, "ID", "Team Name", "Contact Email", "Registration Date");
+        addTableHeader(table, "Team Name", "Contact Email", "Registration Date");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         for (Registration r : registrations) {
-            table.addCell(new Phrase(String.valueOf(r.getId()), NORMAL_FONT));
             table.addCell(new Phrase(r.getTeamName(), NORMAL_FONT));
             table.addCell(new Phrase(r.getContactEmail(), NORMAL_FONT));
             table.addCell(new Phrase(r.getCreatedAt() != null ? r.getCreatedAt().format(formatter) : "N/A", NORMAL_FONT));
